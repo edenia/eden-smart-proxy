@@ -72,7 +72,9 @@ const Header: React.FC = () => {
     <AppBar className={classes.appBar}>
       <Toolbar className={clsx(classes.drawerPaper, classes.topBarStyle)}>
         <div className={classes.menuContainer}>
-          <div className={(classes.drawerContainer, classes.drawerShowDesktop)}>
+          <div
+            className={clsx(classes.drawerContainer, classes.drawerShowDesktop)}
+          >
             <div className={classes.logoAndMenu}>
               <Link className={classes.logo} href='/'>
                 <Image
@@ -107,7 +109,9 @@ const Header: React.FC = () => {
               <LangItem label='ES' handleClick={translateSite} useDivider />
             </div>
           </div>
-          <div className={(classes.drawerContainer, classes.drawerShowMobile)}>
+          <div
+            className={clsx(classes.drawerContainer, classes.drawerShowMobile)}
+          >
             <div className={classes.logoAppbar}>
               <IconButton onClick={handlerDrawer}>
                 <MenuIcon fontSize='large' className={classes.menuIconColor} />

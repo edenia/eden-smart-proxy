@@ -21,8 +21,7 @@ const Layout: React.FC<LayoutProps> = ({
   const classes = useStyles()
   const wrapper = useRef<HTMLInputElement>(null)
   // WIP: header refactor
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [showNavbar, setShowNavbar] = useState(true)
+  const [, setShowNavbar] = useState(true)
   const [lastScroll, setLastScroll] = useState(0)
 
   const scrolling = () => {
