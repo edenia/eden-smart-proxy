@@ -1,0 +1,14 @@
+---
+BasedOnStyle: LLVM
+NamespaceIndentation: All
+ReflowComments: false
+IndentWidth: 2
+AlignConsecutiveDeclarations: Consecutive
+SpacesInParentheses: true
+SpacesInAngles: true
+BinPackArguments: false
+BinPackParameters: false
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
+---
+
