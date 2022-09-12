@@ -6,6 +6,7 @@
 #include <eosio/name.hpp>
 
 namespace eden {
+  inline constexpr auto     eden_contract = "genesis.eden"_n;
   inline constexpr auto     token_contract = "eosio.token"_n;
   inline constexpr uint64_t default_scope = 0;
   inline constexpr uint16_t max_active_members = 10000;

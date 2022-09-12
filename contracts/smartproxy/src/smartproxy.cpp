@@ -8,18 +8,17 @@ namespace edenproxy {
   void smartproxy_contract::vote( eosio::name voter, eosio::name bp ) {
     require_auth( voter );
 
-    // eden::member member = eden::members_contract::get_member( voter );
+    eden::member member = eden::members_contract::get_member( voter );
 
-    // eosio::check( member.status() == eden::member_status::active_member,
-    //               "Need to be an active eden member" );
-    // eosio::check( member.election_rank(),
-    //               "Eden member rank should be greater or equal to 1" );
+    eosio::check( member.status() == eden::member_status::active_member,
+                  "Need to be an active eden member" );
+    eosio::check( member.election_rank(),
+                  "Eden member rank should be greater or equal to 1" );
     eosio::check( is_bp_whitelisted( bp ), "Only whitelisted bps are allowed" );
 
     // hc == ch same weight
-    //
-    uint8_t  rank = 1;
-    uint16_t vote_weight = fib( rank );
+
+    uint16_t vote_weight = fib( member.election_rank() );
 
     votes_table _votes{ get_self(), get_self().value };
     auto        votes_itr = _votes.find( voter.value );
@@ -72,17 +71,11 @@ namespace edenproxy {
     }
 
     _votes.erase( votes_itr );
-
-    update_votes();
   }
 
   void smartproxy_contract::proxyvote() {
     require_auth( get_self() );
 
-    update_votes();
-  }
-
-  void smartproxy_contract::update_votes() {
     // first  = lowest
     // back   = highest
     std::vector< std::pair< eosio::name, uint16_t > > bps;
@@ -90,12 +83,13 @@ namespace edenproxy {
     stats_table _stats{ get_self(), get_self().value };
 
     for ( auto itr = _stats.begin(); itr != _stats.end(); itr++ ) {
-      uint16_t distance = !bps.empty() ? bps.front() - bps.back() : 0;
-
-      // itr->weight
+      std::pair< eosio::name, uint16_t > temp;
+      // uint16_t distance = !bps.empty() ? bps.front() - bps.back() : 0;
+      int pos = (int)bps.size() / 2;
+      int direction = bps[pos].second > itr->weight ? -1 : 1;
     }
 
-    // vote for that bps
+    // vote for bps
   }
 
 } // namespace edenproxy

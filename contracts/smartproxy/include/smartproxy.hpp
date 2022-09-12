@@ -56,8 +56,6 @@ namespace edenproxy {
     void removevote( eosio::name voter );
     void proxyvote();
 
-    void update_votes();
-
   private:
     const eosio::name DEFAULT_ACCOUNT = eosio::name( "smartproxy" );
   };

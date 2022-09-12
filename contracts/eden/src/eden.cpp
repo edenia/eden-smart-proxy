@@ -1,11 +1,11 @@
 #include <eden/eden.hpp>
 
 namespace eden {
-  const member &members_contract::get_member( eosio::name account ) {
-    return member_tb.get(
-        account.value,
-        ( "member " + account.to_string() + " not found" ).c_str() );
-  }
+  // const member &members_contract::get_member( eosio::name account ) {
+  //   return member_tb.get(
+  //       account.value,
+  //       ( "member " + account.to_string() + " not found" ).c_str() );
+  // }
 
   void members_contract::check_active_member( eosio::name account ) {
     eosio::check( get_member( account ).status() ==
