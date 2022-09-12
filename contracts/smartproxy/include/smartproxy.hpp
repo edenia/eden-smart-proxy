@@ -21,21 +21,14 @@ namespace edenproxy {
   }
 
   struct votes {
-    eosio::name account;
-    eosio::name bp;
-    uint16_t    weight;
+    eosio::name                account;
+    std::vector< eosio::name > producers;
+    uint16_t                   weight;
 
     uint64_t primary_key() const { return account.value; }
-    uint64_t by_bp() const { return bp.value; }
   };
-  EOSIO_REFLECT( votes, account, bp, weight )
-  typedef eosio::multi_index<
-      "votes"_n,
-      votes,
-      eosio::indexed_by<
-          "bybp"_n,
-          eosio::const_mem_fun< votes, uint64_t, &votes::by_bp > > >
-      votes_table;
+  EOSIO_REFLECT( votes, account, producers, weight )
+  typedef eosio::multi_index< "votes"_n, votes > votes_table;
 
   struct stats {
     eosio::name bp;
@@ -50,7 +43,7 @@ namespace edenproxy {
   public:
     using eosio::contract::contract;
 
-    void vote( eosio::name voter, eosio::name bp );
+    void vote( eosio::name voter, const std::vector< eosio::name > &producers );
     void removevote( eosio::name voter );
     void proxyvote();
     void refreshvotes();
@@ -62,7 +55,7 @@ namespace edenproxy {
 
   EOSIO_ACTIONS( smartproxy_contract,
                  "smartproxy"_n,
-                 action( vote, voter, bp ),
+                 action( vote, voter, producers ),
                  action( removevote, voter ),
                  action( proxyvote ),
                  action( refreshvotes ) )
