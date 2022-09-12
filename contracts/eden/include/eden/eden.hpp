@@ -80,7 +80,7 @@ namespace eden {
     void check_pending_member( eosio::name account );
     void setactive( eosio::name account, const std::string &name );
     void
-    set_rank( eosio::name account, uint8_t rank, eosio::name representative );
+    setrank( eosio::name account, uint8_t rank, eosio::name representative );
 
     static const member &get_member( eosio::name account ) {
       member_table_type member_tb2{ eden_contract, default_scope };
@@ -91,9 +91,9 @@ namespace eden {
   };
 
   EOSIO_ACTIONS( members_contract,
-                 "eden"_n,
+                 "genesis.eden"_n,
                  action( create, account ),
-                 action( set_rank, account, rank, representative ),
+                 action( setrank, account, rank, representative ),
                  action( setactive, account, name ) )
 
 } // namespace eden

@@ -1,6 +1,6 @@
 #include <myvoteeosdao/myvoteeosdao.hpp>
 
-void eden::myvoteeosdao::addproxy( name proxy ) {
+void dao::myvoteeosdao::addproxy( name proxy ) {
   check( is_proxy( proxy ), "Only registered proxies can be included" );
   require_auth( _self );
 
@@ -15,7 +15,7 @@ void eden::myvoteeosdao::addproxy( name proxy ) {
   }
 }
 
-void eden::myvoteeosdao::rmproxy( name proxy ) {
+void dao::myvoteeosdao::rmproxy( name proxy ) {
   require_auth( _self );
 
   // Init the proxies table
@@ -31,7 +31,7 @@ void eden::myvoteeosdao::rmproxy( name proxy ) {
   _proxy.erase( proxy_itr );
 }
 
-void eden::myvoteeosdao::addproducer( name producer ) {
+void dao::myvoteeosdao::addproducer( name producer ) {
   check( is_blockproducer( producer ),
          "Only registered block producers can be included" );
   require_auth( _self );
@@ -47,7 +47,7 @@ void eden::myvoteeosdao::addproducer( name producer ) {
   }
 }
 
-void eden::myvoteeosdao::rmproducer( name producer ) {
+void dao::myvoteeosdao::rmproducer( name producer ) {
   require_auth( _self );
 
   // Init the producer table
@@ -62,7 +62,7 @@ void eden::myvoteeosdao::rmproducer( name producer ) {
   _producer.erase( producer_itr );
 }
 
-void eden::myvoteeosdao::clear() {
+void dao::myvoteeosdao::clear() {
   require_auth( get_self() );
 
   proxy_table _proxy( get_self(), get_self().value );
@@ -82,8 +82,8 @@ void eden::myvoteeosdao::clear() {
   }
 }
 
-EOSIO_ACTION_DISPATCHER( eden::actions )
+EOSIO_ACTION_DISPATCHER( dao::actions )
 
-EOSIO_ABIGEN( actions( eden::actions ),
-              table( "proxy"_n, eden::proxy ),
-              table( "producer"_n, eden::producer ) )
+EOSIO_ABIGEN( actions( dao::actions ),
+              table( "proxy"_n, dao::proxy ),
+              table( "producer"_n, dao::producer ) )

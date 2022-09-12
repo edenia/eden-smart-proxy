@@ -3,8 +3,6 @@
 
 namespace edenproxy {
 
-  bool is_eden_member( eosio::name account ) { return true; }
-
   bool is_bp_whitelisted( eosio::name bp ) { return true; }
 
   // TODO: optimize this calculation
@@ -55,15 +53,18 @@ namespace edenproxy {
     void vote( eosio::name voter, eosio::name bp );
     void removevote( eosio::name voter );
     void proxyvote();
+    void refreshvotes();
 
   private:
     const eosio::name DEFAULT_ACCOUNT = eosio::name( "smartproxy" );
+    const eosio::name DEFAULT_DAO_ACCOUNT = eosio::name( "myvoteeosdao" );
   };
 
   EOSIO_ACTIONS( smartproxy_contract,
                  "smartproxy"_n,
                  action( vote, voter, bp ),
                  action( removevote, voter ),
-                 action( proxyvote ) )
+                 action( proxyvote ),
+                 action( refreshvotes ) )
 
 } // namespace edenproxy

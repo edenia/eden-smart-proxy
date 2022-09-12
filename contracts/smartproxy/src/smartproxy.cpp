@@ -1,6 +1,8 @@
-#include <eden/eden.hpp>
 #include <eosio/asset.hpp>
 #include <eosio/eosio.hpp>
+
+#include <eden/eden.hpp>
+#include <myvoteeosdao/myvoteeosdao.hpp>
 
 #include <smartproxy.hpp>
 
@@ -14,9 +16,12 @@ namespace edenproxy {
                   "Need to be an active eden member" );
     eosio::check( member.election_rank(),
                   "Eden member rank should be greater or equal to 1" );
-    eosio::check( is_bp_whitelisted( bp ), "Only whitelisted bps are allowed" );
+    eosio::check( dao::myvoteeosdao::checkbp( DEFAULT_DAO_ACCOUNT,
+                                              DEFAULT_DAO_ACCOUNT,
+                                              bp ),
+                  "Only whitelisted bps are allowed" );
 
-    // hc == ch same weight
+    // TODO: hc and ch must have the same weight
 
     uint16_t vote_weight = fib( member.election_rank() );
 
@@ -76,8 +81,7 @@ namespace edenproxy {
   void smartproxy_contract::proxyvote() {
     require_auth( get_self() );
 
-    // first  = lowest
-    // back   = highest
+    // lowest -> highest
     std::vector< std::pair< eosio::name, uint16_t > > bps;
 
     stats_table _stats{ get_self(), get_self().value };
@@ -92,6 +96,9 @@ namespace edenproxy {
     // vote for bps
   }
 
+  void smartproxy_contract::refreshvotes() {
+    // re-calculate votes
+  }
 } // namespace edenproxy
 
 EOSIO_ACTION_DISPATCHER( edenproxy::actions )

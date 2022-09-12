@@ -1,3 +1,5 @@
+#pragma once
+
 /*
  *
  * @author  EOSCostaRica.io [ https://eoscostarica.io ]
@@ -106,7 +108,7 @@ bool is_proxy( name name ) {
   return it != _voters.end() && it->is_proxy;
 }
 
-namespace eden {
+namespace dao {
   struct proxy {
     name proxy;
 
@@ -166,6 +168,21 @@ namespace eden {
      */
     void rmproducer( name producer );
 
+    /**
+     * Check block producer is in the list of block producers
+     *
+     * This action allow to check if a block producers is whitelisted
+     *
+     *
+     * @return true if whitelisted, false if not.
+     */
+    static bool checkbp( name contract, name owner, name producer ) {
+      producer_table _producer( contract, owner.value );
+      auto           producer_itr = _producer.find( producer.value );
+
+      return producer_itr == _producer.end();
+    }
+
     void clear();
   };
 
@@ -176,4 +193,4 @@ namespace eden {
                  action( addproducer, producer ),
                  action( rmproducer, producer ),
                  action( clear ) )
-} // namespace eden
+} // namespace dao

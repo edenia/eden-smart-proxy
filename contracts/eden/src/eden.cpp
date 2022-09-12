@@ -1,12 +1,6 @@
 #include <eden/eden.hpp>
 
 namespace eden {
-  // const member &members_contract::get_member( eosio::name account ) {
-  //   return member_tb.get(
-  //       account.value,
-  //       ( "member " + account.to_string() + " not found" ).c_str() );
-  // }
-
   void members_contract::check_active_member( eosio::name account ) {
     eosio::check( get_member( account ).status() ==
                       member_status::active_member,
@@ -30,19 +24,21 @@ namespace eden {
   void members_contract::setactive( eosio::name        account,
                                     const std::string &name ) {
     check_pending_member( account );
-    const auto &member = get_member( account );
-    member_tb.modify( member, eosio::same_payer, [&]( auto &row ) {
-      row.value = member_v1{ { .account = row.account(),
-                               .name = name,
-                               .status = member_status::active_member,
-                               .nft_template_id = row.nft_template_id(),
-                               .election_participation_status = 0 } };
-    } );
+    member_tb.modify( member_tb.get( account.value ),
+                      eosio::same_payer,
+                      [&]( auto &row ) {
+                        row.value = member_v1{
+                            { .account = row.account(),
+                              .name = name,
+                              .status = member_status::active_member,
+                              .nft_template_id = row.nft_template_id(),
+                              .election_participation_status = 0 } };
+                      } );
   }
 
-  void members_contract::set_rank( eosio::name member,
-                                   uint8_t     rank,
-                                   eosio::name representative ) {
+  void members_contract::setrank( eosio::name member,
+                                  uint8_t     rank,
+                                  eosio::name representative ) {
     member_tb.modify(
         member_tb.get( member.value ),
         contract,
