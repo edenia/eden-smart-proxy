@@ -1,0 +1,63 @@
+name: Publish release to production environment
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        id: checkout_repo
+        uses: actions/checkout@v2.4.0
+
+      - name: Setup Docker
+        uses: docker-practice/actions-setup-docker@1.0.8
+
+      - name: Get tag
+        id: tag
+        uses: dawidd6/action-get-tag@v1
+
+      - name: Log in to docker registry
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login \
+            ghcr.io \
+            --username ${{ github.actor }} \
+            --password-stdin
+      - name: Build new image and push
+        run: |
+          make \
+            pull-image \
+            build-docker-cached \
+            push-image
+        env:
+          LATEST_TAG: latest
+          RELEASE_TAG: ${{ steps.tag.outputs.tag }}
+          VERSION: ${{ steps.tag.outputs.tag }}
+
+      - name: Build kubernetes files
+        id: build_kubernetes_files
+        run: |
+          make \
+            build-kubernetes
+        env:
+          VERSION: ${{ steps.tag.outputs.tag }}
+
+      - name: Setup and deploy kubernetes environment
+        uses: steebchen/kubectl@v1.1.0
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+          NAMESPACE: edenproxy
+          K8S_BUILD_DIR: build_k8s
+        with:
+          args: version && make deploy-kubernetes
+
+      - name: Create Release
+        id: create_release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: false

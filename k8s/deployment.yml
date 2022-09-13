@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: edenproxy
+  name: edenproxy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: edenproxy
+  template:
+    metadata:
+      labels:
+        app: edenproxy
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - image: ${DOCKER_REGISTRY}/${IMAGE_NAME}:${VERSION}
+          name: edenproxy
+          ports:
+            - containerPort: 80
+              name: http
+          resources:
+            requests:
+              cpu: 150m
+            limits:
+              cpu: "1"
+          env:
+            - name: APP_NAME
+              value: edenproxy
+      dnsConfig:
+        nameservers:
+        - 10.43.0.10
+        searches:
+        - edenproxy.svc.cluster.local
+        - svc.cluster.local
+        - cluster.local
+      dnsPolicy: None
