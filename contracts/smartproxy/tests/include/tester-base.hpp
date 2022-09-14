@@ -62,6 +62,3 @@ struct tester {
     }
   }
 };
-
-// eosio::check( producers.size() <= 30 && producers.size() >= 1,
-//                   "Can only vote for at least 1 bp and a max of 30 bps" );

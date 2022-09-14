@@ -13,11 +13,11 @@ TEST_CASE( "Require to be an eden member" ) {
           "Needs to be an active eden member" );
 }
 
-TEST_CASE( "BP is not whitelisted" ) {
-  tester t;
+// TEST_CASE( "BP is not whitelisted" ) {
+//   tester t;
 
-  t.genesis();
-}
+//   t.genesis();
+// }
 
 TEST_CASE( "Success vote" ) {
   tester t;

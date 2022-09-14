@@ -16,7 +16,6 @@ namespace edenproxy {
 
     eosio::check( member.status() == eden::member_status::active_member,
                   "Needs to be an active eden member" );
-
     eosio::check(
         dao::myvoteeosdao::checkbp( DAO_ACCOUNT, DAO_ACCOUNT, producers[0] ),
         "Only whitelisted bps are allowed" );
@@ -126,8 +125,11 @@ namespace edenproxy {
                                 const std::vector< eosio::name > &producers ) {
     // TODO: hc and ch must have the same weight
 
-    uint16_t vote_weight = fib( member.election_rank() + 1 );
-    uint16_t old_vote_weight = 0;
+    uint16_t                   vote_weight = fib( member.election_rank() + 1 );
+    uint16_t                   old_vote_weight = 0;
+    std::vector< eosio::name > current_producers;
+    std::vector< eosio::name > new_producers = producers;
+    std::vector< eosio::name > old_producers;
 
     votes_table _votes{ get_self(), get_self().value };
     auto        votes_itr = _votes.find( voter.value );
@@ -139,6 +141,7 @@ namespace edenproxy {
         row.weight = vote_weight;
       } );
     } else {
+      old_producers = votes_itr->producers;
       old_vote_weight = votes_itr->weight;
 
       _votes.modify( votes_itr, eosio::same_payer, [&]( auto &row ) {
@@ -147,32 +150,63 @@ namespace edenproxy {
       } );
     }
 
-    // TODO: what if a user include/exclude a bp in their new vote?
-
     stats_table _stats{ get_self(), get_self().value };
 
-    const std::vector< eosio::name > current_producers = votes_itr->producers;
-    const std::vector< eosio::name > new_producers;
-    const std::vector< eosio::name > removed_producers;
-
-    for ( eosio::name bp : current_producers ) {
+    for ( auto bp_itr = old_producers.begin(); bp_itr < old_producers.end();
+          bp_itr++ ) {
+      if ( std::any_of(
+               new_producers.begin(),
+               new_producers.end(),
+               [&]( eosio::name temp_bp ) { return temp_bp == *bp_itr; } ) ) {
+        std::erase( new_producers, *bp_itr );
+        current_producers.push_back( *bp_itr );
+        bp_itr = old_producers.erase( bp_itr );
+      }
     }
 
-    // for ( eosio::name bp : producers ) {
-    //   auto stats_itr = _stats.find( bp.value );
+    // remove bp weight
+    for ( eosio::name bp : old_producers ) {
+      auto stats_itr = _stats.find( bp.value );
 
-    //   if ( stats_itr == _stats.end() ) {
-    //     _stats.emplace( get_self(), [&]( auto &row ) {
-    //       row.bp = bp;
-    //       row.weight = vote_weight;
-    //     } );
-    //   } else {
-    //     _stats.modify( stats_itr, eosio::same_payer, [&]( auto &row ) {
-    //       // the voter could have increased his rank
-    //       row.weight += vote_weight - old_vote_weight;
-    //     } );
-    //   }
-    // }
+      if ( stats_itr->weight - old_vote_weight <= 0 ) {
+        _stats.erase( stats_itr );
+      } else {
+        _stats.modify( stats_itr, eosio::same_payer, [&]( auto &row ) {
+          row.weight -= old_vote_weight;
+        } );
+      }
+    }
+
+    // add new bp weight
+    for ( eosio::name bp : new_producers ) {
+      auto stats_itr = _stats.find( bp.value );
+
+      if ( stats_itr == _stats.end() ) {
+        _stats.emplace( get_self(), [&]( auto &row ) {
+          // the voter could have increased his rank
+          row.bp = bp;
+          row.weight = vote_weight;
+        } );
+      } else {
+        _stats.modify( stats_itr, eosio::same_payer, [&]( auto &row ) {
+          row.weight += vote_weight;
+        } );
+      }
+    }
+
+    // update bp weight
+    for ( eosio::name bp : current_producers ) {
+      auto stats_itr = _stats.find( bp.value );
+
+      if ( stats_itr->weight + ( vote_weight - old_vote_weight ) <= 0 ) {
+        _stats.erase( stats_itr );
+      } else {
+        _stats.modify( stats_itr, eosio::same_payer, [&]( auto &row ) {
+          // the voter could have increased his rank
+          row.weight += vote_weight - old_vote_weight;
+        } );
+      }
+    }
   }
 
   void smartproxy_contract::on_remove_vote( eosio::name voter ) {
