@@ -180,7 +180,7 @@ namespace dao {
       producer_table _producer( contract, owner.value );
       auto           producer_itr = _producer.find( producer.value );
 
-      return producer_itr == _producer.end();
+      return producer_itr != _producer.end();
     }
 
     void clear();

@@ -1,5 +1,7 @@
 #include <eden/eden.hpp>
 #include <eosio/tester.hpp>
+#include <myvoteeosdao/myvoteeosdao.hpp>
+
 #include <smartproxy.hpp>
 
 // Catch2 unit testing framework. https://github.com/catchorg/Catch2
@@ -13,6 +15,10 @@ void eden_setup( test_chain &t ) {
   t.set_code( "genesis.eden"_n, "eden.wasm" );
 }
 
+void myvoteeosdao_setup( test_chain &t ) {
+  t.set_code( "myvoteeosdao"_n, "myvoteeosdao.wasm" );
+}
+
 void smartproxy_setup( test_chain &t ) {
   t.set_code( "smartproxy"_n, "smartproxy.wasm" );
 }
@@ -20,6 +26,9 @@ void smartproxy_setup( test_chain &t ) {
 struct tester {
   test_chain   chain;
   user_context eden = chain.as( "genesis.eden"_n );
+  user_context myvoteeosdao = chain.as( "myvoteeosdao"_n );
+  user_context smartproxy = chain.as( "smartproxy"_n );
+
   user_context alice = chain.as( "alice"_n );
   user_context bob = chain.as( "bob"_n );
   user_context pip = chain.as( "pip"_n );
@@ -27,20 +36,15 @@ struct tester {
   user_context bertie = chain.as( "bertie"_n );
   user_context ahab = chain.as( "ahab"_n );
 
-  user_context bp1 = chain.as( "bp1"_n );
-
   tester() {
     chain.create_code_account( "genesis.eden"_n );
     chain.create_code_account( "smartproxy"_n );
-    smartproxy_setup( chain );
+    chain.create_code_account( "myvoteeosdao"_n );
     eden_setup( chain );
-    for ( auto account : { "alice"_n,
-                           "bob"_n,
-                           "pip"_n,
-                           "egeon"_n,
-                           "bertie"_n,
-                           "ahab"_n,
-                           "bp1"_n } ) {
+    myvoteeosdao_setup( chain );
+    smartproxy_setup( chain );
+    for ( auto account :
+          { "alice"_n, "bob"_n, "pip"_n, "egeon"_n, "bertie"_n, "ahab"_n } ) {
       chain.create_account( account );
     }
   }
@@ -48,5 +52,16 @@ struct tester {
   void genesis() {
     eden.act< eden::actions::create >( "alice"_n );
     eden.act< eden::actions::create >( "bob"_n );
+    eden.act< eden::actions::create >( "pip"_n );
+  }
+
+  void create_producers() {
+    for ( auto account : { "bp1"_n, "bp2"_n, "bp3"_n, "bp4"_n, "bp5"_n } ) {
+      chain.create_account( account );
+      myvoteeosdao.act< dao::actions::addproducer >( account );
+    }
   }
 };
+
+// eosio::check( producers.size() <= 30 && producers.size() >= 1,
+//                   "Can only vote for at least 1 bp and a max of 30 bps" );

@@ -13,18 +13,6 @@ TEST_CASE( "Require to be an eden member" ) {
           "Need to be an active eden member" );
 }
 
-TEST_CASE( "Election rank must be greater or equal to 1" ) {
-  tester t;
-
-  t.genesis();
-
-  t.alice.act< eden::actions::setactive >( "alice"_n, "Alice Knox" );
-
-  expect( t.alice.trace< edenproxy::actions::vote >( "alice"_n,
-                                                     std::vector{ "bp1"_n } ),
-          "Eden member rank should be greater or equal to 1" );
-}
-
 TEST_CASE( "BP is not whitelisted" ) {
   tester t;
 
@@ -59,6 +47,27 @@ TEST_CASE( "Proxy vote" ) {
   tester t;
 
   t.genesis();
+  t.create_producers();
+
+  t.alice.act< eden::actions::setactive >( "alice"_n, "Alice Knox" );
+  t.alice.act< eden::actions::setrank >( "alice"_n, 1, "hc"_n );
+
+  t.bob.act< eden::actions::setactive >( "bob"_n, "Bob Quinn" );
+  t.bob.act< eden::actions::setrank >( "bob"_n, 2, "hc"_n );
+
+  t.pip.act< eden::actions::setactive >( "pip"_n, "Pip Mcpherson" );
+  t.pip.act< eden::actions::setrank >( "pip"_n, 3, "hc"_n );
+
+  t.alice.act< edenproxy::actions::vote >(
+      "alice"_n,
+      std::vector{ "bp1"_n, "bp2"_n, "bp3"_n } );
+  t.bob.act< edenproxy::actions::vote >( "bob"_n,
+                                         std::vector{ "bp1"_n, "bp2"_n } );
+  t.pip.act< edenproxy::actions::vote >(
+      "pip"_n,
+      std::vector{ "bp1"_n, "bp2"_n, "bp3"_n } );
+
+  t.smartproxy.act< edenproxy::actions::proxyvote >();
 
   // Validate right permission
   // Check vote is done in the right bp order according to their weight

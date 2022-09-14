@@ -16,19 +16,23 @@ namespace edenproxy {
 
     eosio::check( member.status() == eden::member_status::active_member,
                   "Need to be an active eden member" );
-    eosio::check( member.election_rank(),
-                  "Eden member rank should be greater or equal to 1" );
 
-    for ( eosio::name bp : producers ) {
-      eosio::check( dao::myvoteeosdao::checkbp( DEFAULT_DAO_ACCOUNT,
-                                                DEFAULT_DAO_ACCOUNT,
-                                                bp ),
-                    "Only whitelisted bps are allowed" );
+    eosio::check(
+        dao::myvoteeosdao::checkbp( DAO_ACCOUNT, DAO_ACCOUNT, producers[0] ),
+        "Only whitelisted bps are allowed" );
+
+    for ( size_t i = 1; i < producers.size(); ++i ) {
+      eosio::check( producers[i - 1] < producers[i],
+                    "Producer votes must be unique and sorted" );
+      eosio::check(
+          dao::myvoteeosdao::checkbp( DAO_ACCOUNT, DAO_ACCOUNT, producers[i] ),
+          "Only whitelisted bps are allowed" );
     }
 
     // TODO: hc and ch must have the same weight
 
-    uint16_t vote_weight = fib( member.election_rank() );
+    uint16_t vote_weight = fib( member.election_rank() + 1 );
+    uint16_t old_vote_weight = 0;
 
     votes_table _votes{ get_self(), get_self().value };
     auto        votes_itr = _votes.find( voter.value );
@@ -40,11 +44,15 @@ namespace edenproxy {
         row.weight = vote_weight;
       } );
     } else {
+      old_vote_weight = votes_itr->weight;
+
       _votes.modify( votes_itr, eosio::same_payer, [&]( auto &row ) {
         row.producers = producers;
         row.weight = vote_weight;
       } );
     }
+
+    // TODO: what if user include/exclude a bp in their new vote?
 
     stats_table _stats{ get_self(), get_self().value };
 
@@ -52,12 +60,13 @@ namespace edenproxy {
       auto stats_itr = _stats.find( bp.value );
 
       if ( stats_itr == _stats.end() ) {
-        _stats.emplace( get_self(),
-                        [&]( auto &row ) { row.weight += vote_weight; } );
-      } else {
-        _stats.modify( stats_itr, eosio::same_payer, [&]( auto &row ) {
+        _stats.emplace( get_self(), [&]( auto &row ) {
           row.bp = bp;
           row.weight = vote_weight;
+        } );
+      } else {
+        _stats.modify( stats_itr, eosio::same_payer, [&]( auto &row ) {
+          row.weight += vote_weight - old_vote_weight;
         } );
       }
     }
@@ -77,7 +86,7 @@ namespace edenproxy {
       auto stats_itr = _stats.find( bp.value );
 
       // TODO: could be less than 0 ?
-      if ( votes_itr->weight - stats_itr->weight <= 0 ) {
+      if ( stats_itr->weight - votes_itr->weight <= 0 ) {
         _stats.erase( stats_itr );
       } else {
         _stats.modify( stats_itr, eosio::same_payer, [&]( auto &row ) {
@@ -92,23 +101,64 @@ namespace edenproxy {
   void smartproxy_contract::proxyvote() {
     require_auth( get_self() );
 
-    // lowest -> highest
     std::vector< std::pair< eosio::name, uint16_t > > bps;
 
     stats_table _stats{ get_self(), get_self().value };
 
     for ( auto itr = _stats.begin(); itr != _stats.end(); itr++ ) {
-      std::pair< eosio::name, uint16_t > temp;
-      // uint16_t distance = !bps.empty() ? bps.front() - bps.back() : 0;
-      int pos = (int)bps.size() / 2;
-      int direction = bps[pos].second > itr->weight ? -1 : 1;
+      bps.push_back( std::pair{ itr->bp, itr->weight } );
     }
 
-    // vote for bps
+    eosio::check( bps.size() >= 1, "No bps to vote for" );
+
+    std::sort( bps.begin(),
+               bps.end(),
+               []( std::pair< eosio::name, uint16_t > a,
+                   std::pair< eosio::name, uint16_t > b ) {
+                 return a.second > b.second;
+               } );
+
+    int edge = bps.size() <= 30 ? bps.size() : 30;
+    std::vector< std::pair< eosio::name, uint16_t > > final_bps( bps.begin(),
+                                                                 bps.begin() +
+                                                                     edge );
+
+    std::sort( final_bps.begin(),
+               final_bps.end(),
+               []( std::pair< eosio::name, uint16_t > a,
+                   std::pair< eosio::name, uint16_t > b ) {
+                 return a.first < b.first;
+               } );
+
+    std::vector< eosio::name > sorted_bps;
+
+    for ( auto bp : bps ) {
+      sorted_bps.push_back( bp.first );
+    }
+
+    eosio::action{ { get_self(), "active"_n },
+                   "eosio"_n,
+                   "voteproducer"_n,
+                   std::tuple( get_self(), eosio::name{}, sorted_bps ) }
+        .send();
   }
 
   void smartproxy_contract::refreshvotes() {
     // re-calculate votes
+  }
+
+  void smartproxy_contract::clearall() {
+    votes_table _votes{ get_self(), get_self().value };
+
+    for ( auto itr = _votes.begin(); itr != _votes.end(); ) {
+      itr = _votes.erase( itr );
+    }
+
+    stats_table _stats{ get_self(), get_self().value };
+
+    for ( auto itr = _stats.begin(); itr != _stats.end(); ) {
+      itr = _stats.erase( itr );
+    }
   }
 } // namespace edenproxy
 

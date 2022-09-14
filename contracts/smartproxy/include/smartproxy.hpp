@@ -2,9 +2,6 @@
 #include <eosio/eosio.hpp>
 
 namespace edenproxy {
-
-  bool is_bp_whitelisted( eosio::name bp ) { return true; }
-
   // TODO: optimize this calculation
   uint16_t fib( uint8_t n ) {
     uint16_t j = 1, k = 1;
@@ -19,6 +16,8 @@ namespace edenproxy {
 
     return k;
   }
+
+  // change weight to points
 
   struct votes {
     eosio::name                account;
@@ -47,10 +46,10 @@ namespace edenproxy {
     void removevote( eosio::name voter );
     void proxyvote();
     void refreshvotes();
+    void clearall();
 
   private:
-    const eosio::name DEFAULT_ACCOUNT = eosio::name( "smartproxy" );
-    const eosio::name DEFAULT_DAO_ACCOUNT = eosio::name( "myvoteeosdao" );
+    const eosio::name DAO_ACCOUNT = eosio::name( "myvoteeosdao" );
   };
 
   EOSIO_ACTIONS( smartproxy_contract,
@@ -58,6 +57,7 @@ namespace edenproxy {
                  action( vote, voter, producers ),
                  action( removevote, voter ),
                  action( proxyvote ),
-                 action( refreshvotes ) )
+                 action( refreshvotes ),
+                 action( clearall ) )
 
 } // namespace edenproxy

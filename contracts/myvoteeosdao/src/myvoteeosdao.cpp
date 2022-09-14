@@ -32,8 +32,8 @@ void dao::myvoteeosdao::rmproxy( name proxy ) {
 }
 
 void dao::myvoteeosdao::addproducer( name producer ) {
-  check( is_blockproducer( producer ),
-         "Only registered block producers can be included" );
+  // check( is_blockproducer( producer ),
+  //        "Only registered block producers can be included" );
   require_auth( _self );
 
   // Init the producer table
