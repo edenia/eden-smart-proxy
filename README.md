@@ -4,15 +4,30 @@
 
 # Eden Members Smart Proxy
 
-**A BP voting portal and Proxy for Eden Members**
+**A legitimate list of community backed quality BPs to vote for**
 
+<p align="center">
 ![](https://img.shields.io/github/license/eoscostarica/eden-smart-proxy) ![](https://img.shields.io/badge/code%20style-standard-brightgreen.svg) ![](https://img.shields.io/badge/%E2%9C%93-collaborative_etiquette-brightgreen.svg) ![](https://img.shields.io/twitter/follow/eoscostarica.svg?style=social&logo=twitter) ![](https://img.shields.io/github/forks/eoscostarica/eden-smart-proxy?style=social)
+</p>
 
-The Eden Smart proxy is an app available only for eden on EOS members. The intention behind this project is to leverage the Eden democratic process to produce a list of quality BPs to vote for. Eden members delegate their vote to the eos proxy which then votes for the top 30 BPs acording to a weighted calculation depending on members' election rank.
+The Eden Smart proxy is an app available only for eden on EOS members. The intention behind this project is to leverage the Eden democratic process to produce a legitimate list of community backed quality BPs to vote for. Eden members can delegate their vote to the eden smart proxy which then votes for the top 30 BPs according to a weighted calculation depending on members' election rank.
 
+### Election Rank Vote Weight
+
+We apply a fibonacci sequence to assign points for each delegates vote according to their election rank. Sortition Head Delegate will have the same vite weight as other chief delegates.
+
+```
+Eden Member ======> 1 Point
+Level 1 Delegate => 2 points
+Level 2 Delegate => 3 points
+Level 3 Delegate => 5 points
+Level 4 Delegate => 8 Points
+Level 5 Delegate => 13 points
+and so on...
+```
 
 ## Web Application
-We are using [Next.js](https://nextjs.org/) React Framework for building the webapplication.
+We are using [Next.js](https://nextjs.org/) React Framework for building the web application.
 
 ## Smart Contract
 An Antelope smart contract that calculates the weighted votes for each eden member and casts a vote as an EOS proxy.
@@ -39,7 +54,6 @@ Within this repository you will find the following directories and files:
 ├── public ........................ Static Website Files
 └── utils ......................... Makefiles for project build
 ```
-
 
 ## Getting Started
 
@@ -71,7 +85,7 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 # Contributing
 
-Please read Edenia's [Open Source Contributing Guidelines](https://developers.eoscostarica.io/docs/open-source-guidelines).
+Please read EOS Costa Rica's [Open Source Contributing Guidelines](https://developers.eoscostarica.io/docs/open-source-guidelines).
 
 Please report bugs big and small by [opening an issue](https://github.com/eoscostarica/eden-smart-proxy/issues/new/choose)
 
