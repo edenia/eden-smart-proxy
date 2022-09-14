@@ -10,7 +10,7 @@ TEST_CASE( "Require to be an eden member" ) {
 
   expect( t.alice.trace< edenproxy::actions::vote >( "alice"_n,
                                                      std::vector{ "bp1"_n } ),
-          "Need to be an active eden member" );
+          "Needs to be an active eden member" );
 }
 
 TEST_CASE( "BP is not whitelisted" ) {

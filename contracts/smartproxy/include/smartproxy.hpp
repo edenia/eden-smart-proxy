@@ -43,10 +43,15 @@ namespace edenproxy {
     using eosio::contract::contract;
 
     void vote( eosio::name voter, const std::vector< eosio::name > &producers );
-    void removevote( eosio::name voter );
+    void rmvote( eosio::name voter );
     void proxyvote();
     void refreshvotes();
     void clearall();
+
+    void on_vote( eden::member                      member,
+                  eosio::name                       voter,
+                  const std::vector< eosio::name > &producers );
+    void on_remove_vote( eosio::name voter );
 
   private:
     const eosio::name DAO_ACCOUNT = eosio::name( "myvoteeosdao" );
@@ -55,7 +60,7 @@ namespace edenproxy {
   EOSIO_ACTIONS( smartproxy_contract,
                  "smartproxy"_n,
                  action( vote, voter, producers ),
-                 action( removevote, voter ),
+                 action( rmvote, voter ),
                  action( proxyvote ),
                  action( refreshvotes ),
                  action( clearall ) )
