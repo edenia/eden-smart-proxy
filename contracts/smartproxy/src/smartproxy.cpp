@@ -12,7 +12,8 @@ namespace edenproxy {
                              const std::vector< eosio::name > &producers ) {
     require_auth( voter );
 
-    eosio::check( producers.size() >= 1 && producers.size() <= 30 );
+    eosio::check( producers.size() >= 1 && producers.size() <= 30,
+                  "No more than 30 bps are allowed to vote for" );
 
     eden::member member = eden::members_contract::get_member( voter );
 
