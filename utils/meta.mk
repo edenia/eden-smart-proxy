@@ -3,8 +3,8 @@
 VERSION ?= $(shell git ls-files -s nginx.conf k8s public src package.json yarn.lock Dockerfile | git hash-object --stdin)
 
 IMAGE_NAME=website
-IMAGE_ID=$(shell docker images --format '{{.ID}}' --filter reference='docker.pkg.github.com/edenia/edenia.com*latest')
-DOCKER_REGISTRY=docker.pkg.github.com/edenia/edenia.com
+IMAGE_ID=$(shell docker images --format '{{.ID}}' --filter reference='docker.pkg.github.com/eoscostarica/eden-smart-proxy*latest')
+DOCKER_REGISTRY=docker.pkg.github.com/eoscostarica/eden-smart-proxy
 
 MAKE_ENV += DOCKER_REGISTRY VERSION IMAGE_NAME
 

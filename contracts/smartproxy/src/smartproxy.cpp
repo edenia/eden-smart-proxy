@@ -12,6 +12,9 @@ namespace edenproxy {
                              const std::vector< eosio::name > &producers ) {
     require_auth( voter );
 
+    eosio::check( producers.size() >= 1 && producers.size() <= 30,
+                  "No more than 30 bps are allowed to vote for" );
+
     eden::member member = eden::members_contract::get_member( voter );
 
     eosio::check( member.status() == eden::member_status::active_member,
@@ -45,6 +48,7 @@ namespace edenproxy {
     stats_table _stats{ get_self(), get_self().value };
 
     for ( auto itr = _stats.begin(); itr != _stats.end(); itr++ ) {
+      // TODO: exclude unactive bps
       bps.push_back( std::pair{ itr->bp, itr->weight } );
     }
 
