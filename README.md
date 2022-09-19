@@ -26,6 +26,13 @@ Level 5 Delegate => 13 points
 and so on...
 ```
 
+### Smart Contract
+To compile the Smart Contract, make sure you have `Docker` installed. To install docker, please follow [this guide](https://docs.docker.com/get-docker/).
+
+Run:
+1. `cd contracts`
+2. `docker_build.sh`
+
 ## Web Application
 We are using [Next.js](https://nextjs.org/) React Framework for building the web application.
 
