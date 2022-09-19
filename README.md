@@ -6,9 +6,9 @@
 
 **A legitimate list of community backed quality BPs to vote for**
 
-<p align="center">
+
 ![](https://img.shields.io/github/license/eoscostarica/eden-smart-proxy) ![](https://img.shields.io/badge/code%20style-standard-brightgreen.svg) ![](https://img.shields.io/badge/%E2%9C%93-collaborative_etiquette-brightgreen.svg) ![](https://img.shields.io/twitter/follow/eoscostarica.svg?style=social&logo=twitter) ![](https://img.shields.io/github/forks/eoscostarica/eden-smart-proxy?style=social)
-</p>
+
 
 The Eden Smart proxy is an app available only for eden on EOS members. The intention behind this project is to leverage the Eden democratic process to produce a legitimate list of community backed quality BPs to vote for. Eden members can delegate their vote to the eden smart proxy which then votes for the top 30 BPs according to a weighted calculation depending on members' election rank.
 
