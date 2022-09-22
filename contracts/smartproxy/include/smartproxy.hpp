@@ -48,13 +48,15 @@ namespace edenproxy {
     void refreshvotes();
     void clearall();
 
-    void on_vote( eden::member                      member,
+    void on_vote( uint16_t                          member_rank,
                   eosio::name                       voter,
                   const std::vector< eosio::name > &producers );
-    void on_remove_vote( eosio::name voter );
+    void on_remove_vote( std::vector< eosio::name > producers,
+                         uint16_t                   weight );
 
   private:
     const eosio::name DAO_ACCOUNT = eosio::name( "myvoteeosdao" );
+    const eosio::name EDEN_ACCOUNT = eosio::name( "genesis.eden" );
   };
 
   EOSIO_ACTIONS( smartproxy_contract,

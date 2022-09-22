@@ -1,5 +1,5 @@
 # Build eden.wasm contract
-add_executable(eden src/eden.cpp)
+add_executable(eden src/actions/members.cpp src/eden.cpp src/members.cpp)
 target_include_directories(eden PUBLIC include)
 target_link_libraries(eden eosio-contract-simple-malloc)
 set_target_properties(eden PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})

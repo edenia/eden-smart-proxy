@@ -1,7 +1,7 @@
 #include <eosio/asset.hpp>
 #include <eosio/eosio.hpp>
 
-#include <eden/eden.hpp>
+#include <members.cpp>
 #include <myvoteeosdao/myvoteeosdao.hpp>
 
 #include <smartproxy.hpp>
@@ -15,7 +15,8 @@ namespace edenproxy {
     eosio::check( producers.size() >= 1 && producers.size() <= 30,
                   "No more than 30 bps are allowed to vote for" );
 
-    eden::member member = eden::members_contract::get_member( voter );
+    eden::members members{ EDEN_ACCOUNT };
+    const auto   &member = members.get_member( voter );
 
     eosio::check( member.status() == eden::member_status::active_member,
                   "Needs to be an active eden member" );
@@ -31,13 +32,25 @@ namespace edenproxy {
           "Only whitelisted bps are allowed" );
     }
 
-    on_vote( member, voter, producers );
+    std::vector< uint16_t > ranks = members.stats().ranks;
+    uint16_t is_election_completed = ranks.size() >= 3 && ranks.back() == 1;
+    uint8_t  member_rank = member.election_rank();
+    bool     is_hd = member_rank == ranks.size() - 1 && is_election_completed;
+    uint8_t  rank_factor = is_hd ? -1 : 0;
+    uint16_t vote_weight = fib( member_rank + rank_factor + 1 );
+
+    on_vote( vote_weight, voter, producers );
   }
 
   void smartproxy_contract::rmvote( eosio::name voter ) {
     require_auth( voter );
 
-    on_remove_vote( voter );
+    votes_table _votes{ get_self(), get_self().value };
+    auto        votes_itr = _votes.find( voter.value );
+
+    eosio::check( votes_itr != _votes.end(), "Vote does not exist" );
+
+    on_remove_vote( votes_itr->producers, votes_itr->weight );
   }
 
   void smartproxy_contract::proxyvote() {
@@ -48,8 +61,9 @@ namespace edenproxy {
     stats_table _stats{ get_self(), get_self().value };
 
     for ( auto itr = _stats.begin(); itr != _stats.end(); itr++ ) {
-      // TODO: exclude unactive bps
-      bps.push_back( std::pair{ itr->bp, itr->weight } );
+      if ( is_blockproducer( itr->bp ) ) {
+        bps.push_back( std::pair{ itr->bp, itr->weight } );
+      }
     }
 
     eosio::check( bps.size() >= 1, "No bps to vote for" );
@@ -87,25 +101,40 @@ namespace edenproxy {
   }
 
   void smartproxy_contract::refreshvotes() {
+    require_auth( get_self() );
+
     votes_table _votes{ get_self(), get_self().value };
 
-    for ( auto votes_itr = _votes.begin(); votes_itr != _votes.end(); ) {
-      eden::member member =
-          eden::members_contract::get_member( votes_itr->account );
+    eden::members members{ EDEN_ACCOUNT };
 
-      if ( member.status() != eden::member_status::active_member ) {
-        on_remove_vote( votes_itr->account );
+    std::vector< uint16_t > ranks = members.stats().ranks;
+    uint16_t is_election_completed = ranks.size() >= 3 && ranks.back() == 1;
+
+    for ( auto votes_itr = _votes.begin(); votes_itr != _votes.end(); ) {
+      eosio::print( "Account: " + votes_itr->account.to_string() + "\n" );
+      const auto &member = members.get_member( votes_itr->account );
+
+      if ( member.status() == eden::member_status::pending_membership ) {
+        on_remove_vote( votes_itr->producers, votes_itr->weight );
+        votes_itr = _votes.erase( votes_itr );
 
         continue;
       }
 
-      uint16_t vote_weight = fib( member.election_rank() + 1 );
+      uint8_t  member_rank = member.election_rank();
+      bool     is_hd = member_rank == ranks.size() - 1 && is_election_completed;
+      uint8_t  rank_factor = is_hd ? -1 : 0;
+      uint16_t vote_weight = fib( member_rank + rank_factor + 1 );
 
       if ( votes_itr->weight == vote_weight ) {
+        votes_itr++;
+
         continue;
       }
 
-      on_vote( member, votes_itr->account, votes_itr->producers );
+      on_vote( vote_weight, votes_itr->account, votes_itr->producers );
+
+      votes_itr++;
     }
   }
 
@@ -124,12 +153,10 @@ namespace edenproxy {
   }
 
   void
-  smartproxy_contract::on_vote( eden::member                      member,
+  smartproxy_contract::on_vote( uint16_t                          vote_weight,
                                 eosio::name                       voter,
                                 const std::vector< eosio::name > &producers ) {
-    // TODO: hc and ch must have the same weight
-
-    uint16_t                   vote_weight = fib( member.election_rank() + 1 );
+    eden::members              members{ EDEN_ACCOUNT };
     uint16_t                   old_vote_weight = 0;
     std::vector< eosio::name > current_producers;
     std::vector< eosio::name > new_producers = producers;
@@ -213,27 +240,22 @@ namespace edenproxy {
     }
   }
 
-  void smartproxy_contract::on_remove_vote( eosio::name voter ) {
-    votes_table _votes{ get_self(), get_self().value };
-    auto        votes_itr = _votes.find( voter.value );
-
-    eosio::check( votes_itr != _votes.end(), "Vote does not exist" );
-
+  void
+  smartproxy_contract::on_remove_vote( std::vector< eosio::name > producers,
+                                       uint16_t                   weight ) {
     stats_table _stats{ get_self(), get_self().value };
 
-    for ( eosio::name bp : votes_itr->producers ) {
+    for ( eosio::name bp : producers ) {
       auto stats_itr = _stats.find( bp.value );
 
-      if ( stats_itr->weight - votes_itr->weight <= 0 ) {
+      if ( stats_itr->weight - weight <= 0 ) {
         _stats.erase( stats_itr );
       } else {
         _stats.modify( stats_itr, eosio::same_payer, [&]( auto &row ) {
-          row.weight -= votes_itr->weight;
+          row.weight -= weight;
         } );
       }
     }
-
-    _votes.erase( votes_itr );
   }
 } // namespace edenproxy
 
