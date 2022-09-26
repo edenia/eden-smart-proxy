@@ -2,7 +2,7 @@
 
 /*
  *
- * @author  EOSCostaRica.io [ https://eoscostarica.io ]
+ * @author  edenia.com [ https://edenia.com ]
  *
  * @section DESCRIPTION
  *  Header file for the declaration of all functions
