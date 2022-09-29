@@ -100,7 +100,7 @@ namespace edenproxy {
         .send();
   }
 
-  void smartproxy_contract::refreshvotes() {
+  void smartproxy_contract::refreshvotes( uint32_t max_steps, bool flag ) {
     require_auth( get_self() );
 
     votes_table _votes{ get_self(), get_self().value };
@@ -110,31 +110,35 @@ namespace edenproxy {
     std::vector< uint16_t > ranks = members.stats().ranks;
     uint16_t is_election_completed = ranks.size() >= 3 && ranks.back() == 1;
 
-    for ( auto votes_itr = _votes.begin(); votes_itr != _votes.end(); ) {
-      eosio::print( "Account: " + votes_itr->account.to_string() + "\n" );
+    auto votes_secidx = _votes.get_index< "byflag"_n >();
+    auto votes_itr =
+        votes_secidx.lower_bound( static_cast< uint64_t >( flag ) );
+    auto end = votes_secidx.upper_bound( static_cast< uint64_t >( flag ) );
+
+    check( votes_itr != end, "Nothing to do" );
+
+    for ( ; votes_itr != end && max_steps > 0; --max_steps ) {
       const auto &member = members.get_member( votes_itr->account );
 
       if ( member.status() == eden::member_status::pending_membership ) {
         on_remove_vote( votes_itr->producers, votes_itr->weight );
-        votes_itr = _votes.erase( votes_itr );
+        votes_itr = votes_secidx.erase( votes_itr );
+      } else {
+        uint8_t member_rank = member.election_rank();
+        bool is_hd = member_rank == ranks.size() - 1 && is_election_completed;
+        uint8_t  rank_factor = is_hd ? -1 : 0;
+        uint16_t vote_weight = fib( member_rank + rank_factor + 1 );
 
-        continue;
+        if ( votes_itr->weight != vote_weight ) {
+          on_vote( vote_weight, votes_itr->account, votes_itr->producers );
+        }
+
+        votes_secidx.modify( votes_itr, eosio::same_payer, [&]( auto &row ) {
+          row.flag = static_cast< uint64_t >( !flag );
+        } );
       }
 
-      uint8_t  member_rank = member.election_rank();
-      bool     is_hd = member_rank == ranks.size() - 1 && is_election_completed;
-      uint8_t  rank_factor = is_hd ? -1 : 0;
-      uint16_t vote_weight = fib( member_rank + rank_factor + 1 );
-
-      if ( votes_itr->weight == vote_weight ) {
-        votes_itr++;
-
-        continue;
-      }
-
-      on_vote( vote_weight, votes_itr->account, votes_itr->producers );
-
-      votes_itr++;
+      votes_itr = votes_secidx.lower_bound( static_cast< uint64_t >( flag ) );
     }
   }
 

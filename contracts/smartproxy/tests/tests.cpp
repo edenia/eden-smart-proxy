@@ -134,7 +134,11 @@ TEST_CASE( "Refresh votes weight" ) {
 
   // Inactivate an eden member
   t.eden.act< eden::actions::inacmember >( "alice"_n );
-  t.smartproxy.act< edenproxy::actions::refreshvotes >();
+
+  expect( t.smartproxy.trace< edenproxy::actions::refreshvotes >( 10, true ),
+          "Nothing to do" );
+
+  t.smartproxy.act< edenproxy::actions::refreshvotes >( 10, false );
 
   std::map< eosio::name, uint16_t > expected_after_inactivation{
       { "bp1"_n, 5 },
@@ -146,7 +150,7 @@ TEST_CASE( "Refresh votes weight" ) {
   // Change rank for two eden members
   t.bob.act< eden::actions::setmembrank >( "bob"_n, 3, "hc"_n );
   t.chain.start_block();
-  t.smartproxy.act< edenproxy::actions::refreshvotes >();
+  t.smartproxy.act< edenproxy::actions::refreshvotes >( 10, true );
 
   std::map< eosio::name, uint16_t > expected_after_change{ { "bp1"_n, 6 },
                                                            { "bp2"_n, 6 },
