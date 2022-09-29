@@ -51,6 +51,8 @@ namespace edenproxy {
     eosio::check( votes_itr != _votes.end(), "Vote does not exist" );
 
     on_remove_vote( votes_itr->producers, votes_itr->weight );
+
+    _votes.erase( votes_itr );
   }
 
   void smartproxy_contract::proxyvote() {
