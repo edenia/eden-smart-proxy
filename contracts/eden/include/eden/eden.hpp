@@ -14,7 +14,6 @@ namespace eden {
           eosio::datastream< const char * > ds )
         : contract( receiver, code, ds ) {}
 
-    // const member_table_type &get_table() const { return member_tb; }
     void createmember( eosio::name account );
     void actmember( eosio::name account, const std::string &name );
     void inacmember( eosio::name account );

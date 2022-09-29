@@ -91,7 +91,6 @@ namespace eden {
         : contract( contract ), member_tb( contract, default_scope ),
           member_stats( contract, default_scope ) {}
 
-    // const member_table_type &get_table() const { return member_tb; }
     const member &get_member( eosio::name account );
     void          create( eosio::name account );
     void          check_active_member( eosio::name account );
@@ -100,21 +99,8 @@ namespace eden {
     void          setinactive( eosio::name account );
     void
     setrank( eosio::name account, uint8_t rank, eosio::name representative );
-    void setstats( std::vector< uint16_t > ranks );
-    // bool            is_active_member( eosio::name account ) const;
+    void            setstats( std::vector< uint16_t > ranks );
     member_stats_v1 stats();
-
-    // static const member &get_member( eosio::name account ) {
-    //   member_table_type member_tb2{ eden_contract, default_scope };
-    //   return member_tb2.get(
-    //       account.value,
-    //       ( "member " + account.to_string() + " not found" ).c_str() );
-    // }
-
-    // static const member_stats_v1 &get_stats() {
-    //   member_stats_singleton stats_sing2{ eden_contract, default_scope };
-    //   return stats_sing2.get();
-    // }
   };
 
 } // namespace eden
