@@ -2,7 +2,6 @@
 #include <eosio/eosio.hpp>
 
 namespace edenproxy {
-  // TODO: optimize this calculation
   uint16_t fib( uint8_t n ) {
     uint16_t j = 1, k = 1;
     uint16_t temp = 0;
@@ -43,6 +42,14 @@ namespace edenproxy {
   EOSIO_REFLECT( stats, bp, weight )
   typedef eosio::multi_index< "stats"_n, stats > stats_table;
 
+  struct blacklisted {
+    eosio::name bp;
+
+    uint64_t primary_key() const { return bp.value; }
+  };
+  EOSIO_REFLECT( blacklisted, bp )
+  typedef eosio::multi_index< "blacklisted"_n, blacklisted > blacklisted_table;
+
   struct smartproxy_contract : public eosio::contract {
   public:
     using eosio::contract::contract;
@@ -51,6 +58,8 @@ namespace edenproxy {
     void rmvote( eosio::name voter );
     void proxyvote();
     void refreshvotes( uint32_t max_steps, bool flag );
+    void banbp( eosio::name bp );
+    void unbanbp( eosio::name bp );
     void clearall();
 
     void on_vote( uint16_t                          member_rank,
@@ -58,6 +67,7 @@ namespace edenproxy {
                   const std::vector< eosio::name > &producers );
     void on_remove_vote( std::vector< eosio::name > producers,
                          uint16_t                   weight );
+    bool is_blacklisted( eosio::name bp );
 
   private:
     const eosio::name DAO_ACCOUNT = eosio::name( "myvoteeosdao" );
@@ -70,6 +80,8 @@ namespace edenproxy {
                  action( rmvote, voter ),
                  action( proxyvote ),
                  action( refreshvotes, max_steps, flag ),
+                 action( banbp, bp ),
+                 action( unbanbp, bp ),
                  action( clearall ) )
 
 } // namespace edenproxy

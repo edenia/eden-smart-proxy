@@ -23,6 +23,8 @@ namespace edenproxy {
     eosio::check(
         dao::myvoteeosdao::checkbp( DAO_ACCOUNT, DAO_ACCOUNT, producers[0] ),
         "Only whitelisted bps are allowed" );
+    eosio::check( !is_blacklisted( producers[0] ),
+                  "The bp " + producers[0].to_string() + " is blacklisted" );
 
     for ( size_t i = 1; i < producers.size(); ++i ) {
       eosio::check( producers[i - 1] < producers[i],
@@ -30,6 +32,8 @@ namespace edenproxy {
       eosio::check(
           dao::myvoteeosdao::checkbp( DAO_ACCOUNT, DAO_ACCOUNT, producers[i] ),
           "Only whitelisted bps are allowed" );
+      eosio::check( !is_blacklisted( producers[i] ),
+                    "The bp " + producers[i].to_string() + " is blacklisted" );
     }
 
     std::vector< uint16_t > ranks = members.stats().ranks;
@@ -37,7 +41,7 @@ namespace edenproxy {
     uint8_t  member_rank = member.election_rank();
     bool     is_hd = member_rank == ranks.size() - 1 && is_election_completed;
     uint8_t  rank_factor = is_hd ? -1 : 0;
-    uint16_t vote_weight = fib( member_rank + rank_factor + 1 );
+    uint16_t vote_weight = fib( member_rank + rank_factor + 2 );
 
     on_vote( vote_weight, voter, producers );
   }
@@ -63,7 +67,7 @@ namespace edenproxy {
     stats_table _stats{ get_self(), get_self().value };
 
     for ( auto itr = _stats.begin(); itr != _stats.end(); itr++ ) {
-      if ( is_blockproducer( itr->bp ) ) {
+      if ( is_active_bp( itr->bp ) && !is_blacklisted( itr->bp ) ) {
         bps.push_back( std::pair{ itr->bp, itr->weight } );
       }
     }
@@ -129,7 +133,7 @@ namespace edenproxy {
         uint8_t member_rank = member.election_rank();
         bool is_hd = member_rank == ranks.size() - 1 && is_election_completed;
         uint8_t  rank_factor = is_hd ? -1 : 0;
-        uint16_t vote_weight = fib( member_rank + rank_factor + 1 );
+        uint16_t vote_weight = fib( member_rank + rank_factor + 2 );
 
         if ( votes_itr->weight != vote_weight ) {
           on_vote( vote_weight, votes_itr->account, votes_itr->producers );
@@ -144,6 +148,34 @@ namespace edenproxy {
     }
   }
 
+  void smartproxy_contract::banbp( eosio::name bp ) {
+    require_auth( get_self() );
+
+    eosio::check( is_blockproducer( bp ), "Only blockproducers can be banned" );
+
+    blacklisted_table _blacklisted( get_self(), get_self().value );
+
+    auto blacklisted_itr = _blacklisted.find( bp.value );
+
+    eosio::check( blacklisted_itr == _blacklisted.end(),
+                  "bp is already blacklisted" );
+
+    _blacklisted.emplace( get_self(), [&]( auto &row ) { row.bp = bp; } );
+  }
+
+  void smartproxy_contract::unbanbp( eosio::name bp ) {
+    require_auth( get_self() );
+
+    blacklisted_table _blacklisted( get_self(), get_self().value );
+
+    auto blacklisted_itr = _blacklisted.find( bp.value );
+
+    eosio::check( blacklisted_itr != _blacklisted.end(),
+                  "bp is not blacklisted" );
+
+    _blacklisted.erase( blacklisted_itr );
+  }
+
   void smartproxy_contract::clearall() {
     votes_table _votes{ get_self(), get_self().value };
 
@@ -155,6 +187,12 @@ namespace edenproxy {
 
     for ( auto itr = _stats.begin(); itr != _stats.end(); ) {
       itr = _stats.erase( itr );
+    }
+
+    blacklisted_table _blacklisted{ get_self(), get_self().value };
+
+    for ( auto itr = _blacklisted.begin(); itr != _blacklisted.end(); ) {
+      itr = _blacklisted.erase( itr );
     }
   }
 
@@ -263,10 +301,19 @@ namespace edenproxy {
       }
     }
   }
+
+  bool smartproxy_contract::is_blacklisted( eosio::name bp ) {
+    blacklisted_table _blacklisted( get_self(), get_self().value );
+
+    auto blacklisted_itr = _blacklisted.find( bp.value );
+
+    return blacklisted_itr != _blacklisted.end();
+  }
 } // namespace edenproxy
 
 EOSIO_ACTION_DISPATCHER( edenproxy::actions )
 
 EOSIO_ABIGEN( actions( edenproxy::actions ),
               table( "votes"_n, edenproxy::votes ),
-              table( "stats"_n, edenproxy::stats ) )
+              table( "stats"_n, edenproxy::stats ),
+              table( "blacklisted"_n, edenproxy::blacklisted ) )
