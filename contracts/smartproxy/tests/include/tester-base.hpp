@@ -50,9 +50,9 @@ struct tester {
   }
 
   void genesis() {
-    eden.act< eden::actions::create >( "alice"_n );
-    eden.act< eden::actions::create >( "bob"_n );
-    eden.act< eden::actions::create >( "pip"_n );
+    eden.act< eden::actions::createmember >( "alice"_n );
+    eden.act< eden::actions::createmember >( "bob"_n );
+    eden.act< eden::actions::createmember >( "pip"_n );
   }
 
   void create_producers() {

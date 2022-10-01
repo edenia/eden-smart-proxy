@@ -85,13 +85,30 @@ typedef eosio::multi_index< "voters"_n, voter_info > voters_table;
 *
 * @return true is the account is a block producer, otherwise returns false
 */
-bool is_blockproducer( name bp_name ) {
+bool is_active_bp( name bp_name ) {
   producers_table bp( system_account, system_account.value );
   auto            it = bp.find( bp_name.value );
+
   if ( it == bp.end() ) {
     return false;
   }
+
   return it->is_active;
+}
+
+/**
+*
+*  Verify is an account is a block producer
+*
+* @param bp_name - Contains the name of the account that we want to verify as bp
+*
+* @return true is the account is a block producer, otherwise returns false
+*/
+bool is_blockproducer( name bp_name ) {
+  producers_table bp( system_account, system_account.value );
+  auto            it = bp.find( bp_name.value );
+
+  return it != bp.end();
 }
 
 /**
