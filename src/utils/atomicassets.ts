@@ -47,7 +47,7 @@ export const getTemplates = async (
   page = 1,
   limit = 100
 ): Promise<MemberProfile[]> => {
-  const res = await api.getTemplates(
+  const templates = await api.getTemplates(
     {
       collection_name: sdkConfig.genesisEdenContract
     },
@@ -55,7 +55,7 @@ export const getTemplates = async (
     limit
   )
 
-  return res.map(({ immutable_data }) => ({
+  return templates.map(({ immutable_data }) => ({
     name: immutable_data.name,
     image: immutable_data.img,
     bio: immutable_data.bio,
