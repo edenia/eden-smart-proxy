@@ -6,6 +6,9 @@ export const endpoint = `${process.env.NEXT_PUBLIC_APP_UAL_API_PROTOCOL}://${
 
 export const eosioContract = 'eosio'
 
+export const genesisEdenContract =
+  process.env.NEXT_PUBLIC_GENESISEDEN_CONTRACT || 'genesis.eden'
+
 export const edenSmartProxyContract =
   process.env.NEXT_PUBLIC_EDENSMARTPROXY_CONTRACT || 'edensmartprx'
 

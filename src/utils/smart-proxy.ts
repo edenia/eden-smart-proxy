@@ -72,7 +72,7 @@ export const buildDelegateTransaction = (voter: string): Transaction => {
   return buildTransaction({
     actor: voter,
     action: 'voteproducer',
-    data: { voter, proxy: 'edensmartprx', producers: [] },
+    data: { voter, proxy: sdkConfig.edenSmartProxyContract, producers: [] },
     contract: sdkConfig.eosioContract
   })
 }
@@ -99,6 +99,19 @@ export const getVotes = async <T>(
     json: true,
     lower_bound: lowerBound,
     limit: 30
+  })) as TableResponse<T>
+}
+
+export const getEdenMembers = async <T>(
+  lowerBound?: string
+): Promise<TableResponse<T> | undefined> => {
+  return (await eosApi.getTableRows({
+    code: sdkConfig.genesisEdenContract,
+    scope: 0,
+    table: 'member',
+    json: true,
+    lower_bound: lowerBound,
+    limit: 100
   })) as TableResponse<T>
 }
 
