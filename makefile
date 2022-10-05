@@ -52,6 +52,7 @@ push-image:
 
 build-kubernetes: ##@devops Generate proper k8s files based on the templates
 build-kubernetes: ./k8s
+	@echo "Build kubernetes files..."
 	@rm -Rf $(K8S_BUILD_DIR) && mkdir -p $(K8S_BUILD_DIR)
 	@for file in $(K8S_FILES); do \
 		mkdir -p `dirname "$(K8S_BUILD_DIR)/$$file"`; \

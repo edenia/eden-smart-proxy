@@ -24,8 +24,7 @@ jobs:
       - name: Build new image and push
         run: |
           make \
-            pull-image \
-            build-docker-cached \
+            build-docker \
             push-image
         env:
           LATEST_TAG: latest
