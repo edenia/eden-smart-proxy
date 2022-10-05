@@ -29,6 +29,11 @@ jobs:
             push-image
         env:
           LATEST_TAG: latest
+          NEXT_PUBLIC_APP_UAL_API_PROTOCOL: 'https'
+          NEXT_PUBLIC_APP_UAL_API_HOST: ${{ secrets.NEXT_PUBLIC_APP_UAL_API_HOST }}
+          NEXT_PUBLIC_APP_UAL_API_PORT: '443'
+          NEXT_PUBLIC_EDENSMARTPROXY_CONTRACT: edensmartprx
+          NEXT_PUBLIC_MYVOTEEOSDAO_CONTRACT: myvoteeosdao
           RELEASE_TAG: ${{ steps.tag.outputs.tag }}
           VERSION: ${{ steps.tag.outputs.tag }}
 

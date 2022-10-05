@@ -1,0 +1,13 @@
+export const endpoint = `${process.env.NEXT_PUBLIC_APP_UAL_API_PROTOCOL}://${
+  process.env.NEXT_PUBLIC_APP_UAL_API_HOST
+}${process.env.NEXT_PUBLIC_APP_UAL_API_PORT ? ':' : ''}${
+  process.env.NEXT_PUBLIC_APP_UAL_API_PORT
+}`
+
+export const eosioContract = 'eosio'
+
+export const edenSmartProxyContract =
+  process.env.NEXT_PUBLIC_EDENSMARTPROXY_CONTRACT || 'edensmartprx'
+
+export const myVoteEOSDaoContract =
+  process.env.NEXT_PUBLIC_MYVOTEEOSDAO_CONTRACT || 'myvoteeosdao'
