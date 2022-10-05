@@ -1,2 +1,6 @@
 export { default as Layout } from './Layout'
+export { default as HomeHead } from './Home/Head'
+export { default as HomeBody } from './Home/Body'
+export { default as HomeBottom } from './Home/Bottom'
+export { default as LanguageSelector } from './LanguageSelector'
 export { default as CustomListItem } from './CustomListItem'
