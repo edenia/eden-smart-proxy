@@ -92,7 +92,7 @@ export const buildVoteTransaction = ({
 export const getVotes = async <T>(
   lowerBound?: string
 ): Promise<TableResponse<T> | undefined> => {
-  const data = (await eosApi.getTableRows({
+  return (await eosApi.getTableRows({
     code: sdkConfig.edenSmartProxyContract,
     scope: sdkConfig.edenSmartProxyContract,
     table: 'votes',
@@ -100,8 +100,6 @@ export const getVotes = async <T>(
     lower_bound: lowerBound,
     limit: 30
   })) as TableResponse<T>
-
-  return data
 }
 
 export const getWhitelistedBps = async <T>(): Promise<
