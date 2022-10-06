@@ -33,7 +33,8 @@ const Layout: React.FC<LayoutProps> = ({
 
   return (
     <div ref={wrapper} className={classes.wrapperClass} onScroll={scrolling}>
-      <Header />
+      {typeof window !== 'undefined' &&
+        !['/', '/es'].includes(window?.location?.pathname) && <Header />}
       <Container>{children}</Container>
       <Footer isDarkTheme={isDarkTheme} toggleThemeType={toggleThemeType} />
     </div>

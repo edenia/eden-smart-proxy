@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { NextComponentType } from 'next'
+import dynamic from 'next/dynamic'
 import { AppProps, AppContext, AppInitialProps } from 'next/app'
 import Head from 'next/head'
 import Script from 'next/script'
@@ -10,11 +11,15 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { useRouter } from 'next/router'
 import { appWithTranslation } from 'next-i18next'
+import '@edenia/ui-kit/dist/index.css'
 
 import { themeConfig, seoConfig, analyticsConfig, i18nConfig } from 'config'
 import { Locale } from 'config/i18n'
 import { analyticsUtils } from 'utils'
-import { Layout } from 'components'
+
+const Layout = dynamic(() => import('../components/Layout'), {
+  ssr: false
+})
 
 const MyApp: NextComponentType<AppContext, AppInitialProps, AppProps> = ({
   Component,
