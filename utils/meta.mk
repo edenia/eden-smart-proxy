@@ -4,7 +4,7 @@ VERSION ?= $(shell git ls-files -s nginx.conf k8s public src package.json yarn.l
 
 IMAGE_NAME=eden-proxy-webapp
 IMAGE_ID=$(shell docker images --format '{{.ID}}' --filter reference='docker.pkg.github.com/edenia/eden-smart-proxy*latest')
-DOCKER_REGISTRY=ghcr.io/edenia/eden-smart-proxy
+DOCKER_REGISTRY=ghcr.io/edenia
 
 MAKE_ENV += DOCKER_REGISTRY VERSION IMAGE_NAME
 
