@@ -1,6 +1,7 @@
 name: Publish release to production environment
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - v*
@@ -8,33 +9,32 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    environment: production
 
     steps:
       - name: Checkout Repo
-        id: checkout_repo
-        uses: actions/checkout@v2.4.0
+        uses: actions/checkout@v3
 
-      - name: Setup Docker
-        uses: docker-practice/actions-setup-docker@1.0.8
-
-      - name: Get tag
-        id: tag
-        uses: dawidd6/action-get-tag@v1
-
-      - name: Log in to docker registry
-        run: |
-          echo ${{ secrets.GITHUB_TOKEN }} | docker login \
-            ghcr.io \
-            --username ${{ github.actor }} \
-            --password-stdin
+      - name: Log in to the Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
       - name: Build new image and push
         run: |
           make \
-            pull-image \
-            build-docker-cached \
+            build-docker \
             push-image
         env:
           LATEST_TAG: latest
+          NEXT_PUBLIC_APP_UAL_API_PROTOCOL: 'https'
+          NEXT_PUBLIC_APP_UAL_API_HOST: ${{ secrets.NEXT_PUBLIC_APP_UAL_API_HOST }}
+          NEXT_PUBLIC_APP_UAL_API_PORT: '443'
+          NEXT_PUBLIC_GENESISEDEN_CONTRACT: genesis.eden
+          NEXT_PUBLIC_EDENSMARTPROXY_CONTRACT: edensmartprx
+          NEXT_PUBLIC_MYVOTEEOSDAO_CONTRACT: myvoteeosdao
           RELEASE_TAG: ${{ steps.tag.outputs.tag }}
           VERSION: ${{ steps.tag.outputs.tag }}
 
