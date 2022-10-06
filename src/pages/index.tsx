@@ -18,7 +18,7 @@ const Home: NextPage = () => {
     <>
       <NextSeo title={t('homeMetaTitle')} />
       <div className={classes.containerPage}>
-        <div style={{ zIndex: 1 }}>
+        <div className={classes.backgroundContainer}>
           <Image
             src={bgImage}
             alt='Backgound image'

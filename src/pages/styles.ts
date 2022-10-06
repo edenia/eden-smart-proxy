@@ -9,6 +9,9 @@ const Styles = makeStyles(theme => ({
     position: 'relative',
     zIndex: 2,
     paddingBottom: theme.spacing(4)
+  },
+  backgroundContainer: {
+    zIndex: 1
   }
 }))
 
