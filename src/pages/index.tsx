@@ -17,16 +17,11 @@ const Home: NextPage = () => {
   return (
     <>
       <NextSeo title={t('homeMetaTitle')} />
-      <div
-        className={classes.containerPage}
-        style={{
-          height: typeof window !== 'undefined' ? window.innerHeight : 0
-        }}
-      >
+      <div className={classes.containerPage}>
         <div style={{ zIndex: 1 }}>
           <Image
             src={bgImage}
-            alt='ContactUs'
+            alt='Backgound image'
             layout='fill'
             objectFit='cover'
           />

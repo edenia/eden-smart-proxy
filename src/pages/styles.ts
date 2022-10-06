@@ -7,7 +7,8 @@ const Styles = makeStyles(theme => ({
   },
   contentPage: {
     position: 'relative',
-    zIndex: 2
+    zIndex: 2,
+    paddingBottom: theme.spacing(4)
   }
 }))
 

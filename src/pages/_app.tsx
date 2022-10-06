@@ -11,6 +11,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { useRouter } from 'next/router'
 import { appWithTranslation } from 'next-i18next'
+import '@edenia/ui-kit/dist/index.css'
 
 import { themeConfig, seoConfig, analyticsConfig, i18nConfig } from 'config'
 import { Locale } from 'config/i18n'

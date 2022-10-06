@@ -22,6 +22,10 @@ const palette: ThemeOptions['palette'] = {
     light: '#F09F4F',
     contrastText: '#ffffff'
   },
+  info: {
+    main: '#3B82F6',
+    light: '#2AA3EF'
+  },
   grey: {
     600: '#707070',
     800: '#4c4d4e'

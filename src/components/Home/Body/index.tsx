@@ -23,10 +23,10 @@ const Body: React.FC = () => {
         className={clsx(classes.buttonContainer, classes.spaceTopComponents)}
       >
         <div className={classes.buttonPadding}>
-          <Button text='Sign in and vote' variant='primary' />
+          <Button label='Sign in and vote' variant='primary'></Button>
         </div>
         <div className={classes.buttonPadding}>
-          <Button text='Delegate Vote' variant='secondary' />
+          <Button label='Delegate Vote' variant='secondary' />
         </div>
       </div>
     </div>
