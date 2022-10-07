@@ -5,12 +5,11 @@ const Styles = makeStyles(theme => ({
     padding: theme.spacing(3),
     width: '100%'
   },
-  centerSelectableItems: {
-    display: 'flex',
-    alignItems: 'center'
+  linkPadding: {
+    padding: '0 4px'
   },
-  labelSelectedItems: {
-    marginLeft: `${theme.spacing(0.5)} !important`
+  flex: {
+    display: 'flex'
   }
 }))
 

@@ -2,15 +2,15 @@ import { makeStyles } from '@mui/styles'
 
 const Styles = makeStyles(theme => ({
   container: {
-    padding: theme.spacing(3),
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: theme.spacing(2, 3, 3, 3),
     width: '100%'
   },
-  centerSelectableItems: {
+  flex: {
     display: 'flex',
     alignItems: 'center'
-  },
-  labelSelectedItems: {
-    marginLeft: `${theme.spacing(0.5)} !important`
   }
 }))
 

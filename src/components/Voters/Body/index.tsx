@@ -1,5 +1,5 @@
 import { DelegateItem } from '@edenia/ui-kit'
-import { Link } from '@mui/material'
+import { Link, Typography } from '@mui/material'
 import Image from 'next/image'
 
 import logoImage from '/public/logos/eden-proxy-logo.png'
@@ -73,10 +73,22 @@ const Body: React.FC = () => {
           // avatarIcon={delegate.avatarIcon}
           positionText={delegate.positionText}
           selectableItems={
-            <Link href={delegate.selectableItems.ref}>
+            <div className={classes.centerSelectableItems}>
               <Image src={telegramIcon} alt='Telegram icon' />
-              {delegate.selectableItems.user}
-            </Link>
+              <Typography
+                variant='subtitle1'
+                className={classes.labelSelectedItems}
+              >
+                <Link
+                  href={delegate.selectableItems.ref}
+                  rel='noreferrer'
+                  underline='none'
+                  target='_blank'
+                >
+                  {delegate.selectableItems.user}
+                </Link>
+              </Typography>
+            </div>
           }
         />
       ))}
