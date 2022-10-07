@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BlockProducerItem } from '@edenia/ui-kit'
 import { Link, Typography } from '@mui/material'
 import Image from 'next/image'
