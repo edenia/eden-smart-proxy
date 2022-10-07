@@ -1,7 +1,7 @@
 import { DefaultSeoProps } from 'next-seo'
 const title = 'Eden Smart Proxy'
 const description = 'Eden Smart Proxy.'
-const url = 'https://proxy.eden.eoscommunity.org/'
+const url = 'https://proxy.eden.eoscommunity.org'
 
 const SEO: DefaultSeoProps = {
   titleTemplate: '%s | Eden Smart Proxy',
