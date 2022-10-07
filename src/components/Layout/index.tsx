@@ -1,8 +1,10 @@
 import { useRef, useState } from 'react'
+import { Footer } from '@edenia/ui-kit'
 
 import Header from './Header'
 import Container from './Container'
-import Footer from './Footer'
+import { constantConfig } from 'config'
+// import Footer from './Footer'
 import Styles from './styles'
 
 const useStyles = Styles
@@ -36,7 +38,14 @@ const Layout: React.FC<LayoutProps> = ({
       {typeof window !== 'undefined' &&
         !['/', '/es'].includes(window?.location?.pathname) && <Header />}
       <Container>{children}</Container>
-      <Footer isDarkTheme={isDarkTheme} toggleThemeType={toggleThemeType} />
+      {/* <Footer isDarkTheme={isDarkTheme} toggleThemeType={toggleThemeType} /> */}
+      <Footer
+        socialMediaItems={constantConfig?.footer?.socialMediaItems}
+        buttomContent={}
+        itemsFooter={}
+        bgColor=''
+        color=''
+      />
     </div>
   )
 }
