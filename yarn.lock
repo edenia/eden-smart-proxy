@@ -144,10 +144,10 @@
   dependencies:
     "@date-io/core" "^2.15.0"
 
-"@edenia/ui-kit@^0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@edenia/ui-kit/-/ui-kit-0.2.4.tgz#b9ffe98a67dc1f6303ca8006174d8dc718cd66e2"
-  integrity sha512-8ClgNx9vQpA+Aj8yPxLJVC3Th7QUriEOWo/Nm61lpongv9+Ad8S4XHzP5WmaM+sq/EwhRoiOCiyaWZfH9krPRQ==
+"@edenia/ui-kit@^0.2.7":
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/@edenia/ui-kit/-/ui-kit-0.2.7.tgz#8c1bf2c26689b0d863d110e44a9dddaef49212cc"
+  integrity sha512-6iJ91afPX23NZXoChN6TtONJguUJfEu1awk+yeK6kpWWQPoerhOOQAlLfh0JPfV4CXZ0rqK6ub1bjgTB1z+2+g==
   dependencies:
     react "^18.2.0"
     react-dom "^18.2.0"
