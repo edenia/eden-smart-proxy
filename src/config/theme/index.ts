@@ -27,7 +27,7 @@ const palette: ThemeOptions['palette'] = {
     light: '#2AA3EF'
   },
   grey: {
-    600: '#707070',
+    600: '#ACACAC',
     800: '#4c4d4e'
   }
 }

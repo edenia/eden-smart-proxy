@@ -1,11 +1,16 @@
 import { useRef, useState } from 'react'
 import { Footer } from '@edenia/ui-kit'
+import { useTheme } from '@mui/styles'
+import Image from 'next/image'
 
 import Header from './Header'
 import Container from './Container'
 import { constantConfig } from 'config'
+import edeniaLogo from '/public/logos/edenia-isotipo-grey.png'
+
 // import Footer from './Footer'
 import Styles from './styles'
+import { Link, Typography } from '@mui/material'
 
 const useStyles = Styles
 
@@ -21,6 +26,7 @@ const Layout: React.FC<LayoutProps> = ({
   toggleThemeType
 }) => {
   const classes = useStyles()
+  const theme = useTheme()
   const wrapper = useRef<HTMLInputElement>(null)
   // WIP: header refactor
   const [, setShowNavbar] = useState(true)
@@ -38,13 +44,30 @@ const Layout: React.FC<LayoutProps> = ({
       {typeof window !== 'undefined' &&
         !['/', '/es'].includes(window?.location?.pathname) && <Header />}
       <Container>{children}</Container>
-      {/* <Footer isDarkTheme={isDarkTheme} toggleThemeType={toggleThemeType} /> */}
       <Footer
         socialMediaItems={constantConfig?.footer?.socialMediaItems}
-        buttomContent={}
-        itemsFooter={}
-        bgColor=''
-        color=''
+        buttomContent={
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <div style={{ paddingRight: '4px' }}>
+              <Image src={edeniaLogo} />
+            </div>
+            <Typography variant='subtitle1' color={theme.palette.grey[600]}>
+              <Link href='https://edenia.com' color={theme.palette.grey[600]}>
+                Hosted by Edenia{' '}
+              </Link>
+              - Community Owned
+            </Typography>
+          </div>
+        }
+        itemsFooter={constantConfig?.footer?.footerItems}
+        bgColor='#343434'
+        color='#FFFFFF'
       />
     </div>
   )
