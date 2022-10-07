@@ -2,6 +2,8 @@ import React from 'react'
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheets } from '@mui/styles'
 
+import { SharedStateProvider } from 'context/state.context'
+
 class MyDocument extends Document {
   render(): JSX.Element {
     return (
@@ -32,7 +34,12 @@ MyDocument.getInitialProps = async ctx => {
 
   ctx.renderPage = () =>
     originalRenderPage({
-      enhanceApp: App => props => sheets.collect(<App {...props} />)
+      enhanceApp: App => props =>
+        sheets.collect(
+          <SharedStateProvider>
+            <App {...props} />
+          </SharedStateProvider>
+        )
     })
 
   const initialProps = await Document.getInitialProps(ctx)

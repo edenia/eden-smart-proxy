@@ -16,6 +16,7 @@ import '@edenia/ui-kit/dist/index.css'
 import { themeConfig, seoConfig, analyticsConfig, i18nConfig } from 'config'
 import { Locale } from 'config/i18n'
 import { analyticsUtils } from 'utils'
+// import { SharedStateProvider } from 'context/state.context'
 
 const Layout = dynamic(() => import('../components/Layout'), {
   ssr: false
@@ -96,7 +97,7 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppProps> = ({
       >
         <LocalizationProvider
           dateAdapter={AdapterDateFns}
-          locale={i18nConfig?.dateFnsLocaleMap?.[currentLocale]}
+          adapterLocale={i18nConfig?.dateFnsLocaleMap?.[currentLocale]}
         >
           <CssBaseline />
           <Layout isDarkTheme={isDarkTheme} toggleThemeType={toggleThemeType}>
