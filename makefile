@@ -61,6 +61,7 @@ build-kubernetes: ./k8s
 
 deploy-kubernetes: ##@devops Publish the build k8s files
 deploy-kubernetes: $(K8S_BUILD_DIR)
+	@kubectl create ns $(NAMESPACE) || echo "Namespace '$(NAMESPACE)' already exists.";
 	@for file in $(shell find $(K8S_BUILD_DIR) -name '*.yml' | sed 's:$(K8S_BUILD_DIR)/::g'); do \
 		kubectl apply -n edenproxy -f $(K8S_BUILD_DIR)/$$file; \
 	done
