@@ -1,10 +1,12 @@
 import React from 'react'
-import { Typography, Box, Grid, Link } from '@mui/material'
-import {
-  YouTube as YouTubeIcon,
-  LinkedIn as LinkedInIcon
-} from '@mui/icons-material'
+import { Typography, Box, Link } from '@mui/material'
 import { useTranslation } from 'next-i18next'
+import { Footer } from '@edenia/ui-kit'
+import Image from 'next/image'
+import { useTheme } from '@mui/styles'
+
+import { constantConfig } from 'config'
+import edeniaLogo from '/public/logos/edenia-isotipo-grey.png'
 
 import Styles from './styles'
 
@@ -15,120 +17,39 @@ type FooterProps = {
 
 const useStyles = Styles
 
-const firstTags = [
-  {
-    id: 0,
-    label: 'home',
-    link: '/',
-    target: '_self'
-  },
-  {
-    id: 3,
-    label: 'contact',
-    link: '/contact',
-    target: '_self'
-  }
-]
-
-const secondTags = [
-  {
-    id: 1,
-    label: 'support',
-    link: '/support',
-    target: '_blank'
-  }
-]
-
-type LabelProps = {
-  link: string
-  label: string
-  target: string
-  rel?: string
-}
-
-const Label: React.FC<LabelProps> = ({ link, label, target }) => {
-  const { t } = useTranslation()
-  const classes = useStyles()
-
-  return (
-    <Grid item md={12} xs={12}>
-      <Link href={link} className={classes.aStyle} target={target}>
-        <Typography variant='h4' className={classes.legend}>
-          {t(label)}
-        </Typography>
-      </Link>
-    </Grid>
-  )
-}
-
 const Footer: React.FC<FooterProps> = () => {
   const { t } = useTranslation()
   const classes = useStyles()
+  const theme = useTheme()
 
   return (
-    <>
-      <Box className={classes.root}>
-        <Grid justifyContent='center' container>
-          <Grid item md={6} xs={12}>
-            {firstTags.map(label => {
-              return (
-                <Label
-                  key={label.id}
-                  link={label.link}
-                  label={label.label}
-                  target={label.target}
-                />
-              )
-            })}
-          </Grid>
-          <Grid item md={6} xs={12}>
-            {secondTags.map(label => {
-              return (
-                <Label
-                  key={label.id}
-                  link={label.link}
-                  label={label.label}
-                  target={label.target}
-                />
-              )
-            })}
-          </Grid>
-          <Grid
-            container
-            className={classes.socialMediaStyle}
-            justifyContent='flex-end'
+    <Box className={classes.root}>
+      <Footer
+        socialMediaItems={constantConfig?.footer?.socialMediaItems}
+        buttomContent={
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
           >
-            <Grid
-              className={classes.paddingSocialMedia}
-              item
-              lg={12}
-              md={12}
-              xs={12}
-            >
-              <Link
-                href='https://www.linkedin.com/'
-                color='inherit'
-                target='_blank'
-                rel='noreferrer'
-              >
-                <LinkedInIcon className={classes.socialIcon} />
+            <div style={{ paddingRight: '4px' }}>
+              <Image src={edeniaLogo} />
+            </div>
+            <Typography variant='subtitle1' color={theme.palette.grey[600]}>
+              <Link href='https://edenia.com' color={theme.palette.grey[600]}>
+                Hosted by Edenia{' '}
               </Link>
-              <Link
-                href='https://youtube.com/'
-                color='inherit'
-                target='_blank'
-                rel='noreferrer'
-              >
-                <YouTubeIcon className={classes.socialIcon} />
-              </Link>
-              <Typography variant='body1' className={classes.whiteColor}>
-                {t('copyright')}
-              </Typography>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Box>
-    </>
+              - Community Owned
+            </Typography>
+          </div>
+        }
+        itemsFooter={constantConfig?.footer?.footerItems}
+        bgColor='#343434'
+        color='#FFFFFF'
+      />
+    </Box>
   )
 }
 

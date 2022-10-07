@@ -1,16 +1,8 @@
 import { useRef, useState } from 'react'
-import { Footer } from '@edenia/ui-kit'
-import { useTheme } from '@mui/styles'
-import Image from 'next/image'
 
 import Header from './Header'
 import Container from './Container'
-import { constantConfig } from 'config'
-import edeniaLogo from '/public/logos/edenia-isotipo-grey.png'
-
-// import Footer from './Footer'
 import Styles from './styles'
-import { Link, Typography } from '@mui/material'
 
 const useStyles = Styles
 
@@ -21,12 +13,11 @@ type LayoutProps = {
 }
 
 const Layout: React.FC<LayoutProps> = ({
-  children,
-  isDarkTheme,
-  toggleThemeType
+  children
+  // isDarkTheme,
+  // toggleThemeType
 }) => {
   const classes = useStyles()
-  const theme = useTheme()
   const wrapper = useRef<HTMLInputElement>(null)
   // WIP: header refactor
   const [, setShowNavbar] = useState(true)
@@ -41,10 +32,11 @@ const Layout: React.FC<LayoutProps> = ({
 
   return (
     <div ref={wrapper} className={classes.wrapperClass} onScroll={scrolling}>
-      {typeof window !== 'undefined' &&
-        !['/', '/es'].includes(window?.location?.pathname) && <Header />}
+      {/* {typeof window !== 'undefined' &&
+        !['/', '/es'].includes(window?.location?.pathname) && <Header />} */}
+      <Header />
       <Container>{children}</Container>
-      <Footer
+      {/* <Footer
         socialMediaItems={constantConfig?.footer?.socialMediaItems}
         buttomContent={
           <div
@@ -68,7 +60,7 @@ const Layout: React.FC<LayoutProps> = ({
         itemsFooter={constantConfig?.footer?.footerItems}
         bgColor='#343434'
         color='#FFFFFF'
-      />
+      /> */}
     </div>
   )
 }
