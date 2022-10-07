@@ -1,0 +1,25 @@
+html {
+  border: 2px solid red;
+  height: 100%;
+  min-height: -webkit-fill-available;
+  min-height: fill-available;
+  min-height: -moz-available;
+  overflow: hidden;
+}
+body {
+  border: 2px solid red;
+
+  height: 100%;
+  min-height: -webkit-fill-available;
+  min-height: fill-available;
+  min-height: -moz-available;
+  overflow: hidden;
+}
+
+#__next {
+  height: 100%;
+  min-height: -webkit-fill-available;
+  min-height: fill-available;
+  min-height: -moz-available;
+  overflow: hidden;
+}

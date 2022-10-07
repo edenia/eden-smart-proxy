@@ -5,7 +5,7 @@ import useLightUAL from '../hooks/useUAL'
 import { walletConfig } from 'config'
 
 type InitialStateType = {
-  user: null
+  user: any
   openMenuWallets: boolean
   elemRef: null
   ual: any

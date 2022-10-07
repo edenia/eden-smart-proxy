@@ -1,11 +1,11 @@
-import { Box } from '@mui/material'
-
 type ContainerProps = {
   children: JSX.Element
 }
 
 const Container: React.FC<ContainerProps> = ({ children }: ContainerProps) => {
-  return <Box component='main'>{children}</Box>
+  return (
+    <div style={{ border: '2px solid orange', height: '100%' }}>{children}</div>
+  )
 }
 
 export default Container

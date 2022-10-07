@@ -3,10 +3,10 @@ import Image from 'next/image'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
-import Drawer from '@mui/material/Drawer'
+// import Drawer from '@mui/material/Drawer'
 import IconButton from '@mui/material/IconButton'
 import Box from '@mui/material/Box'
-import List from '@mui/material/List'
+// import List from '@mui/material/List'
 import Link from '@mui/material/Link'
 import MenuIcon from '@mui/icons-material/Menu'
 import LanguageIcon from '@mui/icons-material/Language'
@@ -14,8 +14,8 @@ import { useRouter } from 'next/router'
 import clsx from 'clsx'
 
 import HeaderLogo from '/public/logos/header-logo.png'
-import { CustomListItem } from 'components'
-import { Icons } from 'components/CustomListItem'
+// import { CustomListItem } from 'components'
+// import { Icons } from 'components/CustomListItem'
 
 import useStyles from './styles'
 import { default as routes } from './routes.json'
@@ -27,6 +27,10 @@ type LangItemProps = {
   handleClick?(): void
   useDivider?: boolean
   isSelected?: boolean
+}
+
+type HeaderProps = {
+  onDrawerToggle?(): void
 }
 
 const LangItem: React.FC<LangItemProps> = ({
@@ -54,15 +58,15 @@ const LangItem: React.FC<LangItemProps> = ({
   )
 }
 
-const Header: React.FC = () => {
+const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
   const classes = useStyles()
   const router = useRouter()
-  const [isOpen, setIsOpen] = useState(false)
+  // const [isOpen, setIsOpen] = useState(false)
   const { asPath } = router
 
-  const handlerDrawer = () => {
-    setIsOpen(!isOpen)
-  }
+  // const handlerDrawer = () => {
+  //   setIsOpen(!isOpen)
+  // }
 
   const translateSite = () => {
     window.open(`${asPath}`, '_self')
@@ -113,7 +117,7 @@ const Header: React.FC = () => {
             className={clsx(classes.drawerContainer, classes.drawerShowMobile)}
           >
             <div className={classes.logoAppbar}>
-              <IconButton onClick={handlerDrawer}>
+              <IconButton onClick={onDrawerToggle}>
                 <MenuIcon fontSize='large' className={classes.menuIconColor} />
               </IconButton>
               <Link className={classes.logo} href='/'>
@@ -135,7 +139,7 @@ const Header: React.FC = () => {
               </div>
             </div>
           </div>
-          <Drawer
+          {/* <Drawer
             className={classes.drawer}
             anchor={'left'}
             open={isOpen}
@@ -185,7 +189,7 @@ const Header: React.FC = () => {
                 </div>
               </List>
             </div>
-          </Drawer>
+          </Drawer> */}
         </div>
       </Toolbar>
     </AppBar>

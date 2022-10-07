@@ -1,6 +1,6 @@
 import React from 'react'
 import { Typography, Box, Link } from '@mui/material'
-import { useTranslation } from 'next-i18next'
+// import { useTranslation } from 'next-i18next'
 import { Footer } from '@edenia/ui-kit'
 import Image from 'next/image'
 import { useTheme } from '@mui/styles'
@@ -10,15 +10,10 @@ import edeniaLogo from '/public/logos/edenia-isotipo-grey.png'
 
 import Styles from './styles'
 
-type FooterProps = {
-  isDarkTheme: boolean
-  toggleThemeType(): void
-}
-
 const useStyles = Styles
 
-const Footer: React.FC<FooterProps> = () => {
-  const { t } = useTranslation()
+const FooterComp: React.FC = () => {
+  // const { t } = useTranslation()
   const classes = useStyles()
   const theme = useTheme()
 
@@ -53,4 +48,4 @@ const Footer: React.FC<FooterProps> = () => {
   )
 }
 
-export default Footer
+export default FooterComp
