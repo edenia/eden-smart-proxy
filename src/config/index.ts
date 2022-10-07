@@ -1,5 +1,6 @@
 export { default as themeConfig } from './theme'
 export { default as seoConfig } from './seo'
+export * as constantConfig from './constants'
 export { default as analyticsConfig } from './analytics'
 export { default as i18nConfig } from './i18n'
 export * as sdkConfig from './sdk'
