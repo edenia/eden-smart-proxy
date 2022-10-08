@@ -1,5 +1,6 @@
 import { DelegateItem } from '@edenia/ui-kit'
 import { Link, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
 import { labelsRanks } from 'config/constants'
@@ -7,11 +8,10 @@ import { smartProxyUtil, atomicAssetsUtil } from 'utils'
 import telegramIcon from '/public/icons/telegram-grey-icon.png'
 
 import useStyles from './styles'
-import { useEffect, useState } from 'react'
 
 const Body: React.FC = () => {
   const classes = useStyles()
-  const [EdenMembers, setEdenMembers] = useState<any>()
+  const [edenMembers, setEdenMembers] = useState<any>()
 
   const loadMembers = async () => {
     const members = await smartProxyUtil.getEdenMembers()
@@ -19,30 +19,30 @@ const Body: React.FC = () => {
       const infoMembers = await atomicAssetsUtil.getTemplates()
       const test3 = members?.rows?.map((member): any => {
         const info = infoMembers.find(
-          (template): any => member[1]?.name === template?.name
+          (template): any => member[1]?.account === template?.account
         )
         return { ...member, info }
       })
       setEdenMembers(test3)
     }
   }
-
+  console.log({ edenMembers })
   useEffect(() => {
     loadMembers()
   }, [])
 
   return (
     <div className={classes.container}>
-      {EdenMembers?.map(delegate => (
+      {edenMembers?.map(delegate => (
         <DelegateItem
           key={delegate[1].name}
           text='Not Voting'
           // link={delegate.link}
           name={delegate[1].name}
-          image={delegate.image}
+          image={`https://ipfs.io/ipfs/${delegate?.info?.image}`}
           target='_blank'
           headItem={<Image src={telegramIcon} />}
-          // linkIcon={delegate.linkIcon}
+          linkIcon='/icons/ref-icon.png'
           // avatarIcon={delegate.avatarIcon}
           positionText={labelsRanks?.electionRank?.[delegate[1]?.election_rank]}
           selectableItems={
