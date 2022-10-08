@@ -15,10 +15,10 @@ const drawerWidth = 260
 
 const Dashboard: React.FC<{ children: React.ReactNode; routes?: Array<any> }> =
   ({ children, routes }) => {
-    const [mobileOpen, setMobileOpen] = useState(false)
-    const [showLayout, setShowLayout] = useState(true)
     const router = useRouter()
     const classes = useStyles()
+    const [mobileOpen, setMobileOpen] = useState(false)
+    const [showLayout, setShowLayout] = useState(true)
 
     const handleDrawerToggle = () => {
       setMobileOpen(!mobileOpen)
