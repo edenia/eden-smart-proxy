@@ -16,7 +16,7 @@ const AuthButton: React.FC = () => {
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
         {!state?.ual?.activeUser && (
           <Button
-            onClick={handleOpenMenu}
+            onClick={() => handleOpenMenu()}
             label='Sign in and vote'
             variant='primary'
           />
