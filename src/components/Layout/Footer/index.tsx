@@ -1,6 +1,5 @@
 import React from 'react'
 import { Typography, Box, Link } from '@mui/material'
-// import { useTranslation } from 'next-i18next'
 import { Footer } from '@edenia/ui-kit'
 import Image from 'next/image'
 import { useTheme } from '@mui/styles'
@@ -13,7 +12,6 @@ import Styles from './styles'
 const useStyles = Styles
 
 const FooterComp: React.FC = () => {
-  // const { t } = useTranslation()
   const classes = useStyles()
   const theme = useTheme()
 

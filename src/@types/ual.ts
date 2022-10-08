@@ -19,7 +19,7 @@ export type UALType = {
 export type UALStateType = {
   activeUser: any
   activeAuthenticator: any
-  users: Array<any> // create user type
+  users: Array<any>
   error: any | string
   message: string
   appName?: string
