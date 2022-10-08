@@ -26,6 +26,9 @@ const Styles = makeStyles(theme => ({
     overflowX: 'hidden',
     '& .internScroll': {
       height: '100%'
+    },
+    '& .pageContainer': {
+      height: '100%'
     }
   },
   childContent: {
