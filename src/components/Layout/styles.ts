@@ -23,18 +23,16 @@ const Styles = makeStyles(theme => ({
     flexDirection: 'column',
     maxWidth: '100%',
     height: '100%',
-    overflowX: 'hidden',
-    '& .internScroll': {
-      height: '100%'
-    },
+    overflow: 'scroll',
     '& .pageContainer': {
-      height: '100%'
+      height: 'calc(100% - 224px)',
+      minHeight: 'calc(100% - 224px)'
     }
   },
   childContent: {
     flex: 1,
     height: '100%',
-    overflow: 'hidden'
+    overflow: 'scroll'
   },
   paddingPage: {
     paddingTop: theme.spacing(6)
