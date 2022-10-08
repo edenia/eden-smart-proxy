@@ -13,7 +13,7 @@ import Styles from './styles'
 const useStyles = Styles
 const drawerWidth = 260
 
-const Dashboard: React.FC<{ children: React.ReactNode; routes: Array<any> }> =
+const Dashboard: React.FC<{ children: React.ReactNode; routes?: Array<any> }> =
   ({ children, routes }) => {
     const [mobileOpen, setMobileOpen] = useState(false)
     const [showLayout, setShowLayout] = useState(true)

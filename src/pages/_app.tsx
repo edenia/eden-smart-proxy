@@ -27,7 +27,6 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppProps> = ({
   Component,
   pageProps
 }: AppProps) => {
-  const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false)
   const { locale, events } = useRouter()
   const currentLocale = (locale as Locale) || i18nConfig.defaultLocale
 
@@ -49,10 +48,6 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppProps> = ({
       events.off('routeChangeComplete', handleRouteChange)
     }
   }, [events])
-
-  const toggleThemeType = useCallback((): void => {
-    setIsDarkTheme(isDark => !isDark)
-  }, [])
 
   return (
     <>
@@ -87,22 +82,16 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppProps> = ({
           />
           <meta
             name='theme-color'
-            content={
-              isDarkTheme
-                ? themeConfig.darkTheme.palette.primary.main
-                : themeConfig.lightTheme.palette.primary.main
-            }
+            content={themeConfig.lightTheme.palette.primary.main}
           />
         </Head>
-        <ThemeProvider
-          theme={isDarkTheme ? themeConfig.darkTheme : themeConfig.lightTheme}
-        >
+        <ThemeProvider theme={themeConfig.lightTheme}>
           <LocalizationProvider
             dateAdapter={AdapterDateFns}
             adapterLocale={i18nConfig?.dateFnsLocaleMap?.[currentLocale]}
           >
             <CssBaseline />
-            <Layout isDarkTheme={isDarkTheme} toggleThemeType={toggleThemeType}>
+            <Layout>
               <Component {...pageProps} />
             </Layout>
           </LocalizationProvider>
