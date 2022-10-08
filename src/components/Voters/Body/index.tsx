@@ -66,11 +66,8 @@ const Body: React.FC = () => {
           text={delegate.textAction}
           link={delegate.link}
           name={delegate.name}
-          // image={delegate.image}
           target={delegate.target}
           headItem={<Image src={telegramIcon} />}
-          // linkIcon={delegate.linkIcon}
-          // avatarIcon={delegate.avatarIcon}
           positionText={delegate.positionText}
           selectableItems={
             <div className={classes.centerSelectableItems}>

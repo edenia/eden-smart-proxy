@@ -124,11 +124,8 @@ const Body: React.FC<voteBodyProps> = ({ setSelectedBps, selectedBps }) => {
           rankValue={delegate.rankValue}
           proxyScore={delegate.proxyScore}
           eosrateValue={delegate.eosrateValue}
-          // image={delegate.image}
           target={delegate.target}
           headItem={<Image src={telegramIcon} />}
-          // linkIcon={delegate.linkIcon}
-          // avatarIcon={delegate.avatarIcon}
           positionText={delegate.positionText}
           selectableItems={
             <div className={classes.flex}>
