@@ -3,11 +3,7 @@ type ContainerProps = {
 }
 
 const Container: React.FC<ContainerProps> = ({ children }: ContainerProps) => {
-  return (
-    <div className='pageContainer'>
-      <div className='internScroll'>{children}</div>
-    </div>
-  )
+  return <div className='pageContainer'>{children}</div>
 }
 
 export default Container
