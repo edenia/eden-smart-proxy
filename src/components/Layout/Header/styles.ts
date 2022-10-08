@@ -3,7 +3,11 @@ import { makeStyles } from '@mui/styles'
 const Styles = makeStyles(theme => ({
   appBar: {
     boxShadow: 'none',
-    color: 'transparent'
+    color: 'transparent',
+    paddingLeft: 0,
+    [theme.breakpoints.up('md')]: {
+      paddingLeft: 260
+    }
   },
   menuContainer: {
     display: 'flex',

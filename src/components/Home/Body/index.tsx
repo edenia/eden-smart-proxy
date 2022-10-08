@@ -2,6 +2,8 @@ import { Typography } from '@mui/material'
 import { Button } from '@edenia/ui-kit'
 import clsx from 'clsx'
 
+import AuthButton from '../../AuthUAL'
+
 import useStyles from './styles'
 
 const Body: React.FC = () => {
@@ -23,7 +25,7 @@ const Body: React.FC = () => {
         className={clsx(classes.buttonContainer, classes.spaceTopComponents)}
       >
         <div className={classes.buttonPadding}>
-          <Button label='Sign in and vote' variant='primary'></Button>
+          <AuthButton />
         </div>
         <div className={classes.buttonPadding}>
           <Button label='Delegate Vote' variant='secondary' />

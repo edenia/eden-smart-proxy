@@ -1,76 +1,71 @@
-import { useRef, useState } from 'react'
-import { Footer } from '@edenia/ui-kit'
-import { useTheme } from '@mui/styles'
-import Image from 'next/image'
+import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
+import Hidden from '@mui/material/Hidden'
+import clsx from 'clsx'
+
+import Sidebar from 'components/Sidebar'
 
 import Header from './Header'
+import FooterComp from './Footer'
 import Container from './Container'
-import { constantConfig } from 'config'
-import edeniaLogo from '/public/logos/edenia-isotipo-grey.png'
-
-// import Footer from './Footer'
 import Styles from './styles'
-import { Link, Typography } from '@mui/material'
 
 const useStyles = Styles
+const drawerWidth = 260
 
-type LayoutProps = {
-  children: JSX.Element
-  isDarkTheme: boolean
-  toggleThemeType(): void
-}
-
-const Layout: React.FC<LayoutProps> = ({
-  children,
-  isDarkTheme,
-  toggleThemeType
-}) => {
+const Dashboard: React.FC<{
+  children: React.ReactNode
+  routes?: Array<any>
+}> = ({ children, routes }) => {
+  const router = useRouter()
   const classes = useStyles()
-  const theme = useTheme()
-  const wrapper = useRef<HTMLInputElement>(null)
-  // WIP: header refactor
-  const [, setShowNavbar] = useState(true)
-  const [lastScroll, setLastScroll] = useState(0)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const [showLayout, setShowLayout] = useState(true)
 
-  const scrolling = () => {
-    const currentScroll = wrapper?.current?.scrollTop || 0
-
-    setShowNavbar(!!(currentScroll > lastScroll))
-    setLastScroll(currentScroll)
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen)
   }
 
+  useEffect(() => {
+    setShowLayout(!['/', '/es'].includes(router?.pathname))
+  }, [router?.pathname])
+
   return (
-    <div ref={wrapper} className={classes.wrapperClass} onScroll={scrolling}>
-      {typeof window !== 'undefined' &&
-        !['/', '/es'].includes(window?.location?.pathname) && <Header />}
-      <Container>{children}</Container>
-      <Footer
-        socialMediaItems={constantConfig?.footer?.socialMediaItems}
-        buttomContent={
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <div style={{ paddingRight: '4px' }}>
-              <Image src={edeniaLogo} />
-            </div>
-            <Typography variant='subtitle1' color={theme.palette.grey[600]}>
-              <Link href='https://edenia.com' color={theme.palette.grey[600]}>
-                Hosted by Edenia{' '}
-              </Link>
-              - Community Owned
-            </Typography>
-          </div>
-        }
-        itemsFooter={constantConfig?.footer?.footerItems}
-        bgColor='#343434'
-        color='#FFFFFF'
-      />
+    <div className={classes.root}>
+      {showLayout && (
+        <div className={classes.drawer}>
+          <Hidden mdUp implementation='js'>
+            <Sidebar
+              PaperProps={{ style: { width: drawerWidth } }}
+              variant='temporary'
+              open={mobileOpen}
+              onClose={handleDrawerToggle}
+              routes={routes}
+            />
+          </Hidden>
+          <Hidden mdDown implementation='css'>
+            <Sidebar
+              PaperProps={{ style: { width: drawerWidth } }}
+              variant='permanent'
+              routes={routes}
+              onClose={handleDrawerToggle}
+            />
+          </Hidden>
+        </div>
+      )}
+      <div
+        className={clsx(classes.mainContent, {
+          [classes.paddingPage]: showLayout
+        })}
+      >
+        {showLayout && <Header onDrawerToggle={handleDrawerToggle} />}
+        <Container>
+          <div className={classes.childContent}>{children}</div>
+        </Container>
+        <FooterComp />
+      </div>
     </div>
   )
 }
 
-export default Layout
+export default Dashboard

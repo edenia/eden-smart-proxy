@@ -1,12 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Image from 'next/image'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
-import Drawer from '@mui/material/Drawer'
 import IconButton from '@mui/material/IconButton'
 import Box from '@mui/material/Box'
-import List from '@mui/material/List'
 import Link from '@mui/material/Link'
 import MenuIcon from '@mui/icons-material/Menu'
 import LanguageIcon from '@mui/icons-material/Language'
@@ -14,8 +12,6 @@ import { useRouter } from 'next/router'
 import clsx from 'clsx'
 
 import HeaderLogo from '/public/logos/header-logo.png'
-import { CustomListItem } from 'components'
-import { Icons } from 'components/CustomListItem'
 
 import useStyles from './styles'
 import { default as routes } from './routes.json'
@@ -27,6 +23,10 @@ type LangItemProps = {
   handleClick?(): void
   useDivider?: boolean
   isSelected?: boolean
+}
+
+type HeaderProps = {
+  onDrawerToggle?(): void
 }
 
 const LangItem: React.FC<LangItemProps> = ({
@@ -54,15 +54,10 @@ const LangItem: React.FC<LangItemProps> = ({
   )
 }
 
-const Header: React.FC = () => {
+const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
   const classes = useStyles()
   const router = useRouter()
-  const [isOpen, setIsOpen] = useState(false)
   const { asPath } = router
-
-  const handlerDrawer = () => {
-    setIsOpen(!isOpen)
-  }
 
   const translateSite = () => {
     window.open(`${asPath}`, '_self')
@@ -113,7 +108,7 @@ const Header: React.FC = () => {
             className={clsx(classes.drawerContainer, classes.drawerShowMobile)}
           >
             <div className={classes.logoAppbar}>
-              <IconButton onClick={handlerDrawer}>
+              <IconButton onClick={onDrawerToggle}>
                 <MenuIcon fontSize='large' className={classes.menuIconColor} />
               </IconButton>
               <Link className={classes.logo} href='/'>
@@ -135,57 +130,6 @@ const Header: React.FC = () => {
               </div>
             </div>
           </div>
-          <Drawer
-            className={classes.drawer}
-            anchor={'left'}
-            open={isOpen}
-            onClose={handlerDrawer}
-          >
-            <div className={classes.drawerContent}>
-              <List>
-                <div className={classes.logoDrawer}>
-                  <Image
-                    src={HeaderLogo}
-                    alt='headerLogo'
-                    width={150}
-                    height={40}
-                    placeholder='blur'
-                    priority
-                  />
-                </div>
-                <div className={classes.linkGruopBox}>
-                  {mainRoutes.slice(0, 2).map(route => (
-                    <CustomListItem
-                      key={route.id}
-                      href={route.path}
-                      target='_self'
-                      label={route.name}
-                      iconName={route.name as keyof Icons}
-                      isSelected={asPath === route.path}
-                    />
-                  ))}
-                </div>
-                <div className={classes.linkGruopBox}>
-                  <Typography
-                    variant='body1'
-                    className={classes.linkGruopLabel}
-                  >
-                    Information
-                  </Typography>
-                  {mainRoutes.slice(2).map(route => (
-                    <CustomListItem
-                      href={route.path}
-                      key={route.id}
-                      target='_self'
-                      label={route.name}
-                      iconName={route.name as keyof Icons}
-                      isSelected={asPath === route.path}
-                    />
-                  ))}
-                </div>
-              </List>
-            </div>
-          </Drawer>
         </div>
       </Toolbar>
     </AppBar>
