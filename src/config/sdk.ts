@@ -1,7 +1,7 @@
-export const endpoint = `${process.env.NEXT_PUBLIC_APP_UAL_API_PROTOCOL}://${
-  process.env.NEXT_PUBLIC_APP_UAL_API_HOST
-}${process.env.NEXT_PUBLIC_APP_UAL_API_PORT ? ':' : ''}${
-  process.env.NEXT_PUBLIC_APP_UAL_API_PORT
+export const endpoint = `${process.env.NEXT_PUBLIC_UAL_API_PROTOCOL}://${
+  process.env.NEXT_PUBLIC_UAL_API_HOST
+}${process.env.NEXT_PUBLIC_UAL_API_PORT ? ':' : ''}${
+  process.env.NEXT_PUBLIC_UAL_API_PORT
 }`
 
 export const eosioContract = 'eosio'
