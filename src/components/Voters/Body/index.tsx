@@ -4,7 +4,6 @@ import Image from 'next/image'
 
 import { labelsRanks } from 'config/constants'
 import { smartProxyUtil, atomicAssetsUtil } from 'utils'
-import logoImage from '/public/logos/eden-proxy-logo.png'
 import telegramIcon from '/public/icons/telegram-grey-icon.png'
 
 import useStyles from './styles'

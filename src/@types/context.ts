@@ -11,11 +11,3 @@ export type stateType = {
   elemRef: null
   ual: any
 }
-
-export type dispathType = {
-  // setState(): void
-  // login(): void
-  // logout(): void
-  // handleOpenMenu(): void
-  // handleCloseMenu(): void
-}
