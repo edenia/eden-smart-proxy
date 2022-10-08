@@ -4,8 +4,8 @@ const Styles = makeStyles(theme => ({
   containerPage: {
     position: 'relative',
     zIndex: 0,
-    height: '100%',
-    border: '2px soolid red'
+    height: '100%'
+    // border: '2px soolid red'
   },
   contentPage: {
     position: 'relative',

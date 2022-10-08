@@ -1,10 +1,21 @@
-export type ContextType = {
-  Provider: any
+export type InitialStateType = {
+  user: any
+  openMenuWallets: boolean
+  elemRef: null
+  ual: any
 }
 
 export type stateType = {
-  useDarkMode: boolean
   user: null
   openMenuWallets: boolean
   elemRef: null
+  ual: any
+}
+
+export type dispathType = {
+  // setState(): void
+  // login(): void
+  // logout(): void
+  // handleOpenMenu(): void
+  // handleCloseMenu(): void
 }

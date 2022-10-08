@@ -1,5 +1,4 @@
 html {
-  border: 2px solid red;
   height: 100%;
   min-height: -webkit-fill-available;
   min-height: fill-available;
@@ -7,8 +6,6 @@ html {
   overflow: hidden;
 }
 body {
-  border: 2px solid red;
-
   height: 100%;
   min-height: -webkit-fill-available;
   min-height: fill-available;

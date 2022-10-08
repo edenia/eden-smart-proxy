@@ -1,15 +1,8 @@
-import React, { useEffect, createContext } from 'react'
+import React, { useEffect, createContext, useCallback } from 'react'
 
-import { stateType } from '../@types/context'
+import { stateType, InitialStateType } from '../@types/context'
 import useLightUAL from '../hooks/useUAL'
 import { walletConfig } from 'config'
-
-type InitialStateType = {
-  user: any
-  openMenuWallets: boolean
-  elemRef: null
-  ual: any
-}
 
 const initialValue = {
   user: null,
@@ -26,7 +19,7 @@ const SharedStateContext = createContext<{
   dispatch: () => null
 })
 
-const sharedStateReducer = (state: stateType, action: any) => {
+const sharedStateReducer = (state, action): stateType => {
   switch (action.type) {
     case 'set': {
       return {
@@ -35,17 +28,19 @@ const sharedStateReducer = (state: stateType, action: any) => {
       }
     }
 
-    case 'setUser':
+    case 'setUser': {
       return {
         ...state,
         user: action.payload
       }
+    }
 
-    case 'ual':
+    case 'ual': {
       return {
         ...state,
         ual: action.ual
       }
+    }
 
     case 'setOpenMenuWallets': {
       return {
@@ -62,7 +57,6 @@ const sharedStateReducer = (state: stateType, action: any) => {
 }
 
 export const SharedStateProvider: React.FC = ({ children, ...props }: any) => {
-  console.log({ walletConfig })
   const ualState = useLightUAL({
     appName: walletConfig.appName,
     chains: walletConfig.network,
@@ -73,22 +67,16 @@ export const SharedStateProvider: React.FC = ({ children, ...props }: any) => {
   })
   const value = React.useMemo(() => [state, dispatch], [state])
 
+  const loadData = useCallback(async ualState => {
+    dispatch({ type: 'ual', ual: ualState })
+  }, [])
+
   useEffect(() => {
-    const load = async () => {
-      dispatch({ type: 'ual', ual: ualState })
+    if (!ualState) return
 
-      if (!ualState?.activeUser) return
-
-      dispatch({
-        type: 'setUser',
-        payload: {
-          accountName: ualState.activeUser.accountName
-        }
-      })
-    }
-
-    load()
-  }, [ualState])
+    if (!state?.ual || (!state?.ual.activeUser && ualState?.activeUser))
+      loadData(ualState)
+  }, [ualState, loadData, state])
 
   return (
     <SharedStateContext.Provider value={value} {...props}>
@@ -97,38 +85,39 @@ export const SharedStateProvider: React.FC = ({ children, ...props }: any) => {
   )
 }
 
-export const useSharedState = () => {
+export const useSharedState = (): any => {
   const context = React.useContext(SharedStateContext)
 
   if (!context) {
     throw new Error(`useSharedState must be used within a SharedStateContext`)
   }
 
-  const { state, dispatch } = context
-  const setState = (payload: any) => dispatch({ type: 'set', payload })
+  const stateTemp = context[0]
+  const dispatchTemp = context[1]
 
+  const setState = (payload: any) => dispatchTemp({ type: 'set', payload })
   const login = (type: string) => {
-    state.ual.login(type)
+    stateTemp.ual.login(type)
   }
   const logout = () => {
-    dispatch({ type: 'logout' })
-    state.ual.logout()
+    dispatchTemp({ type: 'logout' })
+    stateTemp.ual.logout()
   }
   const handleOpenMenu = (event: any) => {
-    dispatch({
+    dispatchTemp({
       type: 'setOpenMenuWallets',
       payload: event.currentTarget
     })
   }
   const handleCloseMenu = () => {
-    dispatch({
+    dispatchTemp({
       type: 'setOpenMenuWallets',
       payload: null
     })
   }
 
   return [
-    state,
+    stateTemp,
     {
       setState,
       login,

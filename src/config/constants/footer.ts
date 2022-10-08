@@ -1,29 +1,23 @@
-import twitterIcon from '/public/icons/twitter-white-icon.png'
-import redditIcon from '/public/icons/reddit-icon.png'
-import gitHubIcon from '/public/icons/github-icon.png'
-// import telegramIcon from '/public/icons/telegram-icon.png'
-const telegramIcon = '/public/icons/telegram-icon.png'
-
 const socialMediaItems = [
   {
     name: 'Twitter',
     ref: 'google.com',
-    image: twitterIcon
+    image: '/icons/twitter-white-icon.png'
   },
   {
     name: 'Reddit',
     ref: 'google.com',
-    image: redditIcon
+    image: '/icons/reddit-icon.png'
   },
   {
     name: 'GitHub',
     ref: 'google.com',
-    image: gitHubIcon
+    image: '/icons/github-icon.png'
   },
   {
     name: 'Telegram',
     ref: 'google.com',
-    image: telegramIcon
+    image: '/icons/telegram-icon.png'
   }
 ]
 

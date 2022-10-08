@@ -4,7 +4,11 @@ const Styles = makeStyles(theme => ({
   appBar: {
     boxShadow: 'none',
     color: 'transparent',
-    border: '2px solid green'
+    // border: '2px solid green',
+    paddingLeft: 0,
+    [theme.breakpoints.up('md')]: {
+      paddingLeft: 260
+    }
   },
   menuContainer: {
     display: 'flex',

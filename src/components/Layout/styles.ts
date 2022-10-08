@@ -4,17 +4,12 @@ const drawerWidth = 260
 
 const Styles = makeStyles(theme => ({
   wrapperClass: {
-    height: '100vh',
-    overflowY: 'scroll',
-    border: '2px solid red'
+    height: '100vh'
   },
   root: {
     display: 'flex',
     height: '100%',
     minHeight: 'fill-available'
-    // minHeight: '-webkit-fill-available'
-    // minHeight: '-moz-available'
-    // backgroundImage: 'url("/bg.png")'
   },
   drawer: {
     [theme.breakpoints.up('md')]: {
@@ -27,14 +22,18 @@ const Styles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     maxWidth: '100%',
-    overflow: 'hidden'
-    // paddingTop: theme.spacing(6)
+    overflow: 'hidden',
+    '& .pageContainer': {
+      height: '100%'
+    }
   },
   childContent: {
     flex: 1,
     height: '100%',
-    padding: theme.spacing(2),
     overflow: 'scroll'
+  },
+  paddingPage: {
+    paddingTop: theme.spacing(6)
   }
 }))
 

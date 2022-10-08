@@ -3,9 +3,7 @@ type ContainerProps = {
 }
 
 const Container: React.FC<ContainerProps> = ({ children }: ContainerProps) => {
-  return (
-    <div style={{ border: '2px solid orange', height: '100%' }}>{children}</div>
-  )
+  return <div className='pageContainer'>{children}</div>
 }
 
 export default Container
