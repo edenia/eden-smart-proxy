@@ -102,9 +102,7 @@ export const getVotes = async <T>(
   })) as TableResponse<T>
 }
 
-export const getEdenMembers = async <T>(
-  lowerBound?: string
-): Promise<TableResponse<T> | undefined> => {
+export const getEdenMembers = async <T>(lowerBound?: string): Promise<any> => {
   return (await eosApi.getTableRows({
     code: sdkConfig.genesisEdenContract,
     scope: 0,

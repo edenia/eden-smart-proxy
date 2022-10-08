@@ -43,10 +43,7 @@ export const getTemplate = async (
   }
 }
 
-export const getTemplates = async (
-  page = 1,
-  limit = 100
-): Promise<MemberProfile[]> => {
+export const getTemplates = async (page = 1, limit = 100): Promise<any[]> => {
   const templates = await api.getTemplates(
     {
       collection_name: sdkConfig.genesisEdenContract
