@@ -22,8 +22,9 @@ const Styles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     maxWidth: '100%',
-    overflow: 'scroll',
-    '& .pageContainer': {
+    height: '100%',
+    overflowX: 'hidden',
+    '& .internScroll': {
       height: '100%'
     }
   },

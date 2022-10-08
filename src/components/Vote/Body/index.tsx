@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BlockProducerItem } from '@edenia/ui-kit'
 import { Link, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
+import { smartProxyUtil } from 'utils'
 import logoImage from '/public/logos/eden-proxy-logo.png'
 import telegramIcon from '/public/icons/telegram-grey-icon.png'
 
@@ -99,6 +101,30 @@ type voteBodyProps = {
 
 const Body: React.FC<voteBodyProps> = ({ setSelectedBps, selectedBps }) => {
   const classes = useStyles()
+  const [bps, setBps] = useState<any>()
+
+  const loadMembers = async () => {
+    const allBps = await smartProxyUtil.getWhitelistedBps()
+    console.log({ allBps })
+    if (allBps) {
+      const invalidBps = (await smartProxyUtil.getBlacklistedBps()).reduce(
+        (reduceList, element) => {
+          return [...reduceList, element.bp]
+        },
+        []
+      )
+      console.log({ invalidBps })
+      const validBps = allBps?.filter((bp): any => {
+        console.log({ bp })
+        invalidBps.includes(bp.producer)
+      })
+      setBps(validBps)
+    }
+  }
+  console.log({ bps })
+  useEffect(() => {
+    loadMembers()
+  }, [])
 
   const handleSelected = delegate => {
     const selected = selectedBps.find(bp => bp.name === delegate.name)

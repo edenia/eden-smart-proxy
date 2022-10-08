@@ -102,9 +102,7 @@ export const getVotes = async <T>(
   })) as TableResponse<T>
 }
 
-export const getEdenMembers = async <T>(
-  lowerBound?: string
-): Promise<TableResponse<T> | undefined> => {
+export const getEdenMembers = async <T>(lowerBound?: string): Promise<any> => {
   return (await eosApi.getTableRows({
     code: sdkConfig.genesisEdenContract,
     scope: 0,
@@ -115,9 +113,7 @@ export const getEdenMembers = async <T>(
   })) as TableResponse<T>
 }
 
-export const getWhitelistedBps = async <T>(): Promise<
-  TableResponseRow<T>[]
-> => {
+export const getWhitelistedBps = async <T>(): Promise<any> => {
   const { rows } = await eosApi.getTableRows({
     code: sdkConfig.myVoteEOSDaoContract,
     scope: sdkConfig.myVoteEOSDaoContract,
@@ -129,9 +125,7 @@ export const getWhitelistedBps = async <T>(): Promise<
   return rows
 }
 
-export const getBlacklistedBps = async <T>(): Promise<
-  TableResponseRow<T>[]
-> => {
+export const getBlacklistedBps = async <T>(): Promise<any> => {
   const { rows } = await eosApi.getTableRows({
     code: sdkConfig.edenSmartProxyContract,
     scope: sdkConfig.edenSmartProxyContract,
