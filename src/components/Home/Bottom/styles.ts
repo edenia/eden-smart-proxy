@@ -3,7 +3,23 @@ import { makeStyles } from '@mui/styles'
 const Styles = makeStyles(theme => ({
   containerBottom: {
     display: 'flex',
-    justifyContent: 'space-around'
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: theme.spacing(1),
+    '& .card-container': {
+      margin: theme.spacing(1, 0),
+      minWidth: 330
+    },
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-evenly',
+      '& .card-container': {
+        margin: theme.spacing(1, 0),
+        minWidth: 350,
+        minHeight: 370
+      }
+    }
   },
   flex: {
     display: 'flex'

@@ -11,10 +11,14 @@ const Body: React.FC = () => {
 
   return (
     <div className={classes.container}>
-      <Typography variant='h1'>Choose Wisely</Typography>
-      <Typography variant='h1'> Choose Eden Smart Proxy</Typography>
+      <Typography variant='h1' className='title'>
+        Choose Wisely
+      </Typography>
+      <Typography variant='h1' className='title'>
+        Choose Eden Smart Proxy
+      </Typography>
       <div className={classes.spaceTopComponents}>
-        <Typography variant='body1'>
+        <Typography variant='body1' className='description'>
           EdenBPsProxy is a EOS BP voting proxy that maximizes voice of
           individual EOS holders by leveraging their voice with Eden`s fractal
           democracy process. Only members of Edens who revealed their identity
@@ -24,12 +28,8 @@ const Body: React.FC = () => {
       <div
         className={clsx(classes.buttonContainer, classes.spaceTopComponents)}
       >
-        <div className={classes.buttonPadding}>
-          <AuthButton />
-        </div>
-        <div className={classes.buttonPadding}>
-          <Button label='Delegate Vote' variant='secondary' />
-        </div>
+        <AuthButton />
+        <Button label='Delegate Vote' variant='secondary' />
       </div>
     </div>
   )

@@ -9,7 +9,13 @@ const Styles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     '& .languageLabel': {
-      color: theme.palette.common.black
+      color: theme.palette.common.black,
+      display: 'none'
+    },
+    [theme.breakpoints.up('sm')]: {
+      '& .languageLabel': {
+        display: 'block'
+      }
     }
   }
 }))
