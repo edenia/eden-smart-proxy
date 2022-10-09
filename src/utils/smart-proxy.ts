@@ -90,26 +90,30 @@ export const buildVoteTransaction = ({
 }
 
 export const getVotes = async <T>(
-  lowerBound?: string
-): Promise<TableResponse<T> | undefined> => {
+  lowerBound?: string,
+  limit = 30
+): Promise<any | undefined> => {
   return (await eosApi.getTableRows({
     code: sdkConfig.edenSmartProxyContract,
     scope: sdkConfig.edenSmartProxyContract,
     table: 'votes',
     json: true,
     lower_bound: lowerBound,
-    limit: 30
+    limit
   })) as TableResponse<T>
 }
 
-export const getEdenMembers = async <T>(lowerBound?: string): Promise<any> => {
+export const getEdenMembers = async <T>(
+  lowerBound?: string,
+  limit = 100
+): Promise<any> => {
   return (await eosApi.getTableRows({
     code: sdkConfig.genesisEdenContract,
     scope: 0,
     table: 'member',
     json: true,
     lower_bound: lowerBound,
-    limit: 100
+    limit
   })) as TableResponse<T>
 }
 
@@ -135,4 +139,18 @@ export const getBlacklistedBps = async <T>(): Promise<any> => {
   })
 
   return rows
+}
+
+export const getStats = async <T = any>(
+  lowerBound?: string,
+  limit = 100
+): Promise<T> => {
+  return await eosApi.getTableRows({
+    code: sdkConfig.edenSmartProxyContract,
+    scope: sdkConfig.edenSmartProxyContract,
+    table: 'stats',
+    json: true,
+    lower_bound: lowerBound,
+    limit
+  })
 }
