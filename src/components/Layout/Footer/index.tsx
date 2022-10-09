@@ -20,17 +20,11 @@ const FooterComp: React.FC = () => {
       <Footer
         socialMediaItems={constantConfig?.footer?.socialMediaItems}
         buttomContent={
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <div style={{ paddingRight: '4px' }}>
+          <div className={classes.footerContainer}>
+            <div className={classes.paddinR}>
               <Image src={edeniaLogo} />
             </div>
-            <Typography variant='subtitle1' color={theme.palette.grey[600]}>
+            <Typography variant='subtitle2' color={theme.palette.grey[600]}>
               <Link href='https://edenia.com' color={theme.palette.grey[600]}>
                 Hosted by Edenia{' '}
               </Link>
