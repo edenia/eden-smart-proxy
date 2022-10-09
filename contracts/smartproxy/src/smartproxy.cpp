@@ -40,8 +40,8 @@ namespace edenproxy {
     uint16_t is_election_completed = ranks.size() >= 3 && ranks.back() == 1;
     uint8_t  member_rank = member.election_rank();
     bool     is_hd = member_rank == ranks.size() - 1 && is_election_completed;
-    uint8_t  rank_factor = is_hd ? -1 : 0;
-    uint16_t vote_weight = fib( member_rank + rank_factor + 2 );
+    uint8_t  rank_factor = is_hd ? 1 : 0;
+    uint16_t vote_weight = calculate_vote_weight( member_rank - rank_factor );
 
     on_vote( vote_weight, voter, producers );
   }
@@ -132,8 +132,9 @@ namespace edenproxy {
       } else {
         uint8_t member_rank = member.election_rank();
         bool is_hd = member_rank == ranks.size() - 1 && is_election_completed;
-        uint8_t  rank_factor = is_hd ? -1 : 0;
-        uint16_t vote_weight = fib( member_rank + rank_factor + 2 );
+        uint8_t  rank_factor = is_hd ? 1 : 0;
+        uint16_t vote_weight =
+            calculate_vote_weight( member_rank - rank_factor );
 
         if ( votes_itr->weight != vote_weight ) {
           on_vote( vote_weight, votes_itr->account, votes_itr->producers );
@@ -308,6 +309,10 @@ namespace edenproxy {
     auto blacklisted_itr = _blacklisted.find( bp.value );
 
     return blacklisted_itr != _blacklisted.end();
+  }
+
+  uint16_t smartproxy_contract::calculate_vote_weight( uint16_t rank ) {
+    return rank ? MAX_EDEN_GROUP_SIZE * rank : 1;
   }
 } // namespace edenproxy
 
