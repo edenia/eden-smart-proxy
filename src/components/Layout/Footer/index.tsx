@@ -24,7 +24,7 @@ const FooterComp: React.FC = () => {
             <div className={classes.paddinR}>
               <Image src={edeniaLogo} />
             </div>
-            <Typography variant='subtitle2' color={theme.palette.grey[600]}>
+            <Typography variant='caption' color={theme.palette.grey[600]}>
               <Link href='https://edenia.com' color={theme.palette.grey[600]}>
                 Hosted by Edenia{' '}
               </Link>

@@ -60,14 +60,11 @@ const Styles = makeStyles(theme => ({
     justifyContent: 'space-between'
   },
   footerBox: {
-    padding: theme.spacing(1, 3)
+    padding: theme.spacing(1, 3, 4, 3)
   },
   centerSelectableItems: {
     display: 'flex',
     alignItems: 'center'
-  },
-  labelSelectedItems: {
-    marginLeft: `${theme.spacing(0.5)} !important`
   }
 }))
 

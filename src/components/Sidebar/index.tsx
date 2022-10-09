@@ -1,9 +1,10 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Drawer, Typography, Link } from '@mui/material'
 import { PreviewProfile } from '@edenia/ui-kit'
 
-import telegramIcon from '/public/icons/telegram-grey-icon.png'
+import { atomicAssetsUtil, smartProxyUtil } from 'utils'
+import { useSharedState } from 'context/state.context'
 import logoImage from '/public/logos/eden-proxy-logo.png'
 
 import Styles from './styles'
@@ -15,6 +16,25 @@ const useStyles = Styles
 
 const Sidebar: React.FC<{ onClose: () => null }> = ({ onClose, ...props }) => {
   const classes = useStyles()
+  const [state] = useSharedState()
+  const [userData, setUserData] = useState<any>()
+
+  const getUserData = async () => {
+    const userData = await smartProxyUtil.getEdenMembers(
+      state?.ual?.activeUser?.accountName,
+      1
+    )
+    const userInfo = await atomicAssetsUtil.getTemplate(
+      userData.rows[0][1]?.nft_template_id
+    )
+    setUserData({ ...userInfo, userData: userData.rows[0][1]?.nft_template_id })
+  }
+
+  useEffect(() => {
+    if (!state?.ual?.activeUser?.accountName) return
+
+    getUserData()
+  }, [])
 
   return (
     <Drawer onClose={onClose} {...props}>
@@ -55,29 +75,30 @@ const Sidebar: React.FC<{ onClose: () => null }> = ({ onClose, ...props }) => {
             </Link>
           </div>
         </div>
-        <div className={classes.footerBox}>
-          <PreviewProfile
-            name='Teto'
-            selectableItems={
-              <div className={classes.centerSelectableItems}>
-                <Image src={telegramIcon} alt='Telegram icon' />
-                <Typography
-                  variant='subtitle1'
-                  className={classes.labelSelectedItems}
-                >
-                  <Link
-                    // href={`https://t.me/${delegate?.info?.social?.telegram}`}
-                    rel='noreferrer'
-                    underline='none'
-                    target='_blank'
-                  >
-                    @teto
-                  </Link>
-                </Typography>
-              </div>
-            }
-          />
-        </div>
+        {state?.ual?.activeUser && (
+          <div className={classes.footerBox}>
+            <PreviewProfile
+              name={userData?.name}
+              nameSize='12px'
+              nameFontWeight='600'
+              image={`https://ipfs.io/ipfs/${userData?.image}`}
+              selectableItems={
+                <div className={classes.centerSelectableItems}>
+                  <Typography variant='caption'>
+                    <Link
+                      href={`https://t.me/${userData?.social?.telegram}`}
+                      rel='noreferrer'
+                      underline='none'
+                      target='_blank'
+                    >
+                      @{userData?.social?.telegram}
+                    </Link>
+                  </Typography>
+                </div>
+              }
+            />
+          </div>
+        )}
       </div>
     </Drawer>
   )
