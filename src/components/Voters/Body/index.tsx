@@ -37,13 +37,11 @@ const Body: React.FC = () => {
         <DelegateItem
           key={delegate[1].name}
           text='Not Voting'
-          // link={delegate.link}
           name={delegate[1].name}
           image={`https://ipfs.io/ipfs/${delegate?.info?.image}`}
           target='_blank'
           headItem={<Image src={telegramIcon} />}
           linkIcon='/icons/ref-icon.png'
-          // avatarIcon={delegate.avatarIcon}
           positionText={labelsRanks?.electionRank?.[delegate[1]?.election_rank]}
           selectableItems={
             <div className={classes.centerSelectableItems}>
