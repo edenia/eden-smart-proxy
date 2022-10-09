@@ -23,7 +23,7 @@ const socialMediaItems = [
 
 const footerItems = [
   {
-    title: 'Eden',
+    title: 'EDEN',
     links: [
       {
         underline: 'none',
