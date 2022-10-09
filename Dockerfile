@@ -6,16 +6,22 @@ RUN yarn install --frozen-lockfile
 
 FROM node:alpine AS builder
 
-ARG next_public_app_ual_api_protocol
-ARG next_public_app_ual_api_host
-ARG next_public_app_ual_api_port
+ARG next_public_ual_app_name
+ARG next_public_ual_api_protocol
+ARG next_public_ual_api_host
+ARG next_public_ual_api_port
+ARG next_public_ual_chain_id
+ARG next_public_aa_api_host
 ARG next_public_genesiseden_contract
 ARG next_public_edensmartproxy_contract
 ARG next_public_myvoteeosdao_contract
 
-ENV NEXT_PUBLIC_APP_UAL_API_PROTOCOL $next_public_app_ual_api_protocol
-ENV NEXT_PUBLIC_APP_UAL_API_HOST $next_public_app_ual_api_host
-ENV NEXT_PUBLIC_APP_UAL_API_PORT $next_public_app_ual_api_port
+ENV NEXT_PUBLIC_UAL_APP_NAME $next_public_ual_app_name
+ENV NEXT_PUBLIC_UAL_API_PROTOCOL $next_public_ual_api_protocol
+ENV NEXT_PUBLIC_UAL_API_HOST $next_public_ual_api_host
+ENV NEXT_PUBLIC_UAL_API_PORT $next_public_ual_api_port
+ENV NEXT_PUBLIC_UAL_CHAIN_ID $next_public_ual_chain_id
+ENV NEXT_PUBLIC_AA_API_HOST $next_public_aa_api_host
 ENV NEXT_PUBLIC_GENESISEDEN_CONTRACT $next_public_genesiseden_contract
 ENV NEXT_PUBLIC_EDENSMARTPROXY_CONTRACT $next_public_edensmartproxy_contract
 ENV NEXT_PUBLIC_MYVOTEEOSDAO_CONTRACT $next_public_myvoteeosdao_contract
