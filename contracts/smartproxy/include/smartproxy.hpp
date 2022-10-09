@@ -2,20 +2,6 @@
 #include <eosio/eosio.hpp>
 
 namespace edenproxy {
-  uint16_t fib( uint8_t n ) {
-    uint16_t j = 1, k = 1;
-    uint16_t temp = 0;
-
-    for ( uint8_t i = 2; i < n; i++ ) {
-      temp = j + k;
-
-      j = k;
-      k = temp;
-    }
-
-    return k;
-  }
-
   struct votes {
     eosio::name                account;
     std::vector< eosio::name > producers;
@@ -62,16 +48,18 @@ namespace edenproxy {
     void unbanbp( eosio::name bp );
     void clearall();
 
-    void on_vote( uint16_t                          member_rank,
-                  eosio::name                       voter,
-                  const std::vector< eosio::name > &producers );
-    void on_remove_vote( std::vector< eosio::name > producers,
-                         uint16_t                   weight );
-    bool is_blacklisted( eosio::name bp );
+    void     on_vote( uint16_t                          member_rank,
+                      eosio::name                       voter,
+                      const std::vector< eosio::name > &producers );
+    void     on_remove_vote( std::vector< eosio::name > producers,
+                             uint16_t                   weight );
+    bool     is_blacklisted( eosio::name bp );
+    uint16_t calculate_vote_weight( uint16_t rank );
 
   private:
     const eosio::name DAO_ACCOUNT = eosio::name( "myvoteeosdao" );
     const eosio::name EDEN_ACCOUNT = eosio::name( "genesis.eden" );
+    const uint16_t    MAX_EDEN_GROUP_SIZE = 6;
   };
 
   EOSIO_ACTIONS( smartproxy_contract,

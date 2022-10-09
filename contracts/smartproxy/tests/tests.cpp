@@ -26,7 +26,7 @@ TEST_CASE( "Success vote" ) {
       "alice"_n,
       std::vector{ "bp1"_n, "bp2"_n, "bp3"_n } );
 
-  std::map< eosio::name, uint16_t > expected{ { "alice"_n, 2 } };
+  std::map< eosio::name, uint16_t > expected{ { "alice"_n, 6 } };
 
   CHECK( t.get_votes() == expected );
 }
@@ -90,15 +90,15 @@ TEST_CASE( "Remove vote" ) {
   t.bob.act< edenproxy::actions::vote >( "bob"_n,
                                          std::vector{ "bp2"_n, "bp3"_n } );
 
-  std::map< eosio::name, uint16_t > expected{ { "alice"_n, 2 },
-                                              { "bob"_n, 5 } };
+  std::map< eosio::name, uint16_t > expected{ { "alice"_n, 6 },
+                                              { "bob"_n, 18 } };
 
   CHECK( t.get_votes() == expected );
 
   t.alice.act< edenproxy::actions::rmvote >( "alice"_n );
 
-  std::map< eosio::name, uint16_t > expected_stats{ { "bp2"_n, 5 },
-                                                    { "bp3"_n, 5 } };
+  std::map< eosio::name, uint16_t > expected_stats{ { "bp2"_n, 18 },
+                                                    { "bp3"_n, 18 } };
 
   CHECK( t.get_stats() == expected_stats );
 }
@@ -158,9 +158,9 @@ TEST_CASE( "Refresh votes weight" ) {
       "pip"_n,
       std::vector{ "bp1"_n, "bp2"_n, "bp3"_n } );
 
-  std::map< eosio::name, uint16_t > expected_first_stats{ { "bp1"_n, 10 },
-                                                          { "bp2"_n, 10 },
-                                                          { "bp3"_n, 7 } };
+  std::map< eosio::name, uint16_t > expected_first_stats{ { "bp1"_n, 36 },
+                                                          { "bp2"_n, 36 },
+                                                          { "bp3"_n, 24 } };
 
   CHECK( t.get_stats() == expected_first_stats );
 
@@ -176,19 +176,19 @@ TEST_CASE( "Refresh votes weight" ) {
   t.smartproxy.act< edenproxy::actions::refreshvotes >( 10, false );
 
   std::map< eosio::name, uint16_t > expected_after_inactivation{
-      { "bp1"_n, 8 },
-      { "bp2"_n, 8 },
-      { "bp3"_n, 5 } };
+      { "bp1"_n, 30 },
+      { "bp2"_n, 30 },
+      { "bp3"_n, 18 } };
 
   CHECK( t.get_stats() == expected_after_inactivation );
 
-  t.bob.act< eden::actions::setmembrank >( "bob"_n, 1, "hc"_n );
   t.chain.start_block();
+  t.bob.act< eden::actions::setmembrank >( "bob"_n, 1, "hc"_n );
   t.smartproxy.act< edenproxy::actions::refreshvotes >( 10, true );
 
-  std::map< eosio::name, uint16_t > expected_after_change{ { "bp1"_n, 7 },
-                                                           { "bp2"_n, 7 },
-                                                           { "bp3"_n, 5 } };
+  std::map< eosio::name, uint16_t > expected_after_change{ { "bp1"_n, 24 },
+                                                           { "bp2"_n, 24 },
+                                                           { "bp3"_n, 18 } };
 
   CHECK( t.get_stats() == expected_after_change );
 }

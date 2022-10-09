@@ -142,3 +142,17 @@ export const getBlacklistedBps = async <T>(): Promise<any> => {
 
   return rows
 }
+
+export const getStats = async <T = any>(
+  lowerBound?: string,
+  limit = 100
+): Promise<T> => {
+  return await eosApi.getTableRows({
+    code: sdkConfig.edenSmartProxyContract,
+    scope: sdkConfig.edenSmartProxyContract,
+    table: 'stats',
+    json: true,
+    lower_bound: lowerBound,
+    limit
+  })
+}
