@@ -1,7 +1,7 @@
 import { ExplorerApi } from 'atomicassets'
 import { sdkConfig } from 'config'
 
-const api = new ExplorerApi('https://jungle-aa.edenia.cloud', 'atomicassets', {
+const api = new ExplorerApi(sdkConfig.atomicassetsEndpoint, 'atomicassets', {
   fetch: require('node-fetch')
 })
 

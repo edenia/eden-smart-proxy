@@ -12,9 +12,10 @@ clean-install:
 	@yarn
 
 run: ##@local Run the project locally (without docker)
-run: node_modules
-	@echo "DOCKER WEBAPP RUN"
-	@$(SHELL_EXPORT) yarn run dev
+run:
+	@echo "WEBAPP RUN"
+	@$(SHELL_EXPORT) yarn && yarn dev | cat
+	@echo "done webapp"
 
 build-docker: ##@devops Build the docker image
 build-docker: ./Dockerfile
@@ -24,9 +25,12 @@ build-docker: ./Dockerfile
 	@docker build \
 		-t $(DOCKER_REGISTRY)/$(IMAGE_NAME):$(VERSION) --target runner \
 		-t $(DOCKER_REGISTRY)/$(IMAGE_NAME):$(LATEST_TAG) --target runner \
-		--build-arg next_public_app_ual_api_protocol="$(NEXT_PUBLIC_APP_UAL_API_PROTOCOL)" \
-		--build-arg next_public_app_ual_api_host="$(NEXT_PUBLIC_APP_UAL_API_HOST)" \
-		--build-arg next_public_app_ual_api_port="$(NEXT_PUBLIC_APP_UAL_API_PORT)" \
+		--build-arg next_public_ual_app_name="$(NEXT_PUBLIC_UAL_APP_NAME)" \
+		--build-arg next_public_ual_api_protocol="$(NEXT_PUBLIC_UAL_API_PROTOCOL)" \
+		--build-arg next_public_ual_api_host="$(NEXT_PUBLIC_UAL_API_HOST)" \
+		--build-arg next_public_ual_api_port="$(NEXT_PUBLIC_UAL_API_PORT)" \
+		--build-arg next_public_ual_chain_id="$(NEXT_PUBLIC_UAL_CHAIN_ID)" \
+		--build-arg next_public_aa_api_host="$(NEXT_PUBLIC_AA_API_HOST)" \
 		--build-arg next_public_genesiseden_contract="$(NEXT_PUBLIC_GENESISEDEN_CONTRACT)" \
 		--build-arg next_public_edensmartproxy_contract="$(NEXT_PUBLIC_EDENSMARTPROXY_CONTRACT)" \
 		--build-arg next_public_myvoteeosdao_contract="$(NEXT_PUBLIC_MYVOTEEOSDAO_CONTRACT)" \

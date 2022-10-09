@@ -4,6 +4,9 @@ export const endpoint = `${process.env.NEXT_PUBLIC_UAL_API_PROTOCOL}://${
   process.env.NEXT_PUBLIC_UAL_API_PORT
 }`
 
+export const atomicassetsEndpoint =
+  process.env.NEXT_PUBLIC_AA_API_HOST || 'https://jungle-aa.edenia.cloud'
+
 export const eosioContract = 'eosio'
 
 export const genesisEdenContract =
