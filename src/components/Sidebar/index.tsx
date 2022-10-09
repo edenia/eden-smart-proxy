@@ -24,21 +24,29 @@ const Sidebar: React.FC<{ onClose: () => null }> = ({ onClose, ...props }) => {
             <Image src={logoImage} />
           </div>
           <div className={classes.scrollbar}>
-            <Link href={'/'} underline={'none'} className={classes.navLink}>
+            <Link
+              href={'/voters'}
+              underline={'none'}
+              className={classes.navLink}
+            >
               <VoterSvg />
               <Typography variant='subtitle1' className={classes.navLabel}>
                 Voters
               </Typography>
               <p />
             </Link>
-            <Link href={'/'} underline={'none'} className={classes.navLink}>
+            <Link href={'/vote'} underline={'none'} className={classes.navLink}>
               <VoteSvg />
               <Typography variant='subtitle1' className={classes.navLabel}>
                 Vote
               </Typography>
               <p />
             </Link>
-            <Link href={'/'} underline={'none'} className={classes.navLink}>
+            <Link
+              href={'/about'}
+              underline={'none'}
+              className={classes.navLink}
+            >
               <AboutSvg />
               <Typography variant='subtitle1' className={classes.navLabel}>
                 About
