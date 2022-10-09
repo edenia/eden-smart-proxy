@@ -1,4 +1,4 @@
-import { DelegateItem } from '@edenia/ui-kit'
+import { DelegateItem, Button } from '@edenia/ui-kit'
 import { Link, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
@@ -11,24 +11,27 @@ import useStyles from './styles'
 
 const Body: React.FC = () => {
   const classes = useStyles()
-  const [edenMembers, setEdenMembers] = useState<any>()
+  const [edenMembers, setEdenMembers] = useState<any>([])
 
-  const loadMembers = async () => {
-    const members = await smartProxyUtil.getEdenMembers()
+  const loadMembers = async nextKey => {
+    const members = await smartProxyUtil.getEdenMembers(
+      nextKey === '' ? undefined : nextKey,
+      5
+    )
     if (members) {
       const infoMembers = await atomicAssetsUtil.getTemplates()
-      const test3 = members?.rows?.map((member): any => {
+      const membersCompleteData = members?.rows?.map((member): any => {
         const info = infoMembers.find(
           (template): any => member[1]?.account === template?.account
         )
-        return { ...member, info }
+        return { ...member, info, next_key: members.next_key }
       })
-      setEdenMembers(test3)
+      setEdenMembers([...edenMembers, ...membersCompleteData])
     }
   }
-  console.log({ edenMembers })
+
   useEffect(() => {
-    loadMembers()
+    loadMembers(undefined)
   }, [])
 
   return (
@@ -63,6 +66,17 @@ const Body: React.FC = () => {
           }
         />
       ))}
+      {edenMembers[edenMembers?.length - 1]?.next_key !== '' && (
+        <div className={classes.loadMoreContainer}>
+          <Button
+            label='Load More'
+            variant='secondary'
+            onClick={() =>
+              loadMembers(edenMembers[edenMembers.length - 1].next_key)
+            }
+          />
+        </div>
+      )}
     </div>
   )
 }

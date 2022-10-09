@@ -11,6 +11,11 @@ const Styles = makeStyles(theme => ({
   },
   labelSelectedItems: {
     marginLeft: `${theme.spacing(0.5)} !important`
+  },
+  loadMoreContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    paddingTop: theme.spacing(4)
   }
 }))
 

@@ -117,16 +117,18 @@ export const getEdenMembers = async <T>(
   })) as TableResponse<T>
 }
 
-export const getWhitelistedBps = async <T>(): Promise<any> => {
-  const { rows } = await eosApi.getTableRows({
+export const getWhitelistedBps = async <T>(
+  lowerBound?: string,
+  limit = 100
+): Promise<any> => {
+  return (await eosApi.getTableRows({
     code: sdkConfig.myVoteEOSDaoContract,
     scope: sdkConfig.myVoteEOSDaoContract,
+    lower_bound: lowerBound,
     table: 'producer',
     json: true,
-    limit: 100
-  })
-
-  return rows
+    limit
+  })) as TableResponse<T>
 }
 
 export const getBlacklistedBps = async <T>(): Promise<any> => {

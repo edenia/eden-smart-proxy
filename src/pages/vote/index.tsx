@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react'
 import { useTranslation } from 'next-i18next'
 import { AlertColor, Typography } from '@mui/material'
 import { BaseSnackbar } from 'components'
-import { Fab } from '@edenia/ui-kit'
+import { Fab, Button } from '@edenia/ui-kit'
 import { NextSeo } from 'next-seo'
 import Image from 'next/image'
 
@@ -26,7 +26,7 @@ const Vote: NextPage = () => {
   const classes = useStyles()
   const [selectedBps, setSelectedBps] = useState([])
   const [state] = useSharedState()
-  const [bps, setBps] = useState<any>()
+  const [bps, setBps] = useState<any>([])
   const [message, setMessage] = useState<MessageObject>({
     message: '',
     severity: 'success',
@@ -51,7 +51,7 @@ const Vote: NextPage = () => {
         visible: true
       })
       setSelectedBps([])
-      loadBps()
+      loadBps(undefined)
     } catch (error) {
       setMessage({
         severity: 'error',
@@ -61,8 +61,8 @@ const Vote: NextPage = () => {
     }
   }
 
-  const loadBps = async () => {
-    const allBps = await smartProxyUtil.getWhitelistedBps()
+  const loadBps = async nextKey => {
+    const allBps = await smartProxyUtil.getWhitelistedBps(nextKey, 2)
 
     if (allBps) {
       const invalidBps = (await smartProxyUtil.getBlacklistedBps()).reduce(
@@ -72,14 +72,17 @@ const Vote: NextPage = () => {
         []
       )
       const votes = await smartProxyUtil.getVotes(state?.ual?.accountName, 1)
-      const validBps = allBps?.reduce((previous, current): any => {
+      const validBps = allBps?.rows?.reduce((previous, current): any => {
         if (invalidBps.includes(current?.producer)) return previous
 
         const hasVoted = votes?.rows[0]?.producers?.includes(current?.producer)
-        return [...previous, { ...current, voted: hasVoted }]
+        return [
+          ...previous,
+          { ...current, voted: hasVoted, next_key: allBps.next_key }
+        ]
       }, [])
 
-      setBps(validBps)
+      setBps([...bps, ...validBps])
     }
   }
 
@@ -99,10 +102,19 @@ const Vote: NextPage = () => {
       <VoteHead />
       <VoteBody
         bps={bps}
-        loadBps={loadBps}
+        loadBps={() => loadBps(undefined)}
         selectedBps={selectedBps}
         setSelectedBps={setSelectedBps}
       />
+      {bps[bps?.length - 1]?.next_key !== '' && (
+        <div className={classes.loadMoreContainer}>
+          <Button
+            label='Load More'
+            variant='secondary'
+            onClick={() => loadBps(bps[bps.length - 1].next_key)}
+          />
+        </div>
+      )}
       <BaseSnackbar
         snackbarProps={{
           open: message.visible,
