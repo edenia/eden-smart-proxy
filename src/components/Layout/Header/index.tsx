@@ -1,14 +1,19 @@
-import React from 'react'
 import Image from 'next/image'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
+import { useState, useCallback } from 'react'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
+import { BaseSnackbar } from 'components'
 import Link from '@mui/material/Link'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useRouter } from 'next/router'
+import { Button } from '@edenia/ui-kit'
+import { AlertColor } from '@mui/material'
 import clsx from 'clsx'
 
+import { smartProxyUtil } from 'utils'
+import { useSharedState } from 'context/state.context'
 import HeaderLogo from '/public/logos/header-logo.png'
 import LanguageSelector from 'components/LanguageSelector'
 
@@ -21,10 +26,56 @@ type HeaderProps = {
   onDrawerToggle?(): void
 }
 
+type MessageObject = {
+  message: string
+  severity: AlertColor
+  visible: boolean
+}
+
 const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
+  const [state] = useSharedState()
   const classes = useStyles()
   const router = useRouter()
   const { asPath } = router
+  const [message, setMessage] = useState<MessageObject>({
+    message: '',
+    severity: 'success',
+    visible: false
+  })
+
+  const handleDelegateVote = async () => {
+    try {
+      const delegateVoteTrx = smartProxyUtil.buildDelegateTransaction(
+        state?.ual?.activeUser?.accountName
+      )
+      await state?.ual?.activeUser?.signTransaction(delegateVoteTrx, {
+        blocksBehind: 3,
+        expireSeconds: 1200,
+        broadcast: true
+      })
+      setMessage({
+        severity: 'success',
+        message: 'Successful vote',
+        visible: true
+      })
+    } catch (error) {
+      setMessage({
+        severity: 'error',
+        message: 'Something went wrong, try again',
+        visible: true
+      })
+    }
+  }
+
+  const onCloseSnackBar: any = useCallback(
+    (event?: React.SyntheticEvent, reason?: string) => {
+      if (reason === 'clickaway') {
+        return
+      }
+      setMessage({ ...message, visible: false })
+    },
+    [message]
+  )
 
   return (
     <AppBar className={classes.appBar}>
@@ -56,7 +107,15 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
               </div>
             </div>
             <div className={classes.languageBox}>
-              <LanguageSelector />
+              <div className={classes.paddingLenguajeSelector}>
+                <LanguageSelector />
+              </div>
+              <Button
+                icon='/icons/like-white-icon.png'
+                label='Delegate Vote'
+                variant='primary'
+                onClick={() => handleDelegateVote()}
+              />
             </div>
           </div>
           <div
@@ -85,6 +144,18 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
           </div>
         </div>
       </Toolbar>
+      <div style={{ zIndex: 2 }}>
+        <BaseSnackbar
+          snackbarProps={{
+            open: message.visible,
+            onClose: onCloseSnackBar
+          }}
+          alertProps={{
+            severity: message.severity
+          }}
+          message={message.message}
+        />
+      </div>
     </AppBar>
   )
 }

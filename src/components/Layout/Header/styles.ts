@@ -178,6 +178,9 @@ const Styles = makeStyles(theme => ({
     letterSpacing: '-0.0075em',
     color: theme.palette.common.black,
     textTransform: 'capitalize'
+  },
+  paddingLenguajeSelector: {
+    paddingRight: theme.spacing(4)
   }
 }))
 

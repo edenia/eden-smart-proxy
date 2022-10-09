@@ -4,6 +4,14 @@ const Styles = makeStyles(theme => ({
   root: {
     width: '100%',
     backgroundColor: theme.palette.grey[600]
+  },
+  footerContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  paddinR: {
+    paddingRight: theme.spacing(0.5)
   }
 }))
 
