@@ -1,10 +1,10 @@
 import React, { memo, useEffect, useState } from 'react'
 import Image from 'next/image'
-import { Drawer, Typography, Link } from '@mui/material'
+import { Drawer, DrawerProps, Typography, Link } from '@mui/material'
 import { PreviewProfile } from '@edenia/ui-kit'
 
-import { atomicAssetsUtil, smartProxyUtil } from 'utils'
 import { useSharedState } from 'context/state.context'
+import { atomicAssetsUtil, smartProxyUtil } from 'utils'
 import logoImage from '/public/logos/eden-proxy-logo.png'
 
 import Styles from './styles'
@@ -14,7 +14,12 @@ import AboutSvg from './About.svg'
 
 const useStyles = Styles
 
-const Sidebar: React.FC<{ onClose: () => null }> = ({ onClose, ...props }) => {
+type SidebarType = {
+  onClose?(): void
+  props: DrawerProps
+}
+
+const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
   const classes = useStyles()
   const [state] = useSharedState()
   const [userData, setUserData] = useState<any>()
@@ -34,7 +39,7 @@ const Sidebar: React.FC<{ onClose: () => null }> = ({ onClose, ...props }) => {
     if (!state?.ual?.activeUser?.accountName) return
 
     getUserData()
-  }, [])
+  }, [state?.ual?.activeUser?.accountName])
 
   return (
     <Drawer onClose={onClose} {...props}>
