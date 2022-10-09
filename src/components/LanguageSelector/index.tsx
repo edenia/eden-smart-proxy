@@ -13,7 +13,9 @@ const LanguageSelector: React.FC = () => {
       <div className={classes.paddingIcon}>
         <Image src={lenguajeIcon} />
       </div>
-      <Typography variant='body1'>Language</Typography>
+      <Typography variant='body1' className='languageLabel'>
+        Language
+      </Typography>
     </div>
   )
 }
