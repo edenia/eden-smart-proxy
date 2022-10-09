@@ -7,7 +7,10 @@ const Styles = makeStyles(theme => ({
   },
   flexBox: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    '& .languageLabel': {
+      color: theme.palette.common.black
+    }
   }
 }))
 

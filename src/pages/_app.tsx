@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { NextComponentType } from 'next'
 import dynamic from 'next/dynamic'
 import { AppProps, AppContext, AppInitialProps } from 'next/app'

@@ -1,67 +1,81 @@
-import React from 'react'
 import Image from 'next/image'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
+import { useState, useCallback } from 'react'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
-import Box from '@mui/material/Box'
+import { BaseSnackbar } from 'components'
 import Link from '@mui/material/Link'
 import MenuIcon from '@mui/icons-material/Menu'
-import LanguageIcon from '@mui/icons-material/Language'
 import { useRouter } from 'next/router'
+import { Button } from '@edenia/ui-kit'
+import { AlertColor } from '@mui/material'
 import clsx from 'clsx'
 
+import { smartProxyUtil } from 'utils'
+import { useSharedState } from 'context/state.context'
 import HeaderLogo from '/public/logos/header-logo.png'
+import LanguageSelector from 'components/LanguageSelector'
 
 import useStyles from './styles'
 import { default as routes } from './routes.json'
 
 const { mainRoutes } = routes
 
-type LangItemProps = {
-  label: string
-  handleClick?(): void
-  useDivider?: boolean
-  isSelected?: boolean
-}
-
 type HeaderProps = {
   onDrawerToggle?(): void
 }
 
-const LangItem: React.FC<LangItemProps> = ({
-  label,
-  handleClick,
-  useDivider,
-  isSelected
-}) => {
-  const classes = useStyles()
-
-  return (
-    <Box
-      className={clsx(classes.langItemBox, { [classes.divider]: useDivider })}
-      onClick={handleClick}
-    >
-      <Typography
-        variant='body1'
-        className={clsx(classes.languageColor, {
-          [classes.selected]: isSelected
-        })}
-      >
-        {label}
-      </Typography>
-    </Box>
-  )
+type MessageObject = {
+  message: string
+  severity: AlertColor
+  visible: boolean
 }
 
 const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
+  const [state] = useSharedState()
   const classes = useStyles()
   const router = useRouter()
   const { asPath } = router
+  const [message, setMessage] = useState<MessageObject>({
+    message: '',
+    severity: 'success',
+    visible: false
+  })
 
-  const translateSite = () => {
-    window.open(`${asPath}`, '_self')
+  const handleDelegateVote = async () => {
+    try {
+      const delegateVoteTrx = smartProxyUtil.buildDelegateTransaction(
+        state?.ual?.activeUser?.accountName
+      )
+      await state?.ual?.activeUser?.signTransaction(delegateVoteTrx, {
+        blocksBehind: 3,
+        expireSeconds: 1200,
+        broadcast: true
+      })
+      setMessage({
+        severity: 'success',
+        message: 'Successful vote',
+        visible: true
+      })
+    } catch (error) {
+      setMessage({
+        severity: 'error',
+        message: 'Something went wrong, try again',
+        visible: true
+      })
+    }
   }
+
+  const onCloseSnackBar: any = useCallback(
+    (event?: React.SyntheticEvent, reason?: string) => {
+      if (reason === 'clickaway') {
+        return
+      }
+      setMessage({ ...message, visible: false })
+    },
+    [message]
+  )
 
   return (
     <AppBar className={classes.appBar}>
@@ -71,16 +85,9 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
             className={clsx(classes.drawerContainer, classes.drawerShowDesktop)}
           >
             <div className={classes.logoAndMenu}>
-              <Link className={classes.logo} href='/'>
-                <Image
-                  src={HeaderLogo}
-                  alt='headerLogo'
-                  width={160}
-                  height={35}
-                  placeholder='blur'
-                  priority
-                />
-              </Link>
+              <span className={classes.routeLabel}>
+                {asPath.replace('/', '')}
+              </span>
               <div className={classes.topBarMenu}>
                 {mainRoutes.map(route => {
                   return (
@@ -100,8 +107,15 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
               </div>
             </div>
             <div className={classes.languageBox}>
-              <LangItem label='EN' isSelected />
-              <LangItem label='ES' handleClick={translateSite} useDivider />
+              <div className={classes.paddingLenguajeSelector}>
+                <LanguageSelector />
+              </div>
+              <Button
+                icon='/icons/like-white-icon.png'
+                label='Delegate Vote'
+                variant='primary'
+                onClick={() => handleDelegateVote()}
+              />
             </div>
           </div>
           <div
@@ -124,14 +138,24 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
             </div>
             <div className={classes.leftBox}>
               <div className={classes.languageBox}>
-                <LanguageIcon className={classes.languageColor} />
-                <LangItem label='EN' isSelected />
-                <LangItem label='ES' handleClick={translateSite} useDivider />
+                <LanguageSelector />
               </div>
             </div>
           </div>
         </div>
       </Toolbar>
+      <div style={{ zIndex: 2 }}>
+        <BaseSnackbar
+          snackbarProps={{
+            open: message.visible,
+            onClose: onCloseSnackBar
+          }}
+          alertProps={{
+            severity: message.severity
+          }}
+          message={message.message}
+        />
+      </div>
     </AppBar>
   )
 }

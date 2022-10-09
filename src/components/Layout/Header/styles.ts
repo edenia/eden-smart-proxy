@@ -2,8 +2,10 @@ import { makeStyles } from '@mui/styles'
 
 const Styles = makeStyles(theme => ({
   appBar: {
-    boxShadow: 'none',
+    boxShadow: 'none !important',
     color: 'transparent',
+    backgroundColor: `${theme.palette.common.white} !important`,
+    borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
     paddingLeft: 0,
     [theme.breakpoints.up('md')]: {
       paddingLeft: 260
@@ -17,7 +19,7 @@ const Styles = makeStyles(theme => ({
     width: '100%'
   },
   topBarStyle: {
-    backgroundColor: theme.palette.grey[600]
+    backgroundColor: theme.palette.common.white
   },
   topBarMenu: {
     display: 'flex',
@@ -168,6 +170,17 @@ const Styles = makeStyles(theme => ({
   logoAndMenu: {
     display: 'flex',
     justifyContent: 'space-between'
+  },
+  routeLabel: {
+    fontWeight: '600',
+    fontSize: 30,
+    lineHeight: '36px',
+    letterSpacing: '-0.0075em',
+    color: theme.palette.common.black,
+    textTransform: 'capitalize'
+  },
+  paddingLenguajeSelector: {
+    paddingRight: theme.spacing(4)
   }
 }))
 

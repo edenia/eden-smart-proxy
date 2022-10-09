@@ -18,21 +18,21 @@ const Styles = makeStyles(theme => ({
     }
   },
   mainContent: {
-    flex: 1,
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
     maxWidth: '100%',
-    height: '100%',
-    overflow: 'scroll',
+    height: 'auto',
+    overflow: 'auto',
+    justifyContent: 'space-between',
     '& .pageContainer': {
-      height: 'calc(100% - 224px)',
-      minHeight: 'calc(100% - 224px)'
+      height: 'auto'
     }
   },
   childContent: {
     flex: 1,
-    height: '100%',
-    overflow: 'scroll'
+    height: 'auto',
+    overflow: 'hidden'
   },
   paddingPage: {
     paddingTop: theme.spacing(6)

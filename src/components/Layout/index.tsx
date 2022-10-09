@@ -15,14 +15,13 @@ const drawerWidth = 260
 
 const Dashboard: React.FC<{
   children: React.ReactNode
-  routes?: Array<any>
-}> = ({ children, routes }) => {
+}> = ({ children }) => {
   const router = useRouter()
   const classes = useStyles()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [showLayout, setShowLayout] = useState(true)
 
-  const handleDrawerToggle = () => {
+  const handleDrawerToggle = (): any => {
     setMobileOpen(!mobileOpen)
   }
 
@@ -36,19 +35,18 @@ const Dashboard: React.FC<{
         <div className={classes.drawer}>
           <Hidden mdUp implementation='js'>
             <Sidebar
-              PaperProps={{ style: { width: drawerWidth } }}
-              variant='temporary'
-              open={mobileOpen}
-              onClose={handleDrawerToggle}
-              routes={routes}
+              props={{
+                style: { width: drawerWidth },
+                variant: 'temporary',
+                open: mobileOpen
+              }}
+              onClose={() => handleDrawerToggle()}
             />
           </Hidden>
           <Hidden mdDown implementation='css'>
             <Sidebar
-              PaperProps={{ style: { width: drawerWidth } }}
-              variant='permanent'
-              routes={routes}
-              onClose={handleDrawerToggle}
+              props={{ style: { width: drawerWidth }, variant: 'permanent' }}
+              onClose={() => handleDrawerToggle()}
             />
           </Hidden>
         </div>
