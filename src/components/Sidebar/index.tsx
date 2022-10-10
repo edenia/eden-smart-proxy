@@ -1,7 +1,9 @@
 import React, { memo, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Drawer, DrawerProps, Typography, Link } from '@mui/material'
+import { useRouter } from 'next/router'
 import { PreviewProfile } from '@edenia/ui-kit'
+import clsx from 'clsx'
 
 import { useSharedState } from 'context/state.context'
 import { atomicAssetsUtil, smartProxyUtil } from 'utils'
@@ -20,6 +22,7 @@ type SidebarType = {
 }
 
 const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
+  const router = useRouter()
   const classes = useStyles()
   const [state] = useSharedState()
   const [userData, setUserData] = useState<any>()
@@ -52,7 +55,9 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
             <Link
               href={'/voters'}
               underline={'none'}
-              className={classes.navLink}
+              className={clsx(classes.navLink, {
+                [classes.selected]: '/voters' === router.pathname
+              })}
             >
               <VoterSvg />
               <Typography variant='subtitle1' className={classes.navLabel}>
@@ -60,7 +65,13 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
               </Typography>
               <p />
             </Link>
-            <Link href={'/vote'} underline={'none'} className={classes.navLink}>
+            <Link
+              href={'/vote'}
+              underline={'none'}
+              className={clsx(classes.navLink, {
+                [classes.selected]: '/vote' === router.pathname
+              })}
+            >
               <VoteSvg />
               <Typography variant='subtitle1' className={classes.navLabel}>
                 Vote
@@ -70,7 +81,9 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
             <Link
               href={'/about'}
               underline={'none'}
-              className={classes.navLink}
+              className={clsx(classes.navLink, {
+                [classes.selected]: '/about' === router.pathname
+              })}
             >
               <AboutSvg />
               <Typography variant='subtitle1' className={classes.navLabel}>
