@@ -12,6 +12,11 @@ const Styles = makeStyles(theme => ({
   },
   labelPadding: {
     paddingLeft: theme.spacing(2)
+  },
+  loadMoreContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    paddingTop: theme.spacing(4)
   }
 }))
 
