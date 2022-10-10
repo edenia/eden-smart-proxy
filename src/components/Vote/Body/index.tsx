@@ -2,9 +2,7 @@
 import { BlockProducerItem } from '@edenia/ui-kit'
 import { Link, Typography } from '@mui/material'
 import { useEffect } from 'react'
-import Image from 'next/image'
 
-import telegramIcon from '/public/icons/telegram-grey-icon.png'
 import { socialMediaInfo } from 'config/constants'
 
 import useStyles from './styles'
@@ -12,6 +10,7 @@ import useStyles from './styles'
 type voteBodyProps = {
   setSelectedBps(delegate: any): void
   selectedBps: Array<any>
+  state: any
   loadBps(): void
   bps: Array<any>
 }
@@ -20,13 +19,17 @@ const Body: React.FC<voteBodyProps> = ({
   setSelectedBps,
   selectedBps,
   loadBps,
+  state,
   bps
 }) => {
   const classes = useStyles()
 
   useEffect(() => {
+    if (!state?.ual?.accountName) return
+
     loadBps()
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [!state?.ual?.accountName])
 
   const handleSelected = pressBp => {
     const selected = selectedBps.find(bp => bp === pressBp)
@@ -49,9 +52,8 @@ const Body: React.FC<voteBodyProps> = ({
           name={bp.producer}
           // rankValue='N'
           image={bp?.bpJsonData?.org?.branding?.logo_256}
-          proxyScore={bp.stats}
+          proxyScore={String(bp.stats)}
           // eosrateValue='N'
-          headItem={<Image src={telegramIcon} />}
           // positionText='9,200,750 Votes'
           selectableItems={
             <div className={classes.socialItems}>
