@@ -26,6 +26,8 @@ const Styles = makeStyles(theme => ({
     justifyContent: 'center'
   },
   styledInputBase: {
+    marginTop: theme.spacing(1),
+    width: '100%',
     color: 'inherit',
     border: '1px solid rgba(0, 0, 0, 0.6)',
     borderRadius: theme.spacing(0),
