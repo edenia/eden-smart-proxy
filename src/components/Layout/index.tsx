@@ -13,7 +13,7 @@ import { Divider } from '@mui/material'
 const useStyles = Styles
 const drawerWidth = 260
 
-const Dashboard: React.FC<{
+const Layout: React.FC<{
   children: React.ReactNode
 }> = ({ children }) => {
   const router = useRouter()
@@ -67,4 +67,4 @@ const Dashboard: React.FC<{
   )
 }
 
-export default Dashboard
+export default Layout
