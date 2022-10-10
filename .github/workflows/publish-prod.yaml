@@ -20,7 +20,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Build new image and push
         run: |
           make \
@@ -28,7 +28,7 @@ jobs:
             push-image
         env:
           LATEST_TAG: latest
-          NEXT_PUBLIC_UAL_APP_NAME: ${{ secrets.NEXT_PUBLIC_UAL_APP_NAME }}
+          NEXT_PUBLIC_UAL_APP_NAME: 'edensmartprx'
           NEXT_PUBLIC_UAL_API_PROTOCOL: 'https'
           NEXT_PUBLIC_UAL_API_HOST: ${{ secrets.NEXT_PUBLIC_UAL_API_HOST }}
           NEXT_PUBLIC_UAL_API_PORT: '443'
