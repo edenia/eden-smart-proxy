@@ -3,8 +3,7 @@ import { Link, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
-import { labelsRanks } from 'config/constants'
-import { smartProxyUtil, atomicAssetsUtil } from 'utils'
+import { smartProxyUtil, atomicAssetsUtil, genesisEdenUtil } from 'utils'
 import telegramIcon from '/public/icons/telegram-grey-icon.png'
 
 import useStyles from './styles'
@@ -20,11 +19,22 @@ const Body: React.FC = () => {
     )
     if (members) {
       const infoMembers = await atomicAssetsUtil.getTemplates()
+      const electionRankSize = await genesisEdenUtil.getRanks()
       const membersCompleteData = members?.rows?.map((member): any => {
         const info = infoMembers.find(
           (template): any => member[1]?.account === template?.account
         )
-        return { ...member, info, next_key: members.next_key }
+        return {
+          ...member,
+          info: {
+            ...info,
+            rank: genesisEdenUtil.classifyMemberRank(
+              member[1].election_rank,
+              electionRankSize.length
+            )
+          },
+          next_key: members.next_key
+        }
       })
       setEdenMembers([...edenMembers, ...membersCompleteData])
     }
@@ -43,9 +53,10 @@ const Body: React.FC = () => {
           name={delegate[1].name}
           image={`https://ipfs.io/ipfs/${delegate?.info?.image}`}
           target='_blank'
+          avatarIcon={delegate?.info?.rank?.badge}
           headItem={<Image src={telegramIcon} />}
           linkIcon='/icons/ref-icon.png'
-          positionText={labelsRanks?.electionRank?.[delegate[1]?.election_rank]}
+          positionText={`${delegate?.info?.rank?.label} - Rate: n`}
           selectableItems={
             <div className={classes.centerSelectableItems}>
               <Image src={telegramIcon} alt='Telegram icon' />

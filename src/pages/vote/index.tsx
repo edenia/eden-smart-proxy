@@ -72,17 +72,23 @@ const Vote: NextPage = () => {
         []
       )
       const votes = await smartProxyUtil.getVotes(state?.ual?.accountName, 1)
-      const validBps = allBps?.rows?.reduce((previous, current): any => {
-        if (invalidBps.includes(current?.producer)) return previous
+      const validBps = allBps?.rows?.filter(
+        bp => !invalidBps.includes(bp?.producer)
+      )
+      const validBpsAllData = validBps.map(async bp => {
+        const hasVoted = votes?.rows[0]?.producers?.includes(bp?.producer)
+        const { rows = [] } = await smartProxyUtil.getStats(bp?.producer, 1)
 
-        const hasVoted = votes?.rows[0]?.producers?.includes(current?.producer)
-        return [
-          ...previous,
-          { ...current, voted: hasVoted, next_key: allBps.next_key }
-        ]
-      }, [])
+        return {
+          ...bp,
+          voted: hasVoted,
+          next_key: allBps.next_key,
+          stats: (await rows[0]?.weight) || 0
+        }
+      })
 
-      setBps([...bps, ...validBps])
+      const resolvePromise = await Promise?.all(validBpsAllData)
+      setBps([...bps, ...resolvePromise])
     }
   }
 

@@ -57,7 +57,7 @@ const Body: React.FC<voteBodyProps> = ({
           avatarIcon={bp.voted && '/icons/good-icon.png'}
           name={bp.producer}
           rankValue='N'
-          proxyScore='N'
+          proxyScore={bp.stats}
           eosrateValue='N'
           // target={delegate.target}
           headItem={<Image src={telegramIcon} />}
