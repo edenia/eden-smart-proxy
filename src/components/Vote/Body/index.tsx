@@ -52,18 +52,15 @@ const Body: React.FC<voteBodyProps> = ({
           key={bp.producer}
           onClick={() => handleSelected(bp.producer)}
           isSelected={selectedBps.includes(bp.producer)}
-          // text='9,200,750 Votes'
-          // link={delegate.link}
           avatarIcon={bp.voted && '/icons/good-icon.png'}
           name={bp.producer}
           rankValue='N'
           proxyScore={bp.stats}
           eosrateValue='N'
-          // target={delegate.target}
           headItem={<Image src={telegramIcon} />}
           positionText='9,200,750 Votes'
           selectableItems={
-            <div className={classes.flex}>
+            <div className={classes.socialItems}>
               {selectableItems.map((item, index) => (
                 <Typography key={index} variant='subtitle2'>
                   {index !== 0 && '·'}
