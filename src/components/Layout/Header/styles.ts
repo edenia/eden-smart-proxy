@@ -112,7 +112,7 @@ const Styles = makeStyles(theme => ({
     color: theme.palette.common.white
   },
   menuIconColor: {
-    color: theme.palette.common.white
+    color: theme.palette.common.black
   },
   buttonLogin: {
     height: 30,
@@ -162,10 +162,7 @@ const Styles = makeStyles(theme => ({
   },
   logoAppbar: {
     display: 'flex',
-    '& img': {
-      width: '100px !important',
-      height: '35px !important'
-    }
+    alignItems: 'center'
   },
   logoAndMenu: {
     display: 'flex',

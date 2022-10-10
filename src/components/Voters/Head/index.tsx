@@ -9,7 +9,7 @@ const Head: React.FC = () => {
 
   return (
     <div className={classes.container}>
-      <div>
+      <div className='titleWrapper'>
         <Typography variant='body1'>Voting members and delegates.</Typography>
         <Typography variant='body1'>
           Last election on October 8, 2022.

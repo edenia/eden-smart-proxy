@@ -2,8 +2,11 @@ import { makeStyles } from '@mui/styles'
 
 const Styles = makeStyles(theme => ({
   container: {
-    padding: theme.spacing(3),
-    width: '100%'
+    padding: theme.spacing(2, 1),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      padding: theme.spacing(2)
+    }
   },
   centerSelectableItems: {
     display: 'flex',
