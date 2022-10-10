@@ -27,9 +27,6 @@ const Styles = makeStyles(theme => ({
       }
     }
   },
-  linkPadding: {
-    padding: '0 4px'
-  },
   socialItems: {
     paddingTop: '8px',
     display: 'flex',
@@ -37,6 +34,9 @@ const Styles = makeStyles(theme => ({
     [theme.breakpoints.up('sm')]: {
       flexDirection: 'row'
     }
+  },
+  linkPadding: {
+    padding: '0 4px'
   }
 }))
 
