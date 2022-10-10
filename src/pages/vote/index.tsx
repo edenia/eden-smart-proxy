@@ -46,6 +46,7 @@ const Vote: NextPage = () => {
         })
         return
       }
+
       const voteTrx = smartProxyUtil.buildVoteTransaction({
         voter: state?.ual?.accountName,
         producers: selectedBps.sort((a, b) => (a > b ? 1 : a < b ? -1 : 0))
@@ -56,13 +57,17 @@ const Vote: NextPage = () => {
         expireSeconds: 1200,
         broadcast: true
       })
+      setSelectedBps([])
+      setBps([])
+      setLoadingData(true)
       setMessage({
         severity: 'success',
         message: 'Successful vote',
         visible: true
       })
-      setSelectedBps([])
-      loadBps(undefined)
+      setTimeout(async () => {
+        await loadBps(undefined, 4, true)
+      }, 1500)
     } catch (error) {
       setMessage({
         severity: 'error',
@@ -72,9 +77,13 @@ const Vote: NextPage = () => {
     }
   }
 
-  const loadBps = async nextKey => {
+  const loadBps = async (
+    nextKey: string | undefined,
+    limit: number,
+    resetData?: boolean
+  ) => {
     setLoadingData(true)
-    const allBps = await smartProxyUtil.getWhitelistedBps(nextKey, 2)
+    const allBps = await smartProxyUtil.getWhitelistedBps(nextKey, limit)
 
     if (allBps) {
       const invalidBps = (await smartProxyUtil.getBlacklistedBps()).reduce(
@@ -96,6 +105,7 @@ const Vote: NextPage = () => {
       const validBps = allBps?.rows?.filter(
         bp => !invalidBps.includes(bp?.producer)
       )
+
       const validBpsAllData = validBps.map(async bp => {
         const hasVoted = votes?.rows[0]?.producers?.includes(bp?.producer)
         const { rows = [] } = await smartProxyUtil.getStats(bp?.producer, 1)
@@ -114,7 +124,8 @@ const Vote: NextPage = () => {
       })
 
       const resolvePromise = await Promise?.all(validBpsAllData)
-      setBps([...bps, ...resolvePromise])
+
+      resetData ? setBps(resolvePromise) : setBps([...bps, ...resolvePromise])
     }
     setLoadingData(false)
   }
@@ -135,7 +146,8 @@ const Vote: NextPage = () => {
       <VoteHead />
       <VoteBody
         bps={bps}
-        loadBps={() => loadBps(undefined)}
+        state={state}
+        loadBps={() => loadBps(undefined, 4)}
         selectedBps={selectedBps}
         setSelectedBps={setSelectedBps}
       />
@@ -149,7 +161,7 @@ const Vote: NextPage = () => {
           <Button
             label='Load More'
             variant='secondary'
-            onClick={() => loadBps(bps[bps.length - 1].next_key)}
+            onClick={() => loadBps(bps[bps.length - 1].next_key, 4)}
           />
         </div>
       )}
