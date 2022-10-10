@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import { useState, useCallback } from 'react'
@@ -14,7 +13,6 @@ import clsx from 'clsx'
 
 import { smartProxyUtil } from 'utils'
 import { useSharedState } from 'context/state.context'
-import HeaderLogo from '/public/logos/header-logo.png'
 import LanguageSelector from 'components/LanguageSelector'
 
 import useStyles from './styles'
