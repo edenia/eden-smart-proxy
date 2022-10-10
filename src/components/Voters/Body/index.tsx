@@ -53,7 +53,7 @@ const Body: React.FC = () => {
   useEffect(() => {
     loadMembers(undefined)
   }, [])
-  console.log({ edenMembers })
+
   return (
     <div className={classes.container}>
       {edenMembers?.map(delegate => (

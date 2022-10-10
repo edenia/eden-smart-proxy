@@ -51,7 +51,7 @@ export const getTemplates = async (page = 1, limit = 100): Promise<any[]> => {
     page,
     limit
   )
-  console.log({ templates })
+
   return templates.map(({ immutable_data }) => ({
     account: immutable_data.account,
     name: immutable_data.name,
