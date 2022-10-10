@@ -71,7 +71,11 @@ const Vote: NextPage = () => {
         },
         []
       )
-      const votes = await smartProxyUtil.getVotes(state?.ual?.accountName, 1)
+      const votes = await smartProxyUtil.getVotes(
+        state?.ual?.accountName,
+        state?.ual?.accountName,
+        1
+      )
       const validBps = allBps?.rows?.filter(
         bp => !invalidBps.includes(bp?.producer)
       )

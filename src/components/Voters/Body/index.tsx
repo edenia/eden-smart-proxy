@@ -29,7 +29,11 @@ const Body: React.FC = () => {
         const info = infoMembers.find(
           (template): any => member[1]?.account === template?.account
         )
-        const { rows } = await smartProxyUtil.getVotes(member[1]?.account, 1)
+        const { rows } = await smartProxyUtil.getVotes(
+          member[1]?.account,
+          member[1]?.account,
+          1
+        )
 
         return {
           ...member,
