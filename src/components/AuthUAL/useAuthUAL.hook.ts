@@ -16,7 +16,6 @@ const useAuthBottonState = (): any => {
   useEffect(() => {
     if (!state?.ual?.activeUser) return
 
-    console.log('habemus login')
     router.push('/voters')
   }, [state?.ual?.activeUser, router])
 

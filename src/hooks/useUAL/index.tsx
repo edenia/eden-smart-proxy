@@ -165,7 +165,6 @@ const useLightUAL = ({ appName, chains, authenticators }: UALType) => {
         })
         setLoading(false)
       } catch (err) {
-        console.log({ err })
         setLoading(false)
       }
     },
