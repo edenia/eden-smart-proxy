@@ -71,7 +71,7 @@ const Body: React.FC = () => {
           headItem={
             <Image src={delegate.vote ? yesVotingIcon : notVotingIcon} />
           }
-          linkIcon={delegate.vote ? '/icons/ref-icon.png' : undefined}
+          // linkIcon={delegate.vote ? '/icons/ref-icon.png' : undefined}
           positionText={`${delegate?.info?.rank?.label} - Rate: n`}
           selectableItems={
             <div className={classes.centerSelectableItems}>
