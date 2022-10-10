@@ -91,6 +91,7 @@ export const buildVoteTransaction = ({
 
 export const getVotes = async <T>(
   lowerBound?: string,
+  upperBound?: string,
   limit = 30
 ): Promise<any | undefined> => {
   return (await eosApi.getTableRows({
@@ -99,6 +100,7 @@ export const getVotes = async <T>(
     table: 'votes',
     json: true,
     lower_bound: lowerBound,
+    upper_bound: upperBound,
     limit
   })) as TableResponse<T>
 }

@@ -8,6 +8,7 @@ import Header from './Header'
 import FooterComp from './Footer'
 import Container from './Container'
 import Styles from './styles'
+import { Divider } from '@mui/material'
 
 const useStyles = Styles
 const drawerWidth = 260
@@ -18,7 +19,7 @@ const Dashboard: React.FC<{
   const router = useRouter()
   const classes = useStyles()
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [showLayout, setShowLayout] = useState(true)
+  const [showLayout, setShowLayout] = useState<boolean>(true)
 
   const handleDrawerToggle = (): any => {
     setMobileOpen(!mobileOpen)
@@ -59,7 +60,8 @@ const Dashboard: React.FC<{
         <Container>
           <div className={classes.childContent}>{children}</div>
         </Container>
-        <FooterComp />
+        <Divider />
+        <FooterComp showWhite={showLayout} />
       </div>
     </div>
   )

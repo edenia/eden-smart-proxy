@@ -1,4 +1,3 @@
-import React from 'react'
 import { Typography, Box, Link } from '@mui/material'
 import { Footer } from '@edenia/ui-kit'
 import Image from 'next/image'
@@ -11,14 +10,20 @@ import Styles from './styles'
 
 const useStyles = Styles
 
-const FooterComp: React.FC = () => {
+type FooterCompType = {
+  showWhite: boolean
+}
+
+const FooterComp: React.FC<FooterCompType> = ({ showWhite }) => {
   const classes = useStyles()
   const theme = useTheme()
 
   return (
     <Box className={classes.root}>
       <Footer
-        socialMediaItems={constantConfig?.footer?.socialMediaItems}
+        socialMediaItems={
+          !showWhite ? constantConfig?.footer?.socialMediaItems : undefined
+        }
         buttomContent={
           <div className={classes.footerContainer}>
             <div className={classes.paddinR}>
@@ -33,8 +38,8 @@ const FooterComp: React.FC = () => {
           </div>
         }
         itemsFooter={constantConfig?.footer?.footerItems}
-        bgColor='#343434'
-        color='#FFFFFF'
+        bgColor={!showWhite ? '#343434' : '#FFFFFF'}
+        color={!showWhite ? '#FFFFFF' : '#262626'}
       />
     </Box>
   )
