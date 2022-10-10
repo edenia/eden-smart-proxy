@@ -10,7 +10,7 @@ const Head: React.FC = () => {
 
   return (
     <div className={classes.container}>
-      <div>
+      <div className='titleWrapper'>
         <Typography variant='body1'>
           Select and vote to whitelist your most trusted 21 BPs.
         </Typography>
@@ -18,7 +18,7 @@ const Head: React.FC = () => {
           The BP whitelist is sustained by MyvoteEOS. Read more.
         </Typography>
       </div>
-      <div className={classes.flex}>
+      <div className={classes.searchSort}>
         <SearchBar />
         <SortComponent />
       </div>
