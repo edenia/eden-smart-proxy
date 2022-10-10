@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Hidden from '@mui/material/Hidden'
 import clsx from 'clsx'
 
 import Sidebar from 'components/Sidebar'
@@ -33,7 +32,7 @@ const Dashboard: React.FC<{
     <div className={classes.root}>
       {showLayout && (
         <div className={classes.drawer}>
-          <Hidden mdUp implementation='js'>
+          <div className={classes.showOnMobile}>
             <Sidebar
               props={{
                 style: { width: drawerWidth },
@@ -42,13 +41,13 @@ const Dashboard: React.FC<{
               }}
               onClose={() => handleDrawerToggle()}
             />
-          </Hidden>
-          <Hidden mdDown implementation='css'>
+          </div>
+          <div className={classes.showOnDesktop}>
             <Sidebar
               props={{ style: { width: drawerWidth }, variant: 'permanent' }}
               onClose={() => handleDrawerToggle()}
             />
-          </Hidden>
+          </div>
         </div>
       )}
       <div
