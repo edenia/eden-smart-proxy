@@ -8,11 +8,21 @@ const Styles = makeStyles(theme => ({
       flexDirection: 'column',
       padding: '8px !important',
       alignItems: 'flex-start',
-      width: 300,
+      width: '100%',
       '& .centerItems': {
         justifyContent: 'flex-start',
         '& .delegate-bp-item-proxy-padding': {
-          padding: '0 41px !important'
+          padding: '0 41px'
+        }
+      }
+    },
+    [theme.breakpoints.up('sm')]: {
+      '& .delegate-bp-item-container': {
+        flexDirection: 'row',
+        '& .centerItems': {
+          '& .delegate-bp-item-proxy-padding': {
+            padding: '0 39.5px 0 75px'
+          }
         }
       }
     }
@@ -20,10 +30,13 @@ const Styles = makeStyles(theme => ({
   linkPadding: {
     padding: '0 4px'
   },
-  flex: {
+  socialItems: {
     paddingTop: '8px',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row'
+    }
   }
 }))
 

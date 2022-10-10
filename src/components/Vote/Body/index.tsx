@@ -63,7 +63,7 @@ const Body: React.FC<voteBodyProps> = ({
           headItem={<Image src={telegramIcon} />}
           positionText='9,200,750 Votes'
           selectableItems={
-            <div className={classes.flex}>
+            <div className={classes.socialItems}>
               {selectableItems.map((item, index) => (
                 <Typography key={index} variant='subtitle2'>
                   {index !== 0 && '·'}
