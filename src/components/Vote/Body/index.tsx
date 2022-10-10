@@ -5,16 +5,9 @@ import { useEffect } from 'react'
 import Image from 'next/image'
 
 import telegramIcon from '/public/icons/telegram-grey-icon.png'
+import { socialMediaInfo } from 'config/constants'
 
 import useStyles from './styles'
-
-const selectableItems = [
-  { label: 'Telegram', link: 'google.com' },
-  { label: 'Twitter', link: 'google.com' },
-  { label: 'Website', link: 'google.com' },
-  { label: 'Email', link: 'google.com' },
-  { label: 'Interview', link: 'google.com' }
-]
 
 type voteBodyProps = {
   setSelectedBps(delegate: any): void
@@ -54,26 +47,30 @@ const Body: React.FC<voteBodyProps> = ({
           isSelected={selectedBps.includes(bp.producer)}
           avatarIcon={bp.voted && '/icons/good-icon.png'}
           name={bp.producer}
-          rankValue='N'
+          // rankValue='N'
+          image={bp?.bpJsonData?.org?.branding?.logo_256}
           proxyScore={bp.stats}
-          eosrateValue='N'
+          // eosrateValue='N'
           headItem={<Image src={telegramIcon} />}
-          positionText='9,200,750 Votes'
+          // positionText='9,200,750 Votes'
           selectableItems={
             <div className={classes.socialItems}>
-              {selectableItems.map((item, index) => (
-                <Typography key={index} variant='subtitle2'>
-                  {index !== 0 && '·'}
-                  <Link
-                    className={classes.linkPadding}
-                    rel='noreferrer'
-                    href={item.link}
-                    target='_blank'
-                  >
-                    {item.label}
-                  </Link>
-                </Typography>
-              ))}
+              {bp?.bpJsonData &&
+                Object.entries(bp?.bpJsonData?.org?.social).map(
+                  (item, index) => (
+                    <Typography key={index} variant='subtitle2'>
+                      {index !== 0 && '·'}
+                      <Link
+                        className={classes.linkPadding}
+                        rel='noreferrer'
+                        href={`${socialMediaInfo.links[item[0]]}${item[1]}`}
+                        target='_blank'
+                      >
+                        {item[0]}
+                      </Link>
+                    </Typography>
+                  )
+                )}
             </div>
           }
         />

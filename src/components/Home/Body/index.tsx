@@ -1,5 +1,6 @@
 import { Typography } from '@mui/material'
 import { Button } from '@edenia/ui-kit'
+import { useRouter } from 'next/router'
 import clsx from 'clsx'
 
 import AuthButton from '../../AuthUAL'
@@ -8,6 +9,7 @@ import useStyles from './styles'
 
 const Body: React.FC = () => {
   const classes = useStyles()
+  const router = useRouter()
 
   return (
     <div className={classes.container}>
@@ -29,7 +31,11 @@ const Body: React.FC = () => {
         className={clsx(classes.buttonContainer, classes.spaceTopComponents)}
       >
         <AuthButton />
-        <Button label='Delegate Vote' variant='secondary' />
+        <Button
+          label='Delegate Vote'
+          variant='secondary'
+          onClick={() => router.push('/vote')}
+        />
       </div>
     </div>
   )

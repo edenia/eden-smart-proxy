@@ -1,3 +1,4 @@
+import CircularProgress from '@mui/material/CircularProgress'
 import type { NextPage, GetStaticProps } from 'next'
 import { useState, useCallback } from 'react'
 import { useTranslation } from 'next-i18next'
@@ -10,6 +11,7 @@ import Image from 'next/image'
 import { routeUtils, smartProxyUtil } from 'utils'
 import { useSharedState } from 'context/state.context'
 import i18nUtils from 'utils/i18n'
+import { bpsInfo } from 'config/constants'
 import linkIcon from '/public/icons/link-icon.png'
 import { VoteHead, VoteBody } from 'components'
 
@@ -23,6 +25,7 @@ type MessageObject = {
 
 const Vote: NextPage = () => {
   const { t } = useTranslation()
+  const [loadingData, setLoadingData] = useState<boolean>(true)
   const classes = useStyles()
   const [selectedBps, setSelectedBps] = useState([])
   const [state] = useSharedState()
@@ -35,6 +38,14 @@ const Vote: NextPage = () => {
 
   const handleVote = async selectedBps => {
     try {
+      if (!state?.ual?.activeUser?.accountName) {
+        setMessage({
+          severity: 'warning',
+          message: 'You must login',
+          visible: true
+        })
+        return
+      }
       const voteTrx = smartProxyUtil.buildVoteTransaction({
         voter: state?.ual?.accountName,
         producers: selectedBps.sort((a, b) => (a > b ? 1 : a < b ? -1 : 0))
@@ -62,6 +73,7 @@ const Vote: NextPage = () => {
   }
 
   const loadBps = async nextKey => {
+    setLoadingData(true)
     const allBps = await smartProxyUtil.getWhitelistedBps(nextKey, 2)
 
     if (allBps) {
@@ -71,11 +83,16 @@ const Vote: NextPage = () => {
         },
         []
       )
-      const votes = await smartProxyUtil.getVotes(
-        state?.ual?.accountName,
-        state?.ual?.accountName,
-        1
-      )
+      let votes
+
+      if (state?.ual?.accountName) {
+        votes = await smartProxyUtil.getVotes(
+          state?.ual?.accountName,
+          state?.ual?.accountName,
+          1
+        )
+      }
+
       const validBps = allBps?.rows?.filter(
         bp => !invalidBps.includes(bp?.producer)
       )
@@ -83,17 +100,23 @@ const Vote: NextPage = () => {
         const hasVoted = votes?.rows[0]?.producers?.includes(bp?.producer)
         const { rows = [] } = await smartProxyUtil.getStats(bp?.producer, 1)
 
+        const bpJsonData = bpsInfo?.bpJson?.find(
+          bpj => bpj.producer_account_name === bp?.producer
+        )
+
         return {
           ...bp,
           voted: hasVoted,
           next_key: allBps.next_key,
-          stats: (await rows[0]?.weight) || 0
+          stats: (await rows[0]?.weight) || 0,
+          bpJsonData: bpJsonData || undefined
         }
       })
 
       const resolvePromise = await Promise?.all(validBpsAllData)
       setBps([...bps, ...resolvePromise])
     }
+    setLoadingData(false)
   }
 
   const onCloseSnackBar: any = useCallback(
@@ -116,6 +139,11 @@ const Vote: NextPage = () => {
         selectedBps={selectedBps}
         setSelectedBps={setSelectedBps}
       />
+      {loadingData && (
+        <div className={classes.loadMoreContainer}>
+          <CircularProgress />
+        </div>
+      )}
       {bps[bps?.length - 1]?.next_key !== '' && (
         <div className={classes.loadMoreContainer}>
           <Button

@@ -34,7 +34,7 @@ const Dashboard: React.FC<{
     <div className={classes.root}>
       {showLayout && (
         <div className={classes.drawer}>
-          <Hidden mdUp implementation='css'>
+          <Hidden mdUp implementation='js'>
             <Sidebar
               props={{
                 style: { width: drawerWidth },

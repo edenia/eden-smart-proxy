@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react'
 import { Typography, Box, Link } from '@mui/material'
 import { Footer } from '@edenia/ui-kit'
 import Image from 'next/image'

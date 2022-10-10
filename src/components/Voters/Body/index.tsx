@@ -5,9 +5,9 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
 import { smartProxyUtil, atomicAssetsUtil, genesisEdenUtil } from 'utils'
+import telegramIcon from '/public/icons/telegram-grey-icon.png'
 import yesVotingIcon from '/public/icons/yes-voting-icon.png'
 import notVotingIcon from '/public/icons/not-voting-icon.png'
-import telegramIcon from '/public/icons/telegram-grey-icon.png'
 
 import useStyles from './styles'
 
@@ -50,8 +50,8 @@ const Body: React.FC = () => {
       })
       const membersCompleteData = await Promise?.all(membersCompleteDataPromise)
       setEdenMembers([...edenMembers, ...membersCompleteData])
-      setLoadingData(false)
     }
+    setLoadingData(false)
   }
 
   useEffect(() => {

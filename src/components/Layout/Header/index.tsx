@@ -43,6 +43,14 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
 
   const handleDelegateVote = async () => {
     try {
+      if (!state?.ual?.activeUser?.accountName) {
+        setMessage({
+          severity: 'warning',
+          message: 'You must login',
+          visible: true
+        })
+        return
+      }
       const delegateVoteTrx = smartProxyUtil.buildDelegateTransaction(
         state?.ual?.activeUser?.accountName
       )
