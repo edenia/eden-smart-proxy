@@ -65,6 +65,15 @@ const Styles = makeStyles(theme => ({
   centerSelectableItems: {
     display: 'flex',
     alignItems: 'center'
+  },
+  selected: {
+    backgroundColor: 'rgba(0, 0, 0, 0.05) !important',
+    '& svg > path': {
+      fill: '#2563EB'
+    },
+    '& .MuiTypography-subtitle1': {
+      color: '#2563EB !important'
+    }
   }
 }))
 

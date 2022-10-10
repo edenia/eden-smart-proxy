@@ -36,6 +36,18 @@ const Styles = makeStyles(theme => ({
   },
   paddingPage: {
     paddingTop: theme.spacing(6)
+  },
+  showOnMobile: {
+    display: 'initial',
+    [theme.breakpoints.up('md')]: {
+      display: 'none'
+    }
+  },
+  showOnDesktop: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'initial'
+    }
   }
 }))
 
