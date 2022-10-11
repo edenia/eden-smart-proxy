@@ -16,7 +16,7 @@ const SearchBar: React.FC<HeadVotersType> = ({ setSearchInput }) => {
         <SearchIcon />
       </div>
       <InputBase
-        placeholder='Search by name or account'
+        placeholder='Search by name'
         inputProps={{ 'aria-label': 'search' }}
         className={classes.styledInputBase}
         onChange={newValue => setSearchInput(newValue.currentTarget.value)}
