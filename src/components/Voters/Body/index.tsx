@@ -90,10 +90,12 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
 
   useEffect(() => {
     search()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue])
 
   useEffect(() => {
     loadMembers(undefined)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
