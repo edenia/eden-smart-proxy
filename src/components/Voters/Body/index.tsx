@@ -11,10 +11,15 @@ import notVotingIcon from '/public/icons/not-voting-icon.png'
 
 import useStyles from './styles'
 
-const Body: React.FC = () => {
+type BodyVoters = {
+  searchValue: string | undefined
+}
+
+const Body: React.FC<BodyVoters> = ({ searchValue }) => {
   const classes = useStyles()
   const [loadingData, setLoadingData] = useState<boolean>(true)
   const [edenMembers, setEdenMembers] = useState<any>([])
+  const [currentEdenMembers, setCurrentEdenMembers] = useState<any>([])
 
   const loadMembers = async nextKey => {
     setLoadingData(true)
@@ -53,6 +58,39 @@ const Body: React.FC = () => {
     }
     setLoadingData(false)
   }
+
+  const search = () => {
+    if (typeof searchValue === 'string' && searchValue !== '') {
+      if (currentEdenMembers.length === 0) setCurrentEdenMembers(edenMembers)
+
+      const filterMembers = edenMembers.filter(bp =>
+        bp[1]?.name?.toLowerCase()?.includes(searchValue.toLowerCase())
+      )
+      setEdenMembers(filterMembers)
+
+      const membersName = filterMembers.reduce((reduceList, element) => {
+        return [...reduceList, element[1]?.name]
+      }, [])
+
+      setEdenMembers([
+        ...filterMembers,
+        ...currentEdenMembers.filter(bp => {
+          if (!membersName?.includes(bp[1]?.name)) {
+            return bp[1]?.name
+              ?.toLowerCase()
+              ?.includes(searchValue.toLowerCase())
+          }
+        })
+      ])
+    } else {
+      setEdenMembers(currentEdenMembers)
+      setCurrentEdenMembers([])
+    }
+  }
+
+  useEffect(() => {
+    search()
+  }, [searchValue])
 
   useEffect(() => {
     loadMembers(undefined)

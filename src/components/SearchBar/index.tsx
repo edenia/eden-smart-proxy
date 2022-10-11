@@ -3,7 +3,11 @@ import SearchIcon from '@mui/icons-material/Search'
 
 import useStyles from './styles'
 
-const SearchBar: React.FC = () => {
+type HeadVotersType = {
+  setSearchInput(value: any): void
+}
+
+const SearchBar: React.FC<HeadVotersType> = ({ setSearchInput }) => {
   const classes = useStyles()
 
   return (
@@ -15,6 +19,7 @@ const SearchBar: React.FC = () => {
         placeholder='Search by name or account'
         inputProps={{ 'aria-label': 'search' }}
         className={classes.styledInputBase}
+        onChange={newValue => setSearchInput(newValue.currentTarget.value)}
       />
     </div>
   )

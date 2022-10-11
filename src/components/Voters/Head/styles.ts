@@ -22,6 +22,15 @@ const Styles = makeStyles(theme => ({
         alignItems: 'flex-start;'
       }
     }
+  },
+  search: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: theme.spacing(1),
+    '& .MuiInputBase-root': {
+      marginTop: 0
+    }
   }
 }))
 

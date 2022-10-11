@@ -1,10 +1,15 @@
 import { Typography } from '@mui/material'
 
 import SearchBar from 'components/SearchBar'
+import { Dispatch, SetStateAction } from 'react'
 
 import useStyles from './styles'
 
-const Head: React.FC = () => {
+type HeadVotersType = {
+  setSearchInput: Dispatch<SetStateAction<string | undefined>>
+}
+
+const Head: React.FC<HeadVotersType> = ({ setSearchInput }) => {
   const classes = useStyles()
 
   return (
@@ -15,7 +20,9 @@ const Head: React.FC = () => {
           Last election on October 8, 2022.
         </Typography>
       </div>
-      <SearchBar />
+      <div className={classes.search}>
+        <SearchBar setSearchInput={setSearchInput} />
+      </div>
     </div>
   )
 }
