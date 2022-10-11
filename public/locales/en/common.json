@@ -6,11 +6,11 @@
   "en": "English",
   "routes": {
     "/": "Home",
-    "voters": "Voters",
+    "voters": "Eden Members",
     "vote": "Vote",
     "about": "About",
     "mustLogin": "You must login",
-    "successfulVote": "Successful vote",
+    "successfulVote": "Voted Successfully",
     "somethingWrong": "Something went wrong, try again"
   },
   "about": {
@@ -33,13 +33,13 @@
   "vote": {
     "voteMetaTitle": "Vote",
     "mustLogin": "You must login",
-    "successfulVote": "Successful vote",
+    "successfulVote": "Voted Successfully",
     "somethingWrong": "Something went wrong, try again",
     "loadMore": "Load More",
     "voteSelected": "Vote Selected"
   },
   "voters": {
-    "votersMetaTitle": "Voters",
+    "votersMetaTitle": "Eden Members",
     "headTitle": "Voting members and delegates.",
     "lastElection": "Last election on",
     "noVoting": "Not Voting",

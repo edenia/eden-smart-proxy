@@ -90,8 +90,6 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
     setPathName(asPath.replace('/', ''))
   }, [asPath, setPathName])
 
-  console.log(pathName)
-
   return (
     <AppBar className={classes.appBar}>
       <Toolbar className={clsx(classes.drawerPaper, classes.topBarStyle)}>

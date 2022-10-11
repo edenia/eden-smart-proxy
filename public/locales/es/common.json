@@ -6,14 +6,14 @@
   "en": "Inglés",
   "routes": {
     "/": "Hogar",
-    "voters": "Votantes",
+    "voters": "Miembros",
     "vote": "voto",
     "about": "Acerca de",
     "mustLogin": "Debes iniciar sesión",
     "successfulVote": "Voto Exitoso",
     "somethingWrong": "Algo salió mal, inténtalo de nuevo"
   },
-  "sobre": {
+  "about": {
     "votersMetaTitle": "Acerca de",
     "whatIsEden": "¿Qué es Eden Proxy?",
     "edenDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse maximus molestie laoreet. Vestibulum in varius neque. Praesent at finibus nisi. Vestibulum sagittis nec ligula non vulputate. Donec eu nulla rutrum, volutpat eros sit amet, tempor augue. Mecenas risus quam, efficitur nec enim quis, pretium semper turpis. Duis id arcu fringilla, vulputate nulla eget, lobortis nisi. Cras quis feugiat lectus. Donec vestibulum et dolor a vestibulum. In interdum, ex nec porttitor consequat, nulla tellus malesuada velit, eu pretium augue dolor ut nisi. Proin pretium convallis urna, quis dictum nulla ornare eu. Nulla et mollis lorem. Nulla pretium lacus tortor, sit amet dignissim mi tincidunt non. Suspendisse ut maximus dui. Ut massa mi, luctus a magna ut, porta viverra libero.",
@@ -30,7 +30,7 @@
     "shouldVote": "¿Por qué debería votar?",
     "shouldVoteResponse": " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse maximus molestie laoreet. Vestibulum in varius neque. Praesent at finibus nisi. Vestibulum sagittis nec ligula non vulputate. Donec eu nulla rutrum, volutpat eros sit amet, tempor augue. Mecenas risus quam, efficitur nec enim quis, pretium semper turpis. Duis id arcu fringilla, vulputate nulla eget, lobortis nisi. Cras quis feugiat lectus. Donec vestibulum et dolor a vestibulum."
   },
-  "votar": {
+  "vote": {
     "voteMetaTitle": "Voto",
     "mustLogin": "Debes iniciar sesión",
     "successfulVote": "Voto Exitoso",
@@ -38,14 +38,14 @@
     "loadMore": "Cargar más",
     "voteSelected": "Voto seleccionado"
   },
-  "votantes": {
-    "votersMetaTitle": "Votante",
+  "voters": {
+    "votersMetaTitle": "Miembros",
     "headTitle": "Miembros con derecho a voto y delegados.",
     "lastElection": "Última elección el",
     "noVoting": "Sin votar",
     "voteFor": "Votado por"
   },
-  "hogar": {
+  "home": {
     "homeMetaTitle": "Inicio",
     "title": {
       "first": "Elige sabiamente",
