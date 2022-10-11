@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from 'react'
 import { Typography } from '@mui/material'
 
 import SearchBar from 'components/SearchBar'
@@ -5,7 +6,11 @@ import SortComponent from 'components/SortComponent'
 
 import useStyles from './styles'
 
-const Head: React.FC = () => {
+type HeadVotersType = {
+  setSearchInput: Dispatch<SetStateAction<string | undefined>>
+}
+
+const Head: React.FC<HeadVotersType> = ({ setSearchInput }) => {
   const classes = useStyles()
 
   return (
@@ -19,7 +24,7 @@ const Head: React.FC = () => {
         </Typography>
       </div>
       <div className={classes.searchSort}>
-        <SearchBar />
+        <SearchBar setSearchInput={setSearchInput} />
         <SortComponent />
       </div>
     </div>

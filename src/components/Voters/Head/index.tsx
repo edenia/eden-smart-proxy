@@ -1,7 +1,7 @@
+import { Dispatch, SetStateAction } from 'react'
 import { Typography } from '@mui/material'
 
 import SearchBar from 'components/SearchBar'
-import { Dispatch, SetStateAction } from 'react'
 
 import useStyles from './styles'
 

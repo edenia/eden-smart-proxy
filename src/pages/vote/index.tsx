@@ -1,6 +1,6 @@
 import CircularProgress from '@mui/material/CircularProgress'
 import type { NextPage, GetStaticProps } from 'next'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useTranslation } from 'next-i18next'
 import { AlertColor, Typography } from '@mui/material'
 import { BaseSnackbar } from 'components'
@@ -24,9 +24,11 @@ type MessageObject = {
 }
 
 const Vote: NextPage = () => {
+  const classes = useStyles()
   const { t } = useTranslation()
   const [loadingData, setLoadingData] = useState<boolean>(true)
-  const classes = useStyles()
+  const [searchValue, setSearchValue] = useState<string | undefined>()
+  const [currentBps, setCurrentBps] = useState<any>([])
   const [selectedBps, setSelectedBps] = useState([])
   const [state] = useSharedState()
   const [bps, setBps] = useState<any>([])
@@ -130,6 +132,35 @@ const Vote: NextPage = () => {
     setLoadingData(false)
   }
 
+  const search = () => {
+    if (typeof searchValue === 'string' && searchValue !== '') {
+      if (currentBps.length === 0) setCurrentBps(bps)
+
+      const filterMembers = bps.filter(bp =>
+        bp?.producer?.toLowerCase()?.includes(searchValue.toLowerCase())
+      )
+      setBps(filterMembers)
+
+      const membersName = filterMembers.reduce((reduceList, element) => {
+        return [...reduceList, element?.producer]
+      }, [])
+
+      setBps([
+        ...filterMembers,
+        ...currentBps.filter(bp => {
+          if (!membersName?.includes(bp?.producer)) {
+            return bp?.producer
+              ?.toLowerCase()
+              ?.includes(searchValue.toLowerCase())
+          }
+        })
+      ])
+    } else {
+      setBps(currentBps)
+      setCurrentBps([])
+    }
+  }
+
   const onCloseSnackBar: any = useCallback(
     (event?: React.SyntheticEvent, reason?: string) => {
       if (reason === 'clickaway') {
@@ -140,10 +171,15 @@ const Vote: NextPage = () => {
     [message]
   )
 
+  useEffect(() => {
+    search()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchValue])
+
   return (
     <>
       <NextSeo title={t('voteMetaTitle')} />
-      <VoteHead />
+      <VoteHead setSearchInput={setSearchValue} />
       <VoteBody
         bps={bps}
         state={state}
