@@ -5,15 +5,17 @@ import { useTranslation } from 'next-i18next'
 import { routeUtils } from 'utils'
 import i18nUtils from 'utils/i18n'
 import { VotersHead, VotersBody } from 'components'
+import { useState } from 'react'
 
 const Voters: NextPage = () => {
   const { t } = useTranslation()
+  const [searchInput, setSearchInput] = useState<string | undefined>()
 
   return (
     <>
       <NextSeo title={t('votersMetaTitle')} />
-      <VotersHead />
-      <VotersBody />
+      <VotersHead setSearchInput={setSearchInput} />
+      <VotersBody searchValue={searchInput} />
     </>
   )
 }
