@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from 'react'
 import { Typography } from '@mui/material'
+import { useTranslation } from 'next-i18next'
 
 import SearchBar from 'components/SearchBar'
 
@@ -11,13 +12,14 @@ type HeadVotersType = {
 
 const Head: React.FC<HeadVotersType> = ({ setSearchInput }) => {
   const classes = useStyles()
+  const { t } = useTranslation()
 
   return (
     <div className={classes.container}>
       <div className='titleWrapper'>
-        <Typography variant='body1'>Voting members and delegates.</Typography>
+        <Typography variant='body1'>{t('voters.headTitle')}</Typography>
         <Typography variant='body1'>
-          Last election on October 8, 2022.
+          {`${t('voters.lastElection')} October 8, 2022.`}
         </Typography>
       </div>
       <div className={classes.search}>

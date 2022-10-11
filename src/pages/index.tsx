@@ -16,7 +16,7 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <NextSeo title={t('homeMetaTitle')} />
+      <NextSeo title={t('home.homeMetaTitle')} />
       <div className={classes.containerPage}>
         <div className={classes.backgroundContainer}>
           <Image

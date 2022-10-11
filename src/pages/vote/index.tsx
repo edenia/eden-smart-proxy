@@ -43,7 +43,7 @@ const Vote: NextPage = () => {
       if (!state?.ual?.activeUser?.accountName) {
         setMessage({
           severity: 'warning',
-          message: 'You must login',
+          message: t('vote.mustLogin'),
           visible: true
         })
         return
@@ -64,7 +64,7 @@ const Vote: NextPage = () => {
       setLoadingData(true)
       setMessage({
         severity: 'success',
-        message: 'Successful vote',
+        message: t('vote.successVote'),
         visible: true
       })
       setTimeout(async () => {
@@ -73,7 +73,7 @@ const Vote: NextPage = () => {
     } catch (error) {
       setMessage({
         severity: 'error',
-        message: 'Something went wrong, try again',
+        message: t('vote.somethingWrong'),
         visible: true
       })
     }
@@ -178,7 +178,7 @@ const Vote: NextPage = () => {
 
   return (
     <>
-      <NextSeo title={t('voteMetaTitle')} />
+      <NextSeo title={t('vote.voteMetaTitle')} />
       <VoteHead setSearchInput={setSearchValue} />
       <VoteBody
         bps={bps}
@@ -195,7 +195,7 @@ const Vote: NextPage = () => {
       {bps[bps?.length - 1]?.next_key !== '' && (
         <div className={classes.loadMoreContainer}>
           <Button
-            label='Load More'
+            label={t('vote.loadMore')}
             variant='secondary'
             onClick={() => loadBps(bps[bps.length - 1].next_key, 4)}
           />
@@ -222,7 +222,7 @@ const Vote: NextPage = () => {
             <Typography
               className={classes.labelPadding}
               variant='subtitle1'
-            >{`Vote Selected (${selectedBps.length})`}</Typography>
+            >{`${t('vote.voteSelected')} (${selectedBps.length})`}</Typography>
           </div>
         </Fab>
       )}

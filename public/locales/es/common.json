@@ -1,6 +1,57 @@
 {
-  "home": "Inicio",
   "contact": "Contacto",
-  "copyright": "Copyright",
-  "support": "Soporte"
+  "copyright": "Derechos de autor",
+  "support": "Soporte",
+  "es": "Español",
+  "en": "Inglés",
+  "routes": {
+    "/": "Hogar",
+    "voters": "Votantes",
+    "vote": "voto",
+    "about": "Acerca de",
+    "mustLogin": "Debes iniciar sesión",
+    "successfulVote": "Voto Exitoso",
+    "somethingWrong": "Algo salió mal, inténtalo de nuevo"
+  },
+  "sobre": {
+    "votersMetaTitle": "Acerca de",
+    "whatIsEden": "¿Qué es Eden Proxy?",
+    "edenDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse maximus molestie laoreet. Vestibulum in varius neque. Praesent at finibus nisi. Vestibulum sagittis nec ligula non vulputate. Donec eu nulla rutrum, volutpat eros sit amet, tempor augue. Mecenas risus quam, efficitur nec enim quis, pretium semper turpis. Duis id arcu fringilla, vulputate nulla eget, lobortis nisi. Cras quis feugiat lectus. Donec vestibulum et dolor a vestibulum. In interdum, ex nec porttitor consequat, nulla tellus malesuada velit, eu pretium augue dolor ut nisi. Proin pretium convallis urna, quis dictum nulla ornare eu. Nulla et mollis lorem. Nulla pretium lacus tortor, sit amet dignissim mi tincidunt non. Suspendisse ut maximus dui. Ut massa mi, luctus a magna ut, porta viverra libero.",
+    "whitelistWork": "¿Cómo funciona la lista blanca?",
+    "whitelistDescription": "La lista blanca de BP es sostenida por MyvoteEOS, un organismo autorregulador de BP. Para erradicar la subjetividad en el proceso de inclusión en la lista blanca, MyvoteEOS califica solo a aquellos BP que responden a las siguientes cuatro preguntas de sí/no:",
+    "question1": "1. No participar en el compromiso de voto de ninguna forma. (Operando su propio proxy con provisión directa de APR, comprando votos de intercambios de terceros o proxys.)",
+    "question2": "2. Proporcionar informes financieros y operativos públicos de forma periódica.",
+    "question3": "3. No más de un BP con la misma propiedad.",
+    "question4": "4. Reconoce que los BP se pueden quitar de la lista en cualquier momento si se dedican a cualquiera de las actividades anteriores.",
+    "disclaimer": "Descargo de responsabilidad:",
+    "point1": "Como período de gracia, no se les pedirá a los BP que abandonen su voto de compra existente hasta que reciban 30 millones para permanecer en el rango de pago.",
+    "point2": "No hay subjetividad en la lista blanca aparte de los 4 criterios anteriores.",
+    "point3": "Como período de gracia, no se les solicitará a los BP que abandonen su voto de compra existente hasta que reciban 30 millones para permanecer en el rango de pago.",
+    "shouldVote": "¿Por qué debería votar?",
+    "shouldVoteResponse": " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse maximus molestie laoreet. Vestibulum in varius neque. Praesent at finibus nisi. Vestibulum sagittis nec ligula non vulputate. Donec eu nulla rutrum, volutpat eros sit amet, tempor augue. Mecenas risus quam, efficitur nec enim quis, pretium semper turpis. Duis id arcu fringilla, vulputate nulla eget, lobortis nisi. Cras quis feugiat lectus. Donec vestibulum et dolor a vestibulum."
+  },
+  "votar": {
+    "voteMetaTitle": "Voto",
+    "mustLogin": "Debes iniciar sesión",
+    "successfulVote": "Voto Exitoso",
+    "somethingWrong": "Algo salió mal, inténtalo de nuevo",
+    "loadMore": "Cargar más",
+    "voteSelected": "Voto seleccionado"
+  },
+  "votantes": {
+    "votersMetaTitle": "Votante",
+    "headTitle": "Miembros con derecho a voto y delegados.",
+    "lastElection": "Última elección el",
+    "noVoting": "Sin votar",
+    "voteFor": "Votado por"
+  },
+  "hogar": {
+    "homeMetaTitle": "Inicio",
+    "title": {
+      "first": "Elige sabiamente",
+      "second": "Elija Eden Smart Proxy"
+    },
+    "buttonLabel": "Voto delegado",
+    "description": "EdenBPsProxy es un proxy de votación de EOS BP que maximiza la voz de los titulares individuales de EOS al aprovechar su voz con el proceso de democracia fractal de Eden. Solo los miembros de Edens que revelaron su identidad serán elegibles para opinar sobre el proxy que votos BPs."
+  }
 }

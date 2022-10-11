@@ -1,6 +1,7 @@
 import CircularProgress from '@mui/material/CircularProgress'
 import { DelegateItem, Button } from '@edenia/ui-kit'
 import { Link, Typography } from '@mui/material'
+import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
@@ -16,6 +17,7 @@ type BodyVoters = {
 }
 
 const Body: React.FC<BodyVoters> = ({ searchValue }) => {
+  const { t } = useTranslation()
   const classes = useStyles()
   const [loadingData, setLoadingData] = useState<boolean>(true)
   const [edenMembers, setEdenMembers] = useState<any>([])
@@ -105,8 +107,8 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
           key={delegate[1].name}
           text={
             delegate.vote
-              ? `Voted for ${delegate?.vote?.length} `
-              : 'Not Voting '
+              ? `${t('voters.voteFor')} ${delegate?.vote?.length} `
+              : t('voters.noVoting')
           }
           name={delegate[1].name}
           image={`https://ipfs.io/ipfs/${delegate?.info?.image}`}
@@ -115,7 +117,6 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
           headItem={
             <Image src={delegate.vote ? yesVotingIcon : notVotingIcon} />
           }
-          // linkIcon={delegate.vote ? '/icons/ref-icon.png' : undefined}
           positionText={`${delegate?.info?.rank?.label} - Rate: n`}
           selectableItems={
             <div className={classes.centerSelectableItems}>

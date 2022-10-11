@@ -1,9 +1,10 @@
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import { BaseSnackbar } from 'components'
+import { useTranslation } from 'next-i18next'
 import Link from '@mui/material/Link'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useRouter } from 'next/router'
@@ -32,9 +33,11 @@ type MessageObject = {
 
 const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
   const [state] = useSharedState()
+  const { t } = useTranslation()
   const classes = useStyles()
   const router = useRouter()
   const { asPath } = router
+  const [pathName, setPathName] = useState<any>()
   const [message, setMessage] = useState<MessageObject>({
     message: '',
     severity: 'success',
@@ -46,7 +49,7 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
       if (!state?.ual?.activeUser?.accountName) {
         setMessage({
           severity: 'warning',
-          message: 'You must login',
+          message: t('routes.mustLogin'),
           visible: true
         })
         return
@@ -61,13 +64,13 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
       })
       setMessage({
         severity: 'success',
-        message: 'Successful vote',
+        message: t('routes.successfulVote'),
         visible: true
       })
     } catch (error) {
       setMessage({
         severity: 'error',
-        message: 'Something went wrong, try again',
+        message: t('routes.somethingWrong'),
         visible: true
       })
     }
@@ -83,6 +86,12 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
     [message]
   )
 
+  useEffect(() => {
+    setPathName(asPath.replace('/', ''))
+  }, [asPath, setPathName])
+
+  console.log(pathName)
+
   return (
     <AppBar className={classes.appBar}>
       <Toolbar className={clsx(classes.drawerPaper, classes.topBarStyle)}>
@@ -92,7 +101,7 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
           >
             <div className={classes.logoAndMenu}>
               <span className={classes.routeLabel}>
-                {asPath.replace('/', '')}
+                {t(`routes.${pathName}`)}
               </span>
               <div className={classes.topBarMenu}>
                 {mainRoutes.map(route => {
@@ -132,7 +141,7 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
                 <MenuIcon fontSize='large' className={classes.menuIconColor} />
               </IconButton>
               <span className={classes.routeLabel}>
-                {asPath.replace('/', '')}
+                {t(`routes.${pathName}`)}
               </span>
             </div>
             <div className={classes.leftBox}>

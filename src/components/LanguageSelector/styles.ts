@@ -7,15 +7,13 @@ const Styles = makeStyles(theme => ({
   },
   flexBox: {
     display: 'flex',
-    alignItems: 'center',
-    '& .languageLabel': {
-      color: theme.palette.common.black,
-      display: 'none'
-    },
+    alignItems: 'center'
+  },
+  languageLabel: {
+    color: theme.palette.common.black,
+    display: 'none',
     [theme.breakpoints.up('sm')]: {
-      '& .languageLabel': {
-        display: 'block'
-      }
+      display: 'block'
     }
   }
 }))

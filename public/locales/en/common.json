@@ -1,6 +1,57 @@
 {
-  "home": "Home",
   "contact": "Contact",
   "copyright": "Copyright",
-  "support": "Support"
+  "support": "Support",
+  "es": "Spanish",
+  "en": "English",
+  "routes": {
+    "/": "Home",
+    "voters": "Voters",
+    "vote": "Vote",
+    "about": "About",
+    "mustLogin": "You must login",
+    "successfulVote": "Successful vote",
+    "somethingWrong": "Something went wrong, try again"
+  },
+  "about": {
+    "votersMetaTitle": "About",
+    "whatIsEden": "What is Eden Proxy?",
+    "edenDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse maximus molestie laoreet. Vestibulum in varius neque. Praesent at finibus nisi. Vestibulum sagittis nec ligula non vulputate. Donec eu nulla rutrum, volutpat eros sit amet, tempor augue. Maecenas risus quam, efficitur nec enim quis, pretium semper turpis. Duis id arcu fringilla, vulputate nulla eget, lobortis nisi. Cras quis feugiat lectus. Donec vestibulum et dolor a vestibulum. In interdum, ex nec porttitor consequat, nulla tellus malesuada velit, eu pretium augue dolor ut nisi. Proin pretium convallis urna, quis dictum nulla ornare eu. Nulla et mollis lorem. Nulla pretium lacus tortor, sit amet dignissim mi tincidunt non. Suspendisse ut maximus dui. Ut massa mi, luctus a magna ut, porta viverra libero.",
+    "whitelistWork": "How does the whitelist work?",
+    "whitelistDescription": "The BP whitelist is sustained by MyvoteEOS, a BPs self-regulatory body. To eradicate the subjectivity in the whitelisting process, MyvoteEOS qualifies only those BPs who clear below four yes/no questions:",
+    "question1": "1. No engagement in vote compromise in any form. (Operating its own proxy with direct APR provision, buying votes from 3rd party exchanges or proxies.)",
+    "question2": "2. Providing public financial and operation reports on a regular basis.",
+    "question3": "3. No more than one BP with the same ownership.",
+    "question4": "4. Acknowledge that BPs can be unlisted at any time if engage with any ativities above.",
+    "disclaimer": "Disclaimer:",
+    "point1": "As a grace-period, BPs are not going to be requested to drop their existing vote-buy until they receive 30m to stay in the pay range.",
+    "point2": "There's is no subjectivity in the whitelist other than above 4 criterias.",
+    "point3": "As a grace-period, BPs are not going to be requested to drop their existing vote-buy until they receive 30m to stay in the pay range.",
+    "shouldVote": "Why should I vote?",
+    "shouldVoteResponse": " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse maximus molestie laoreet. Vestibulum in varius neque. Praesent at finibus nisi. Vestibulum sagittis nec ligula non vulputate. Donec eu nulla rutrum, volutpat eros sit amet, tempor augue. Maecenas risus quam, efficitur nec enim quis, pretium semper turpis. Duis id arcu fringilla, vulputate nulla eget, lobortis nisi. Cras quis feugiat lectus. Donec vestibulum et dolor a vestibulum."
+  },
+  "vote": {
+    "voteMetaTitle": "Vote",
+    "mustLogin": "You must login",
+    "successfulVote": "Successful vote",
+    "somethingWrong": "Something went wrong, try again",
+    "loadMore": "Load More",
+    "voteSelected": "Vote Selected"
+  },
+  "voters": {
+    "votersMetaTitle": "Voters",
+    "headTitle": "Voting members and delegates.",
+    "lastElection": "Last election on",
+    "noVoting": "Not Voting",
+    "voteFor": "Voted for"
+  },
+  "home": {
+    "homeMetaTitle": "Home",
+    "title": {
+      "first": "Choose Wisely",
+      "second": "Choose Eden Smart Proxy"
+    },
+    "buttonLabel": "Delegate Vote",
+    "description": "EdenBPsProxy is a EOS BP voting proxy that maximizes voice of individual EOS holders by leveraging their voice with Eden`s fractal democracy process. Only members of Edens who revealed their identity will be eligible to have a say on the proxy that votes BPs."
+  }
 }
