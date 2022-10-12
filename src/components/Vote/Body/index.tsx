@@ -37,7 +37,7 @@ const Body: React.FC<voteBodyProps> = ({
   useEffect(() => {
     loadBps()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [!state?.ual?.accountName])
+  }, [state?.ual?.activeUser?.accountName])
 
   return (
     <div className={classes.container}>

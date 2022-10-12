@@ -12,7 +12,7 @@ import { Button } from '@edenia/ui-kit'
 import { AlertColor } from '@mui/material'
 import clsx from 'clsx'
 
-import { smartProxyUtil } from 'utils'
+import { smartProxyUtil, eosioUtil } from 'utils'
 import { useSharedState } from 'context/state.context'
 import LanguageSelector from 'components/LanguageSelector'
 
@@ -36,6 +36,7 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
   const { t } = useTranslation()
   const classes = useStyles()
   const router = useRouter()
+  const [showDelegateButton, setShowDelegateButton] = useState<boolean>(true)
   const { asPath } = router
   const [pathName, setPathName] = useState<any>()
   const [message, setMessage] = useState<MessageObject>({
@@ -67,6 +68,9 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
         message: t('routes.successfulVote'),
         visible: true
       })
+      setTimeout(async () => {
+        await validateHasDelegateVote()
+      }, 1000)
     } catch (error) {
       setMessage({
         severity: 'error',
@@ -74,6 +78,13 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
         visible: true
       })
     }
+  }
+
+  const validateHasDelegateVote = async () => {
+    const delegateState = await eosioUtil.hasVoteForProxy(
+      state?.ual?.activeUser?.accountName
+    )
+    setShowDelegateButton(!delegateState)
   }
 
   const onCloseSnackBar: any = useCallback(
@@ -89,6 +100,11 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
   useEffect(() => {
     setPathName(asPath.replace('/', ''))
   }, [asPath, setPathName])
+
+  useEffect(() => {
+    validateHasDelegateVote()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state?.ual?.activeUser?.accountName])
 
   return (
     <AppBar className={classes.appBar}>
@@ -123,12 +139,14 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
               <div className={classes.paddingLenguajeSelector}>
                 <LanguageSelector />
               </div>
-              <Button
-                icon='/icons/like-white-icon.png'
-                label='Delegate Vote'
-                variant='primary'
-                onClick={() => handleDelegateVote()}
-              />
+              {showDelegateButton && (
+                <Button
+                  icon='/icons/like-white-icon.png'
+                  label='Delegate Vote'
+                  variant='primary'
+                  onClick={() => handleDelegateVote()}
+                />
+              )}
             </div>
           </div>
           <div

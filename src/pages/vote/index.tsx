@@ -8,7 +8,7 @@ import { Fab, Button } from '@edenia/ui-kit'
 import { NextSeo } from 'next-seo'
 import Image from 'next/image'
 
-import { routeUtils, smartProxyUtil } from 'utils'
+import { routeUtils, smartProxyUtil, eosioUtil } from 'utils'
 import { useSharedState } from 'context/state.context'
 import i18nUtils from 'utils/i18n'
 import { bpsInfo } from 'config/constants'
@@ -41,12 +41,25 @@ const Vote: NextPage = () => {
     visible: false
   })
 
+  const validateHasDelegateVote = async () => {
+    return await eosioUtil.hasVoteForProxy(state?.ual?.activeUser?.accountName)
+  }
+
   const handleVote = async selectedBps => {
     try {
       if (!state?.ual?.activeUser?.accountName) {
         setMessage({
           severity: 'warning',
           message: t('vote.mustLogin'),
+          visible: true
+        })
+        return
+      }
+
+      if (!(await validateHasDelegateVote())) {
+        setMessage({
+          severity: 'warning',
+          message: t('vote.beforeVoting'),
           visible: true
         })
         return
