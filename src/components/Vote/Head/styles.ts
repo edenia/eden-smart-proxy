@@ -31,6 +31,9 @@ const Styles = makeStyles(theme => ({
     '& .MuiInputBase-root': {
       marginTop: 0
     }
+  },
+  paddingLeft: {
+    padding: theme.spacing(0, 4, 0, 2)
   }
 }))
 

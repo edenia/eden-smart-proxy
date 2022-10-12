@@ -12,7 +12,7 @@ type voteBodyProps = {
   selectedBps: Array<any>
   state: any
   loadBps(): void
-  bps: Array<any>
+  bps: { sort: string; data: Array<any> }
 }
 
 const Body: React.FC<voteBodyProps> = ({
@@ -24,11 +24,6 @@ const Body: React.FC<voteBodyProps> = ({
 }) => {
   const classes = useStyles()
 
-  useEffect(() => {
-    loadBps()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [!state?.ual?.accountName])
-
   const handleSelected = pressBp => {
     const selected = selectedBps.find(bp => bp === pressBp)
     !selected ? setSelectedBps([...selectedBps, pressBp]) : deselect(pressBp)
@@ -39,9 +34,14 @@ const Body: React.FC<voteBodyProps> = ({
     setSelectedBps(currentSelectedBps)
   }
 
+  useEffect(() => {
+    loadBps()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [!state?.ual?.accountName])
+
   return (
     <div className={classes.container}>
-      {bps?.map(bp => (
+      {bps?.data?.map(bp => (
         <BlockProducerItem
           key={bp.producer}
           onClick={() => handleSelected(bp.producer)}

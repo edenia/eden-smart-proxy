@@ -31,7 +31,10 @@ const Vote: NextPage = () => {
   const [currentBps, setCurrentBps] = useState<any>([])
   const [selectedBps, setSelectedBps] = useState([])
   const [state] = useSharedState()
-  const [bps, setBps] = useState<any>([])
+  const [bps, setBps] = useState<{ sort: string; data: Array<any> }>({
+    sort: '',
+    data: []
+  })
   const [message, setMessage] = useState<MessageObject>({
     message: '',
     severity: 'success',
@@ -60,7 +63,7 @@ const Vote: NextPage = () => {
         broadcast: true
       })
       setSelectedBps([])
-      setBps([])
+      setBps({ ...bps, data: [] })
       setLoadingData(true)
       setMessage({
         severity: 'success',
@@ -127,38 +130,59 @@ const Vote: NextPage = () => {
 
       const resolvePromise = await Promise?.all(validBpsAllData)
 
-      resetData ? setBps(resolvePromise) : setBps([...bps, ...resolvePromise])
+      resetData
+        ? setBps({ ...bps, data: resolvePromise })
+        : setBps({ ...bps, data: [...bps?.data, ...resolvePromise] })
     }
     setLoadingData(false)
   }
 
   const search = () => {
     if (typeof searchValue === 'string' && searchValue !== '') {
-      if (currentBps.length === 0) setCurrentBps(bps)
+      if (currentBps.length === 0) setCurrentBps(bps.data)
 
-      const filterMembers = bps.filter(bp =>
+      const filterMembers = bps?.data?.filter(bp =>
         bp?.producer?.toLowerCase()?.includes(searchValue.toLowerCase())
       )
-      setBps(filterMembers)
+      setBps({ ...bps, data: filterMembers })
 
       const membersName = filterMembers.reduce((reduceList, element) => {
         return [...reduceList, element?.producer]
       }, [])
 
-      setBps([
-        ...filterMembers,
-        ...currentBps.filter(bp => {
-          if (!membersName?.includes(bp?.producer)) {
-            return bp?.producer
-              ?.toLowerCase()
-              ?.includes(searchValue.toLowerCase())
-          }
-        })
-      ])
+      setBps({
+        ...bps,
+        data: [
+          ...filterMembers,
+          ...currentBps.filter(bp => {
+            if (!membersName?.includes(bp?.producer)) {
+              return bp?.producer
+                ?.toLowerCase()
+                ?.includes(searchValue.toLowerCase())
+            }
+          })
+        ]
+      })
     } else {
-      setBps(currentBps)
+      setBps({ ...bps, data: currentBps })
       setCurrentBps([])
     }
+  }
+
+  const sort = method => {
+    method === 'asc'
+      ? setBps({
+          sort: method,
+          data: bps?.data?.sort((a, b) =>
+            a.producer > b.producer ? 1 : b.producer > a.producer ? -1 : 0
+          )
+        })
+      : setBps({
+          sort: method,
+          data: bps?.data?.sort((a, b) =>
+            a.producer < b.producer ? 1 : b.producer < a.producer ? -1 : 0
+          )
+        })
   }
 
   const onCloseSnackBar: any = useCallback(
@@ -172,6 +196,7 @@ const Vote: NextPage = () => {
   )
 
   useEffect(() => {
+    if (searchValue === undefined) return
     search()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue])
@@ -179,11 +204,11 @@ const Vote: NextPage = () => {
   return (
     <>
       <NextSeo title={t('vote.voteMetaTitle')} />
-      <VoteHead setSearchInput={setSearchValue} />
+      <VoteHead setSearchInput={setSearchValue} sort={sort} />
       <VoteBody
         bps={bps}
         state={state}
-        loadBps={() => loadBps(undefined, 4)}
+        loadBps={() => loadBps(undefined, 4, true)}
         selectedBps={selectedBps}
         setSelectedBps={setSelectedBps}
       />
@@ -192,12 +217,14 @@ const Vote: NextPage = () => {
           <CircularProgress />
         </div>
       )}
-      {bps[bps?.length - 1]?.next_key !== '' && (
+      {bps?.data[bps?.data?.length - 1]?.next_key !== '' && (
         <div className={classes.loadMoreContainer}>
           <Button
             label={t('vote.loadMore')}
             variant='secondary'
-            onClick={() => loadBps(bps[bps.length - 1].next_key, 4)}
+            onClick={() =>
+              loadBps(bps?.data?.[bps?.data?.length - 1].next_key, 4, false)
+            }
           />
         </div>
       )}
