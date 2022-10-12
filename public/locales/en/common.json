@@ -6,7 +6,7 @@
   "en": "English",
   "routes": {
     "/": "Home",
-    "voters": "Eden Members",
+    "voters": "Members",
     "vote": "Vote",
     "about": "About",
     "mustLogin": "You must login",
