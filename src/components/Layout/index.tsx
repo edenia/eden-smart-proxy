@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
+import { Divider } from '@mui/material'
 
 import Sidebar from 'components/Sidebar'
 
@@ -8,7 +9,6 @@ import Header from './Header'
 import FooterComp from './Footer'
 import Container from './Container'
 import Styles from './styles'
-import { Divider } from '@mui/material'
 
 const useStyles = Styles
 const drawerWidth = 260
