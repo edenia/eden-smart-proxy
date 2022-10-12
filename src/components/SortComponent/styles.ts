@@ -4,7 +4,6 @@ const Styles = makeStyles(theme => ({
   container: {
     display: 'flex',
     alignItems: 'center',
-    width: 90,
     margin: theme.spacing(1)
   },
   paddingImage: {

@@ -8,9 +8,10 @@ import useStyles from './styles'
 
 type HeadVotersType = {
   setSearchInput: Dispatch<SetStateAction<string | undefined>>
+  sort: Dispatch<SetStateAction<string>>
 }
 
-const Head: React.FC<HeadVotersType> = ({ setSearchInput }) => {
+const Head: React.FC<HeadVotersType> = ({ setSearchInput, sort }) => {
   const classes = useStyles()
 
   return (
@@ -25,7 +26,9 @@ const Head: React.FC<HeadVotersType> = ({ setSearchInput }) => {
       </div>
       <div className={classes.searchSort}>
         <SearchBar setSearchInput={setSearchInput} />
-        <SortComponent />
+        <div className={classes.paddingLeft}>
+          <SortComponent sort={sort} />
+        </div>
       </div>
     </div>
   )
