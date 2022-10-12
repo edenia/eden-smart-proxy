@@ -12,7 +12,6 @@ const Styles = makeStyles(theme => ({
     height: '100%',
     paddingBottom: theme.spacing(4),
     [theme.breakpoints.up('lg')]: {
-      height: 'calc(100vh - 220px)',
       minHeight: 1000
     }
   },

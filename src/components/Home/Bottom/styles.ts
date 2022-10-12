@@ -5,43 +5,37 @@ const Styles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: theme.spacing(1),
-    '& .card-container': {
-      margin: theme.spacing(1, 0),
-      minWidth: 330
+    padding: theme.spacing(1)
+  },
+  wrapperGrid: {
+    paddingBottom: theme.spacing(4),
+    maxWidth: '100%',
+    margin: '0 auto'
+  },
+  gridRow: {
+    display: 'flex',
+    flexFlow: 'row wrap',
+    justifyContent: 'center'
+  },
+  gridItem: {
+    flexBasis: '100%',
+    '-ms-flex': 'auto',
+    width: '100%',
+    position: 'relative',
+    padding: 10,
+    boxSizing: 'border-box',
+    '& iframe': {
+      width: '100% !important'
     },
     [theme.breakpoints.up('sm')]: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      justifyContent: 'space-evenly',
-      '& .card-container': {
-        margin: theme.spacing(1, 0),
-        minWidth: 350,
-        minHeight: 370
+      flexBasis: '50%',
+      '& iframe': {
+        width: '100% !important'
       }
     }
   },
-  flex: {
-    display: 'flex'
-  },
-  headCardContainer: {
-    display: 'flex',
-    justifyContent: 'space-between'
-  },
-  centerElements: {
-    display: 'flex',
-    alignItems: 'center'
-  },
-  paddingVerifyIcon: {
-    paddingLeft: theme.spacing(1)
-  },
-  footerCardContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'center'
-  },
-  linkColor: {
-    color: theme.palette.info.light
+  twitter: {
+    backgroundColor: 'transparent'
   }
 }))
 
