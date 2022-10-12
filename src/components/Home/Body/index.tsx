@@ -29,7 +29,7 @@ const Body: React.FC = () => {
       <div
         className={clsx(classes.buttonContainer, classes.spaceTopComponents)}
       >
-        <AuthButton />
+        <AuthButton btnLabel={t('home.signInLabel')} />
         <Button
           label={t('home.buttonLabel')}
           variant='secondary'

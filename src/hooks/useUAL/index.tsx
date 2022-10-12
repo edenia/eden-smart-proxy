@@ -53,11 +53,13 @@ const useLightUAL = ({ appName, chains, authenticators }: UALType) => {
   }
 
   const logout = () => {
+    const { appName, chains, authenticators } = ualState
+
     if (ualState.authenticator) {
       fullLogout(ualState.authenticator)
     }
 
-    setUalState(DEFAULT_STATUS)
+    setUalState({ ...DEFAULT_STATUS, appName, chains, authenticators })
   }
 
   const setUALInvalidateAt = (authenticator: any) => {

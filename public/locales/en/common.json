@@ -11,7 +11,9 @@
     "about": "About",
     "mustLogin": "You must login",
     "successfulVote": "Voted Successfully",
-    "somethingWrong": "Something went wrong, try again"
+    "somethingWrong": "Something went wrong, try again",
+    "signin": "Login",
+    "logout": "Logout"
   },
   "about": {
     "votersMetaTitle": "About",
@@ -52,6 +54,7 @@
       "second": "Choose Eden Smart Proxy"
     },
     "buttonLabel": "Delegate Vote",
+    "signInLabel": "Sign in and vote",
     "description": "EdenBPsProxy is a EOS BP voting proxy that maximizes voice of individual EOS holders by leveraging their voice with Eden`s fractal democracy process. Only members of Edens who revealed their identity will be eligible to have a say on the proxy that votes BPs."
   }
 }

@@ -3,6 +3,7 @@ export type InitialStateType = {
   openMenuWallets: boolean
   elemRef: null
   ual: any
+  isLogout: boolean
 }
 
 export type stateType = {
@@ -10,4 +11,5 @@ export type stateType = {
   openMenuWallets: boolean
   elemRef: null
   ual: any
+  isLogout: boolean
 }

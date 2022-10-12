@@ -11,7 +11,9 @@
     "about": "Acerca de",
     "mustLogin": "Debes iniciar sesión",
     "successfulVote": "Voto Exitoso",
-    "somethingWrong": "Algo salió mal, inténtalo de nuevo"
+    "somethingWrong": "Algo salió mal, inténtalo de nuevo",
+    "signin": "Iniciar sesión",
+    "logout": "Salir"
   },
   "about": {
     "votersMetaTitle": "Acerca de",
@@ -52,6 +54,7 @@
       "second": "Elija Eden Smart Proxy"
     },
     "buttonLabel": "Voto delegado",
+    "signInLabel": "Inicie sesión y vote",
     "description": "EdenBPsProxy es un proxy de votación de EOS BP que maximiza la voz de los titulares individuales de EOS al aprovechar su voz con el proceso de democracia fractal de Eden. Solo los miembros de Edens que revelaron su identidad serán elegibles para opinar sobre el proxy que votos BPs."
   }
 }

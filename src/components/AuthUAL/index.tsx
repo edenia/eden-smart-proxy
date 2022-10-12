@@ -7,7 +7,7 @@ import { Button } from '@edenia/ui-kit'
 import useAuthUAL from './useAuthUAL.hook'
 import useStyles from './styles'
 
-const AuthButton: React.FC = () => {
+const AuthButton: React.FC<{ btnLabel: string }> = ({ btnLabel }) => {
   const [{ state }, { handleOpenMenu, handleCloseMenu, login }] = useAuthUAL()
   const classes = useStyles()
 
@@ -15,11 +15,7 @@ const AuthButton: React.FC = () => {
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
         {!state?.ual?.activeUser && (
-          <Button
-            onClick={handleOpenMenu}
-            label='Sign in and vote'
-            variant='primary'
-          />
+          <Button onClick={handleOpenMenu} label={btnLabel} variant='primary' />
         )}
       </Box>
       <Menu

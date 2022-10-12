@@ -8,7 +8,8 @@ const initialValue = {
   user: null,
   openMenuWallets: false,
   elemRef: null,
-  ual: null
+  ual: null,
+  isLogout: false
 }
 
 const SharedStateContext = createContext<{
@@ -38,7 +39,8 @@ const sharedStateReducer = (state, action): stateType => {
     case 'ual': {
       return {
         ...state,
-        ual: action.ual
+        ual: action.ual,
+        isLogout: false
       }
     }
 
@@ -49,6 +51,9 @@ const sharedStateReducer = (state, action): stateType => {
         openMenuWallets: Boolean(action.payload)
       }
     }
+
+    case 'logout':
+      return { ...state, user: null, isLogout: true }
 
     default: {
       throw new Error(`Unsupported action type: ${action.type}`)
@@ -74,7 +79,11 @@ export const SharedStateProvider: React.FC = ({ children, ...props }: any) => {
   useEffect(() => {
     if (!ualState) return
 
-    if (!state?.ual || (!state?.ual.activeUser && ualState?.activeUser))
+    if (
+      state.isLogout ||
+      !state?.ual ||
+      (!state?.ual.activeUser && ualState?.activeUser)
+    )
       loadData(ualState)
   }, [ualState, loadData, state])
 
