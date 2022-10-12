@@ -74,6 +74,21 @@ const Styles = makeStyles(theme => ({
     '& .MuiTypography-subtitle1': {
       color: '#2563EB !important'
     }
+  },
+  btnLoginBox: {
+    width: '100%',
+    '& button': {
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'center'
+    }
+  },
+  userBox: {
+    backgroundColor: 'transparent',
+    border: 'none',
+    '&:hover': {
+      cursor: 'pointer'
+    }
   }
 }))
 
