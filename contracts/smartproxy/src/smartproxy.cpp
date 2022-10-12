@@ -19,7 +19,7 @@ namespace edenproxy {
     const auto   &member = members.get_member( voter );
 
     eosio::check( member.status() == eden::member_status::active_member,
-                  "You need to be an active eden member to vote." );
+                  "You need to be an active eden member to vote" );
     eosio::check(
         dao::myvoteeosdao::checkbp( DAO_ACCOUNT, DAO_ACCOUNT, producers[0] ),
         "You may only vote for whitelisted BPs." );
@@ -152,7 +152,8 @@ namespace edenproxy {
   void smartproxy_contract::banbp( eosio::name bp ) {
     require_auth( get_self() );
 
-    eosio::check( is_blockproducer( bp ), "Only Block Producers can be banned" );
+    eosio::check( is_blockproducer( bp ),
+                  "Only Block Producers can be banned" );
 
     blacklisted_table _blacklisted( get_self(), get_self().value );
 
