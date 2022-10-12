@@ -13,27 +13,27 @@ namespace edenproxy {
     require_auth( voter );
 
     eosio::check( producers.size() >= 1 && producers.size() <= 30,
-                  "No more than 30 bps are allowed to vote for" );
+                  "You can not vote for more than 30 BPs." );
 
     eden::members members{ EDEN_ACCOUNT };
     const auto   &member = members.get_member( voter );
 
     eosio::check( member.status() == eden::member_status::active_member,
-                  "Needs to be an active eden member" );
+                  "You need to be an active eden member to vote." );
     eosio::check(
         dao::myvoteeosdao::checkbp( DAO_ACCOUNT, DAO_ACCOUNT, producers[0] ),
-        "Only whitelisted bps are allowed" );
+        "You may only vote for whitelisted BPs." );
     eosio::check( !is_blacklisted( producers[0] ),
-                  "The bp " + producers[0].to_string() + " is blacklisted" );
+                  "The BP " + producers[0].to_string() + " is blacklisted" );
 
     for ( size_t i = 1; i < producers.size(); ++i ) {
       eosio::check( producers[i - 1] < producers[i],
-                    "Producer votes must be unique and sorted" );
+                    "Block Producer votes must be unique and sorted." );
       eosio::check(
           dao::myvoteeosdao::checkbp( DAO_ACCOUNT, DAO_ACCOUNT, producers[i] ),
-          "Only whitelisted bps are allowed" );
+          "Only whitelisted BPs are allowed" );
       eosio::check( !is_blacklisted( producers[i] ),
-                    "The bp " + producers[i].to_string() + " is blacklisted" );
+                    "The BP " + producers[i].to_string() + " is blacklisted" );
     }
 
     std::vector< uint16_t > ranks = members.stats().ranks;
@@ -72,7 +72,7 @@ namespace edenproxy {
       }
     }
 
-    eosio::check( bps.size() >= 1, "No bps to vote for" );
+    eosio::check( bps.size() >= 1, "No BPs to vote for" );
 
     std::sort( bps.begin(),
                bps.end(),
@@ -152,14 +152,14 @@ namespace edenproxy {
   void smartproxy_contract::banbp( eosio::name bp ) {
     require_auth( get_self() );
 
-    eosio::check( is_blockproducer( bp ), "Only blockproducers can be banned" );
+    eosio::check( is_blockproducer( bp ), "Only Block Producers can be banned" );
 
     blacklisted_table _blacklisted( get_self(), get_self().value );
 
     auto blacklisted_itr = _blacklisted.find( bp.value );
 
     eosio::check( blacklisted_itr == _blacklisted.end(),
-                  "bp is already blacklisted" );
+                  "BP is already blacklisted" );
 
     _blacklisted.emplace( get_self(), [&]( auto &row ) { row.bp = bp; } );
   }
@@ -172,7 +172,7 @@ namespace edenproxy {
     auto blacklisted_itr = _blacklisted.find( bp.value );
 
     eosio::check( blacklisted_itr != _blacklisted.end(),
-                  "bp is not blacklisted" );
+                  "BP is not blacklisted" );
 
     _blacklisted.erase( blacklisted_itr );
   }
