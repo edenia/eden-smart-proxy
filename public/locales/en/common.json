@@ -38,7 +38,7 @@
     "descending": "Descending",
     "voteMetaTitle": "Vote",
     "mustLogin": "You must login",
-    "beforeVoting": "Before voting for Block producers, you must delegate the vote",
+    "beforeVoting": "Before voting for Block producers, you must delegate your vote to the proxy.",
     "successfulVote": "Voted Successfully",
     "somethingWrong": "Something went wrong, try again",
     "loadMore": "Load More",
