@@ -10,7 +10,7 @@ TEST_CASE( "Require to be an eden member" ) {
 
   expect( t.alice.trace< edenproxy::actions::vote >( "alice"_n,
                                                      std::vector{ "bp1"_n } ),
-          "Needs to be an active eden member" );
+          "You need to be an active eden member to vote" );
 }
 
 TEST_CASE( "Success vote" ) {
@@ -54,14 +54,14 @@ TEST_CASE( "Vote for blacklisted bp" ) {
   expect( t.alice.trace< edenproxy::actions::vote >(
               "alice"_n,
               std::vector{ "bp1"_n, "bp2"_n, "bp3"_n } ),
-          "The bp bp2 is blacklisted" );
+          "The BP bp2 is blacklisted" );
 
   t.smartproxy.act< edenproxy::actions::banbp >( "bp1"_n );
 
   expect( t.alice.trace< edenproxy::actions::vote >(
               "alice"_n,
               std::vector{ "bp1"_n, "bp2"_n, "bp3"_n } ),
-          "The bp bp1 is blacklisted" );
+          "The BP bp1 is blacklisted" );
 
   t.alice.act< edenproxy::actions::vote >( "alice"_n, std::vector{ "bp3"_n } );
   t.smartproxy.act< edenproxy::actions::unbanbp >( "bp1"_n );
