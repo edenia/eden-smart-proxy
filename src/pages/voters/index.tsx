@@ -13,7 +13,7 @@ const Voters: NextPage = () => {
 
   return (
     <>
-      <NextSeo title={t('votersMetaTitle')} />
+      <NextSeo title={t('voters.votersMetaTitle')} />
       <VotersHead setSearchInput={setSearchInput} />
       <VotersBody searchValue={searchInput} />
     </>

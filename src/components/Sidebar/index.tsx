@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Drawer, DrawerProps, Typography, Link } from '@mui/material'
+import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import { PreviewProfile } from '@edenia/ui-kit'
 import clsx from 'clsx'
@@ -23,6 +24,7 @@ type SidebarType = {
 
 const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
   const router = useRouter()
+  const { t } = useTranslation()
   const classes = useStyles()
   const [state] = useSharedState()
   const [userData, setUserData] = useState<any>()
@@ -61,7 +63,7 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
             >
               <VoterSvg />
               <Typography variant='subtitle1' className={classes.navLabel}>
-                Voters
+                {t('routes.voters')}
               </Typography>
               <p />
             </Link>
@@ -74,7 +76,7 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
             >
               <VoteSvg />
               <Typography variant='subtitle1' className={classes.navLabel}>
-                Vote
+                {t('routes.vote')}
               </Typography>
               <p />
             </Link>
@@ -87,7 +89,7 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
             >
               <AboutSvg />
               <Typography variant='subtitle1' className={classes.navLabel}>
-                About
+                {t('routes.about')}
               </Typography>
               <p />
             </Link>
