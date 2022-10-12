@@ -38,6 +38,7 @@
     "descending": "Descendente",
     "voteMetaTitle": "Voto",
     "mustLogin": "Debes iniciar sesión",
+    "beforeVoting": "Antes de votar por los productores de bloques, debes delegar el voto",
     "successfulVote": "Voto Exitoso",
     "somethingWrong": "Algo salió mal, inténtalo de nuevo",
     "loadMore": "Cargar más",
