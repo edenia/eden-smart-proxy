@@ -48,8 +48,11 @@ const Body: React.FC<voteBodyProps> = ({
           isSelected={selectedBps.includes(bp.producer)}
           avatarIcon={bp.voted && '/icons/good-icon.png'}
           name={bp.producer}
+          bgColor='#fff'
           // rankValue='N'
-          image={bp?.bpJsonData?.org?.branding?.logo_256}
+          image={
+            bp?.bpJsonData?.org?.branding?.logo_256 || '/logos/no-logo.png'
+          }
           proxyScore={String(bp.stats)}
           // eosrateValue='N'
           // positionText='9,200,750 Votes'

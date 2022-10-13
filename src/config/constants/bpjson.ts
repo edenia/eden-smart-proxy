@@ -1,5 +1,328 @@
 const bpJson = [
   {
+    producer_account_name: 'heliosblocks',
+    org: {
+      candidate_name: 'heliosblocks',
+      website: 'https://eos.heliosrising.com',
+      ownership_disclosure: 'https://www.heliosrising.com/helios-bp',
+      code_of_conduct: 'https://www.heliosrising.com/helios-bp',
+      email: 'info@heliosrises.com',
+      branding: {
+        logo_256: 'https://eos.heliosrising.com/helios-logo_256.png',
+        logo_1024: 'https://eos.heliosrising.com/helios-logo_1024.png',
+        logo_svg: 'https://eos.heliosrising.com/helios-logo.svg'
+      },
+      location: {
+        name: 'Puerto Rico',
+        country: 'US',
+        latitude: 18.4655,
+        longitude: 66.1057
+      },
+      social: {
+        twitter: 'helios_rising_',
+        facebook: 'Helios-108890411605127',
+        discord: 'eUwgSsQfTx',
+        telegram: 'helios_rising'
+      }
+    },
+    nodes: [
+      {
+        location: {
+          name: 'Puerto Rico',
+          country: 'US',
+          latitude: 18.4655,
+          longitude: 66.1057
+        },
+        node_type: 'query',
+        features: ['chain-api', 'account-query'],
+        api_endpoint: 'http://api.eos.heliosrising.com',
+        ssl_endpoint: 'https://api.eos.heliosrising.com'
+      },
+      {
+        location: {
+          name: 'Puerto Rico',
+          country: 'US',
+          latitude: 45.425532,
+          longitude: -75.700269
+        },
+        node_type: 'producer'
+      },
+      {
+        location: {
+          name: 'Puerto Rico',
+          country: 'US',
+          latitude: 18.4655,
+          longitude: 66.1057
+        },
+        node_type: 'seed',
+        p2p_endpoint: 'api.eos.heliosrising.com:9876'
+      }
+    ]
+  },
+  {
+    producer_account_name: 'eosbarcelona',
+    producer_public_key:
+      'EOS8WEaLDWnnBbRdYdefHzqumi1Jx3NEquk7wdTkEQyfa3iJXGxqN',
+    org: {
+      candidate_name: 'eosBarcelona',
+      website: 'https://eos.barcelona',
+      ownership_disclosure:
+        'https://steemit.com/eos/@jrosich/introducing-eosbarcelona',
+      code_of_conduct:
+        'https://steemit.com/eos/@jrosich/introducing-eosbarcelona',
+      email: 'contact@eos.barcelona',
+      github_user: 'jrosich',
+      branding: {
+        logo_256: 'https://eos.barcelona/eosLogo-256.png',
+        logo_1024: 'https://eos.barcelona/eosLogo-256.png',
+        logo_svg: ''
+      },
+      location: {
+        name: 'Barcelona',
+        country: 'ES',
+        latitude: 41.3667,
+        longitude: 2.0667
+      },
+      social: {
+        steemit: 'jrosich',
+        twitter: 'eosbarcelona',
+        youtube: '',
+        facebook: '',
+        github: 'jrosich',
+        reddit: 'eosbarcelona',
+        keybase: 'eosbarcelona',
+        telegram: 'eosbarcelona',
+        wechat: ''
+      }
+    },
+    nodes: [
+      {
+        location: {
+          name: 'Germany',
+          country: 'DE',
+          latitude: 52.520008,
+          longitude: 13.404954
+        },
+        node_type: 'producer'
+      },
+      {
+        location: {
+          name: 'Germany',
+          country: 'DE',
+          latitude: 52.520008,
+          longitude: 13.404954
+        },
+        node_type: ['query', 'seed'],
+        p2p_endpoint: 'p2p.eos.barcelona:2093',
+        api_endpoint: 'http://api.eos.barcelona',
+        ssl_endpoint: 'https://api.eos.barcelona',
+        features: ['chain-api']
+      }
+    ]
+  },
+  {
+    producer_account_name: 'eos42freedom',
+    org: {
+      candidate_name: 'EOS42',
+      website: 'https://eos42.io',
+      code_of_conduct:
+        'https://steemit.com/eos/@eos42/eos42-statement-of-ownership-and-code-of-conduct-v1-0',
+      ownership_disclosure:
+        'https://steemit.com/eos/@eos42/eos42-statement-of-ownership',
+      email: 'community@eos42.io',
+      github_user: 'PhillipHamnett',
+      branding: {
+        logo_256: 'https://eos42.io/static/img/eos42_logo_bp2.png',
+        logo_1024: 'https://eos42.io/static/img/eos42_logo_bp_1024_2.png',
+        logo_svg: 'https://eos42.io/static/img/eos42_logo_bp2.svg'
+      },
+      location: {
+        name: 'Germany',
+        country: 'DE',
+        latitude: 50.1109,
+        longitude: 8.6821
+      },
+      social: {
+        steemit: 'eos42',
+        twitter: 'EOS42io',
+        github: 'eos42',
+        keybase: 'phamnett',
+        telegram: 'EOS42'
+      }
+    },
+    nodes: [
+      {
+        location: {
+          name: 'Frankfurt',
+          country: 'DE',
+          latitude: 50.1109,
+          longitude: 8.6821
+        },
+        node_type: 'producer'
+      },
+      {
+        location: {
+          name: 'Frankfurt',
+          country: 'DE',
+          latitude: 50.1109,
+          longitude: 8.6821
+        },
+        node_type: 'query',
+        features: ['chain-api', 'account-query'],
+        ssl_endpoint: 'https://api.eos42.io'
+      },
+      {
+        location: {
+          name: 'Frankfurt',
+          country: 'DE',
+          latitude: 50.1109,
+          longitude: 8.6821
+        },
+        node_type: 'seed',
+        p2p_endpoint: 'p2p.eos42.io:9876'
+      }
+    ]
+  },
+  {
+    producer_account_name: 'bountyblokbp',
+    org: {
+      candidate_name: 'bountyblok.io',
+      website: 'https://www.bountyblok.io',
+      code_of_conduct: 'https://www.bountyblok.io/coc.html',
+      ownership_disclosure: 'https://www.bountyblok.io/ownership.html',
+      email: 'dimitri@bountyblok.io',
+      github_user: ['diminiko'],
+      branding: {
+        logo_256: 'https://www.bountyblok.io/img/logo_256x256.png',
+        logo_1024: 'https://www.bountyblok.io/img/logo_1024x1024.png',
+        logo_svg: 'https://www.bountyblok.io/img/logo_128x128.svg'
+      },
+      location: {
+        name: 'Montreal',
+        country: 'CA',
+        latitude: 45.495921,
+        longitude: -73.757817
+      },
+      social: {
+        medium: 'bountyblok',
+        twitter: 'bountyblok',
+        github: 'bountyblok',
+        keybase: 'bountyblokio',
+        telegram: 'bountyblok'
+      }
+    },
+    nodes: [
+      {
+        location: {
+          name: 'UnitedStates',
+          country: 'US',
+          latitude: 45.495921,
+          longitude: -73.757817
+        },
+        api_endpoint: 'http://api.wax.bountyblok.io',
+        ssl_endpoint: 'https://api.wax.bountyblok.io',
+        node_type: 'query',
+        features: ['chain-api']
+      },
+      {
+        location: {
+          name: 'UnitedStates',
+          country: 'US',
+          latitude: 45.495921,
+          longitude: -73.757817
+        },
+        p2p_endpoint: 'p2p.wax.bountyblok.io:29876',
+        node_type: 'seed'
+      },
+      {
+        location: {
+          name: 'Poland',
+          country: 'PL',
+          latitude: 45.495921,
+          longitude: -73.757817
+        },
+        p2p_endpoint: '',
+        api_endpoint: '',
+        ssl_endpoint: '',
+        node_type: 'producer'
+      },
+      {
+        location: {
+          name: 'Canada',
+          country: 'CA',
+          latitude: 45.495921,
+          longitude: -73.757817
+        },
+        ssl_endpoint: 'https://api.wax-aa.bountyblok.io',
+        node_type: 'query',
+        features: ['atomic-assets-api']
+      }
+    ]
+  },
+  {
+    producer_account_name: 'caleosblocks',
+    org: {
+      candidate_name: 'CALEOS',
+      website: 'https://caleos.io',
+      code_of_conduct: 'https://caleos.io#conduct',
+      ownership_disclosure: 'https://caleos.io#team',
+      email: 'info@caleos.io',
+      branding: {
+        logo_256: 'https://caleos.io/images/caleos_black.png',
+        logo_1024: 'https://caleos.io/images/caleos_black_lg.png',
+        caleos_white_png: 'https://caleos.io/images/caleos_white.png',
+        logo_svg: 'https://caleos.io/images/caleos_black.svg',
+        caleos_white_svg: 'https://caleos.io/images/caleos_white.svg'
+      },
+      location: {
+        name: 'California',
+        country: 'US',
+        latitude: 36.972323,
+        longitude: -122.024017
+      },
+      social: {
+        twitter: 'caleosio',
+        medium: 'caleosio',
+        github: 'CALEOS',
+        telegram: 'CalEOS',
+        steemit: 'caleosio'
+      }
+    },
+    nodes: [
+      {
+        location: {
+          name: 'San Jose',
+          country: 'US',
+          latitude: 37.334174,
+          longitude: -121.891759
+        },
+        node_type: 'producer'
+      },
+      {
+        location: {
+          name: 'San Jose',
+          country: 'US',
+          latitude: 37.334174,
+          longitude: -121.891759
+        },
+        node_type: 'seed',
+        p2p_endpoint: 'eos.caleos.io:9881'
+      },
+      {
+        location: {
+          name: 'San Jose',
+          country: 'US',
+          latitude: 37.334174,
+          longitude: -121.891759
+        },
+        node_type: 'query',
+        api_endpoint: 'http://eos.caleos.io',
+        ssl_endpoint: 'https://eos.caleos.io',
+        features: ['chain-api']
+      }
+    ]
+  },
+  {
     producer_account_name: 'argentinaeos',
     org: {
       candidate_name: 'EOSArgentina',
@@ -137,7 +460,8 @@ const bpJson = [
       chain_resources: '',
       other_resources: [],
       branding: {
-        logo_256: 'https://eospglmlt.com/bp-logo-256.png',
+        logo_256:
+          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAApAAAACICAYAAABQr9uPAAAACXBIWXMAACxLAAAsSwGlPZapAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAB7pSURBVHgB7d1tcBz3fR/w73/vABCUWIK2pBmlymihF67HfUFStvsweaEFR3LjVhOBnlH8ojMmqM44ddOIoFo/KC+MhWZaKQ8jgerUbdoZ45RXjl9Y0LR+VnjL6TRxYscEM5nYiSfCKrIjxXrAUXzAAXe3//x/uD3pBALE7t3u3t7t9+NZHUwewANwt/fd3//hBxARERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERHR0FAg2oPWWm6mwsPu+ng3ftdtTSlVAxHlVvj6nkPCzGu/goLJ888yfGyz2PvcnRTfPF4PORB+z7Y5HFDP9nv+MUDSNvOCk5PLMXMcDW/lsNH7SUcCpB8el8yxKod5QvogooEzr3k5/wdIlrxzP2Ze50soiDCsnDbHl5EsbX6OFvoU/p7PI/0wtWwe7yPIgRR/J0Wy7/OvjP2+gtZz5uY+5N9ltEOL8PFuJWwVdIOuwChXpg+hHRaT1Pn6nX+j8+/6aIfJFXNcyEOgDE82C0j+Z9DNM9/rcygY19Woef7UwbGJUyarHNPKPO90hIsShZr5tbwM3Vx56sVpDzQsJKx80bymKgUahdj+nkFUMPsGSLSvWk5hSIXhQAKLbw7PHJfyUmbPWhgaHXOcQTvYpT2ksRs7PGbDx3TR3JzDYMOkvAE4SPcKXZ6IhQqQCw//HI0/+tncZLn8jEar/VzTET9Zh8Mjqnzm8QdeWdOl8omnvnWnjz5p7eI5rzZVrx+YKpW1vft9gtrYWMM/PbPEaRi9OWKOp82Ri2pUmtK++JRzNqcDUV7tO4QtV5IY4gB5E545KshJFSxN5nfooB3Y5Pc4iNAYlWeOStaVuoyGeHIzvJOFhQd/hq2t1kkzCPI1JGNto9G8d8mb7unN9KvVBbzZuD5XsuTiSR2L9lnaa2m9+JkHftfDCEppCPudL2+OE6N8sR6Gx2lzvIR0yD9wT7/vTxzCph7tO4Td9/yKIeagHSDX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',
         logo_1024: 'https://eospglmlt.com/bp-logo-1024.png',
         logo_svg: 'https://eospglmlt.com/bp-logo.svg'
       },
@@ -479,7 +803,7 @@ const bpJson = [
       github_user: 'eosauthority',
       branding: {
         logo_256:
-          'https://eosauthority.com/common/bp-standard-info/EOS-AUTHORITY-256.jpg',
+          'https://res.cloudinary.com/dwkobzcjz/image/fetch/w_50,h_50,c_fill,r_5/https://eosauthority.com/common/bp-standard-info/EOS-AUTHORITY-256.jpg',
         logo_1024:
           'https://eosauthority.com/common/bp-standard-info/EOS-AUTHORITY-1024.jpg',
         logo_svg:
@@ -664,66 +988,73 @@ const bpJson = [
   {
     producer_account_name: 'eosiodetroit',
     org: {
-      candidate_name: 'EOS Detroit',
-      website: 'https://eosdetroit.io',
-      ownership_disclosure: 'https://eosdetroit.io/block-producer/transparency',
+      candidate_name: 'Detroit Ledger Technologies',
+      website: 'https://detroitledger.tech',
+      ownership_disclosure:
+        'https://detroitledger.tech/block-producer/transparency',
       code_of_conduct:
         'https://steemit.com/eos/@eos.detroit/eos-detroit-membership-guidelines',
-      email: 'ask@eosdetroit.io',
+      email: 'ask@detroitledger.tech',
+      github_user: ['wakeupjohnny', 'LuqWright'],
+      chain_resources: '',
+      other_resources: [],
       branding: {
-        logo_256: 'https://eosdetroit.io/images/eos-detroit_256.png',
-        logo_1024: 'https://eosdetroit.io/images/eos-detroit_1024.png',
-        logo_svg: 'https://eosdetroit.io/images/eos-detroit.svg'
+        logo_256:
+          'https://detroitledger.tech/images/logos/EOSD_logo_transparent_256.png',
+        logo_1024:
+          'https://detroitledger.tech/images/logos/EOSD_logo_transparent.png',
+        logo_svg: 'https://detroitledger.tech/images/logos/EOSD_logo.svg'
       },
       location: {
-        name: 'Detroit',
+        name: 'DETROIT',
         country: 'US',
         latitude: 42.3314,
         longitude: -83.0458
       },
       social: {
         steemit: 'eos.detroit',
-        twitter: 'eosiodetroit',
-        youtube: 'eosdetroit',
-        facebook: 'eosiodetroit',
+        twitter: 'detledgertech',
+        youtube: 'detroitledgertechnologies',
+        facebook: 'detroitledgertech',
         github: 'eosdetroit',
         reddit: 'eosdetroit',
-        keybase: 'robrigo',
-        telegram: 'eos_detroit',
+        keybase: 'wakeupjohnny',
+        telegram: 'detroitledgertech',
         wechat: 'robrigo_eosdetroit'
       }
     },
     nodes: [
       {
         location: {
-          name: 'EOS Detroit API 1',
+          name: 'eos-api1-dlt',
           country: 'US',
           latitude: 39.9612,
           longitude: -82.9988
         },
-        node_type: 'full',
+        node_type: 'query',
         p2p_endpoint: '',
         api_endpoint: '',
-        ssl_endpoint: 'https://api.eosdetroit.io'
+        ssl_endpoint: 'https://api.eos.detroitledger.tech',
+        features: ['chain-api', 'account-query', 'history-v1']
       },
       {
         location: {
-          name: 'EOS Detroit Seed 1',
+          name: 'eos-seed-dlt',
           country: 'US',
           latitude: 39.9612,
           longitude: -82.9988
         },
         node_type: 'seed',
-        p2p_endpoint: 'p2p.eosdetroit.io:3018',
+        p2p_endpoint: 'p2p.eos.detroitledger.tech:1337',
         api_endpoint: '',
         ssl_endpoint: ''
       },
       {
         location: {
-          name: 'EOS Detroit BP 1',
+          name: 'eos-bp-dlt',
           country: 'US',
-          latitude: 39.9612,
-          longitude: -82.9988
+          latitude: 42.3314,
+          longitude: -83.0458
         },
         node_type: 'producer',
         p2p_endpoint: '',
