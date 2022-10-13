@@ -27,11 +27,15 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
     setLoadingData(true)
     const members = await smartProxyUtil.getEdenMembers(
       nextKey === '' ? undefined : nextKey,
-      20
+      40
     )
+
     if (members) {
+      const activeMembers = members?.rows?.filter(
+        member => member[1]?.status === 1
+      )
       const electionRankSize = await genesisEdenUtil.getRanks()
-      const membersCompleteDataPromise = members?.rows?.map(async member => {
+      const membersCompleteDataPromise = activeMembers.map(async member => {
         const { rows } = await smartProxyUtil.getVotes(
           member[1]?.account,
           member[1]?.account,
