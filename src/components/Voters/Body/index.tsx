@@ -121,25 +121,9 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
           headItem={
             <Image src={delegate.vote ? yesVotingIcon : notVotingIcon} />
           }
+          profileLink={`https://genesis.eden.eoscommunity.org/members/${delegate[1]?.account}`}
+          targetProfile='_blank'
           positionText={`${delegate?.info?.rank?.label} - Rate: n`}
-          selectableItems={
-            <div className={classes.centerSelectableItems}>
-              <Image src={telegramIcon} alt='Telegram icon' />
-              <Typography
-                variant='subtitle2'
-                className={classes.labelSelectedItems}
-              >
-                <Link
-                  href={`https://t.me/${delegate?.info?.social?.telegram}`}
-                  rel='noreferrer'
-                  underline='none'
-                  target='_blank'
-                >
-                  {delegate?.info?.social?.telegram}
-                </Link>
-              </Typography>
-            </div>
-          }
         />
       ))}
       {loadingData && (
