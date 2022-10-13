@@ -27,25 +27,25 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
     setLoadingData(true)
     const members = await smartProxyUtil.getEdenMembers(
       nextKey === '' ? undefined : nextKey,
-      5
+      20
     )
     if (members) {
-      const infoMembers = await atomicAssetsUtil.getTemplates()
       const electionRankSize = await genesisEdenUtil.getRanks()
       const membersCompleteDataPromise = members?.rows?.map(async member => {
-        const info = infoMembers.find(
-          (template): any => member[1]?.account === template?.account
-        )
         const { rows } = await smartProxyUtil.getVotes(
           member[1]?.account,
           member[1]?.account,
           1
         )
 
+        const memberInfo = await atomicAssetsUtil.getTemplate(
+          member[1]?.nft_template_id
+        )
+
         return {
           ...member,
           info: {
-            ...info,
+            ...memberInfo,
             rank: genesisEdenUtil.classifyMemberRank(
               member[1].election_rank,
               electionRankSize.length - 1
