@@ -9,7 +9,8 @@ const initialValue = {
   openMenuWallets: false,
   elemRef: null,
   ual: null,
-  isLogout: false
+  isLogout: false,
+  imgCached: []
 }
 
 const SharedStateContext = createContext<{
@@ -43,6 +44,12 @@ const sharedStateReducer = (state, action): stateType => {
         isLogout: false
       }
     }
+
+    case 'setImg':
+      return {
+        ...state,
+        imgCached: [...state.imgCached, action.payload]
+      }
 
     case 'setOpenMenuWallets': {
       return {
@@ -125,10 +132,15 @@ export const useSharedState = (): any => {
     })
   }
 
+  const setImg = img => {
+    dispatchTemp({ type: 'setImg', payload: img })
+  }
+
   return [
     stateTemp,
     {
       setState,
+      setImg,
       login,
       logout,
       handleOpenMenu,

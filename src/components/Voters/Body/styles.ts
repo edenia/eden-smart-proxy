@@ -19,6 +19,13 @@ const Styles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     paddingTop: theme.spacing(4)
+  },
+  avatar: {
+    width: 56,
+    height: 56,
+    borderRadius: '50%',
+    margin: 'auto',
+    objectFit: 'cover'
   }
 }))
 

@@ -118,10 +118,10 @@
   dependencies:
     "@date-io/core" "^2.16.0"
 
-"@edenia/ui-kit@^0.3.3":
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/@edenia/ui-kit/-/ui-kit-0.3.3.tgz#4f1e979d3841410d7d8c25526f670f9c00af7392"
-  integrity sha512-lVu/MiutN87y/OGqy3ne6Q3QiQdVQb/SkfSk3KbkwgGZjXjwPtg97h16CQpOTPjjBtutA96A8fgykB8lIr93zA==
+"@edenia/ui-kit@^0.3.8":
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/@edenia/ui-kit/-/ui-kit-0.3.8.tgz#7c82b0267b6ef282a725513c36cf2ad363c42e96"
+  integrity sha512-Ldz4xBypMqTiUz30JIePULKZpCQsiK6q57uSJcnjB7+/urOL+Ap7sW68cbQhmPGbCd1mdwDx6n1IazvZNm+XTw==
   dependencies:
     clsx "^1.2.1"
     react "^18.2.0"

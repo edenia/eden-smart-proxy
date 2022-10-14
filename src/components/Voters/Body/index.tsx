@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
 import { smartProxyUtil, atomicAssetsUtil, genesisEdenUtil } from 'utils'
+import ImgLoading from '../../ImageLoad'
 import telegramIcon from '/public/icons/telegram-grey-icon.png'
 import yesVotingIcon from '/public/icons/yes-voting-icon.png'
 import notVotingIcon from '/public/icons/not-voting-icon.png'
@@ -115,7 +116,14 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
               : t('voters.noVoting')
           }
           name={delegate[1].name}
-          image={`https://ipfs.io/ipfs/${delegate?.info?.image}`}
+          imgChild={
+            <ImgLoading
+              classes={classes.avatar}
+              img={delegate?.info?.image}
+              defaultImg='/images/user.svg'
+            />
+          }
+          bgColor='rgba(0, 0, 0, 0.05)'
           target='_blank'
           avatarIcon={delegate?.info?.rank?.badge}
           headItem={
