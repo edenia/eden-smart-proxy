@@ -31,7 +31,7 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
     setLoadingData(true)
     const members = await smartProxyUtil.getEdenMembers(
       nextKey === '' ? undefined : nextKey,
-      10
+      50
     )
 
     if (members) {
