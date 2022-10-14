@@ -19,6 +19,9 @@ const Styles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     paddingTop: theme.spacing(4)
+  },
+  itemActionStyle: {
+    width: '110px'
   }
 }))
 

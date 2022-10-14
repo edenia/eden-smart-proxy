@@ -38,6 +38,18 @@ export const getRanks = async <T = any>(): Promise<T> => {
   return rows.length ? rows[0][1].ranks : []
 }
 
+export const getLastElectionDate = async <T = any>(): Promise<T> => {
+  const { rows } = await eosApi.getTableRows({
+    code: sdkConfig.genesisEdenContract,
+    scope: 0,
+    table: 'elect.state',
+    json: true,
+    limit: 1
+  })
+
+  return rows.length ? rows[0][1]?.last_election_time : undefined
+}
+
 export const classifyMemberRank = (
   rank: number,
   electionRankSize: number
