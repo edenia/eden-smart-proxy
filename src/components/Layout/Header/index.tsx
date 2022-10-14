@@ -78,10 +78,12 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
   }
 
   const validateHasDelegateVote = async () => {
-    const delegateState = await eosioUtil.hasVoteForProxy(
+    const delegateState = await eosioUtil.getVotingState(
       state?.ual?.activeUser?.accountName
     )
-    setShowDelegateButton(!delegateState)
+    setShowDelegateButton(
+      delegateState === eosioUtil.VoteState.ForProxy ? false : true
+    )
     setTotalVotesDelegate(await eosioUtil.getTotalEosVoteDelegate())
   }
 
