@@ -37,6 +37,13 @@ const Styles = makeStyles(theme => ({
   },
   linkPadding: {
     padding: '0 4px'
+  },
+  avatar: {
+    width: 56,
+    height: 56,
+    borderRadius: '50%',
+    margin: 'auto',
+    objectFit: 'cover'
   }
 }))
 

@@ -4,6 +4,7 @@ export type InitialStateType = {
   elemRef: null
   ual: any
   isLogout: boolean
+  imgCached: Array<string>
 }
 
 export type stateType = {
@@ -12,4 +13,5 @@ export type stateType = {
   elemRef: null
   ual: any
   isLogout: boolean
+  imgCached: Array<string>
 }

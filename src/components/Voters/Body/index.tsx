@@ -4,6 +4,7 @@ import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
+import ImgLoading from '../../ImageLoad'
 import {
   smartProxyUtil,
   atomicAssetsUtil,
@@ -127,7 +128,14 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
               : `${t('voters.voteFor')} ${String(delegate?.vote?.amount)} `
           }
           name={delegate[1].name}
-          image={`https://ipfs.io/ipfs/${delegate?.info?.image}`}
+          imgChild={
+            <ImgLoading
+              classes={classes.avatar}
+              img={delegate?.info?.image}
+              defaultImg='/icons/spinner.gif'
+            />
+          }
+          bgColor='#fff'
           target='_blank'
           link={`https://bloks.io/account/edensmartprx?loadContract=true&tab=Tables&table=votes&account=edensmartprx&scope=edensmartprx&limit=1&lower_bound=${delegate[1]?.account}&upper_bound=${delegate[1]?.account}`}
           linkIcon={
