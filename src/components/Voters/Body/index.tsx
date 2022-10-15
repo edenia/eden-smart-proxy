@@ -135,7 +135,7 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
               defaultImg='/icons/spinner.gif'
             />
           }
-          bgColor='rgba(0, 0, 0, 0.05)'
+          bgColor='#fff'
           target='_blank'
           link={`https://bloks.io/account/edensmartprx?loadContract=true&tab=Tables&table=votes&account=edensmartprx&scope=edensmartprx&limit=1&lower_bound=${delegate[1]?.account}&upper_bound=${delegate[1]?.account}`}
           linkIcon={

@@ -51,7 +51,7 @@ const Body: React.FC<voteBodyProps> = ({
           image={
             bp?.bpJsonData?.org?.branding?.logo_256 || '/logos/no-logo.png'
           }
-          bgColor='rgba(0, 0, 0, 0.05)'
+          bgColor='#fff'
           proxyScore={String(bp.stats)}
           selectableItems={
             <div className={classes.socialItems}>
