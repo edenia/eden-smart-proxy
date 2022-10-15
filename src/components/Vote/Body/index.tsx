@@ -4,7 +4,6 @@ import { Link, Typography } from '@mui/material'
 import { useEffect } from 'react'
 
 import { socialMediaInfo } from 'config/constants'
-import ImgLoading from '../../ImageLoad'
 
 import useStyles from './styles'
 
@@ -49,12 +48,8 @@ const Body: React.FC<voteBodyProps> = ({
           isSelected={selectedBps.includes(bp.producer)}
           avatarIcon={bp.voted && '/icons/good-icon.png'}
           name={bp.producer}
-          imgChild={
-            <ImgLoading
-              classes={classes.avatar}
-              img={bp?.bpJsonData?.org?.branding?.logo_256}
-              defaultImg='/icons/spinner.gif'
-            />
+          image={
+            bp?.bpJsonData?.org?.branding?.logo_256 || '/logos/no-logo.png'
           }
           bgColor='rgba(0, 0, 0, 0.05)'
           proxyScore={String(bp.stats)}

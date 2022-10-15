@@ -26,6 +26,9 @@ const Styles = makeStyles(theme => ({
     borderRadius: '50%',
     margin: 'auto',
     objectFit: 'cover'
+  },
+  itemActionStyle: {
+    width: '110px'
   }
 }))
 

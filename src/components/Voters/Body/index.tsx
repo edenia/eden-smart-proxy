@@ -1,15 +1,19 @@
 import CircularProgress from '@mui/material/CircularProgress'
 import { DelegateItem, Button } from '@edenia/ui-kit'
-import { Link, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
-import { smartProxyUtil, atomicAssetsUtil, genesisEdenUtil } from 'utils'
 import ImgLoading from '../../ImageLoad'
-import telegramIcon from '/public/icons/telegram-grey-icon.png'
+import {
+  smartProxyUtil,
+  atomicAssetsUtil,
+  genesisEdenUtil,
+  eosioUtil
+} from 'utils'
 import yesVotingIcon from '/public/icons/yes-voting-icon.png'
 import notVotingIcon from '/public/icons/not-voting-icon.png'
+import votingOtherIcon from '/public/icons/voting-for-other-icon.png'
 
 import useStyles from './styles'
 
@@ -28,7 +32,7 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
     setLoadingData(true)
     const members = await smartProxyUtil.getEdenMembers(
       nextKey === '' ? undefined : nextKey,
-      40
+      50
     )
 
     if (members) {
@@ -47,6 +51,8 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
           member[1]?.nft_template_id
         )
 
+        const voteState = await eosioUtil.getVotingState(member[1]?.account)
+
         return {
           ...member,
           info: {
@@ -57,7 +63,10 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
             )
           },
           next_key: members.next_key,
-          vote: rows.length > 0 ? rows[0].producers : undefined
+          vote: {
+            state: voteState,
+            amount: rows.length > 0 ? rows[0]?.producers.length : 0
+          }
         }
       })
       const membersCompleteData = await Promise?.all(membersCompleteDataPromise)
@@ -110,10 +119,13 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
       {edenMembers?.map(delegate => (
         <DelegateItem
           key={delegate[1].name}
+          actionItemStyles={classes.itemActionStyle}
           text={
-            delegate.vote
-              ? `${t('voters.voteFor')} ${delegate?.vote?.length} `
-              : t('voters.noVoting')
+            delegate?.vote?.state !== eosioUtil.VoteState.ForProxy
+              ? delegate?.vote?.state === eosioUtil.VoteState.NoVoting
+                ? t('voters.noVoting')
+                : t('voters.voteByOther')
+              : `${t('voters.voteFor')} ${String(delegate?.vote?.amount)} `
           }
           name={delegate[1].name}
           imgChild={
@@ -125,29 +137,26 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
           }
           bgColor='rgba(0, 0, 0, 0.05)'
           target='_blank'
+          link={`https://bloks.io/account/edensmartprx?loadContract=true&tab=Tables&table=votes&account=edensmartprx&scope=edensmartprx&limit=1&lower_bound=${delegate[1]?.account}&upper_bound=${delegate[1]?.account}`}
+          linkIcon={
+            delegate?.vote?.state === eosioUtil.VoteState.ForProxy &&
+            '/icons/ref-icon.png'
+          }
           avatarIcon={delegate?.info?.rank?.badge}
           headItem={
-            <Image src={delegate.vote ? yesVotingIcon : notVotingIcon} />
+            <Image
+              src={
+                delegate.vote?.state !== eosioUtil.VoteState.ForProxy
+                  ? delegate.vote?.state === eosioUtil.VoteState.ForOther
+                    ? votingOtherIcon
+                    : notVotingIcon
+                  : yesVotingIcon
+              }
+            />
           }
+          profileLink={`https://genesis.eden.eoscommunity.org/members/${delegate[1]?.account}`}
+          targetProfile='_blank'
           positionText={`${delegate?.info?.rank?.label} - Rate: n`}
-          selectableItems={
-            <div className={classes.centerSelectableItems}>
-              <Image src={telegramIcon} alt='Telegram icon' />
-              <Typography
-                variant='subtitle2'
-                className={classes.labelSelectedItems}
-              >
-                <Link
-                  href={`https://t.me/${delegate?.info?.social?.telegram}`}
-                  rel='noreferrer'
-                  underline='none'
-                  target='_blank'
-                >
-                  {delegate?.info?.social?.telegram}
-                </Link>
-              </Typography>
-            </div>
-          }
         />
       ))}
       {loadingData && (

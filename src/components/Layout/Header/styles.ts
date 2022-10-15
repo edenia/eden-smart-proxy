@@ -178,6 +178,9 @@ const Styles = makeStyles(theme => ({
   },
   paddingLenguajeSelector: {
     paddingRight: theme.spacing(4)
+  },
+  btnDelegate: {
+    padding: theme.spacing(1, 2)
   }
 }))
 

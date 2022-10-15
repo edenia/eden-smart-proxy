@@ -12,7 +12,7 @@ import { routeUtils, smartProxyUtil, eosioUtil } from 'utils'
 import { useSharedState } from 'context/state.context'
 import i18nUtils from 'utils/i18n'
 import { bpsInfo } from 'config/constants'
-import linkIcon from '/public/icons/link-icon.png'
+import likeIcon from '/public/icons/like-icon.png'
 import { VoteHead, VoteBody } from 'components'
 
 import useStyles from './styles'
@@ -42,7 +42,11 @@ const Vote: NextPage = () => {
   })
 
   const validateHasDelegateVote = async () => {
-    return await eosioUtil.hasVoteForProxy(state?.ual?.activeUser?.accountName)
+    return (await eosioUtil.getVotingState(
+      state?.ual?.activeUser?.accountName
+    )) === eosioUtil.VoteState.ForProxy
+      ? true
+      : false
   }
 
   const handleVote = async selectedBps => {
@@ -258,7 +262,7 @@ const Vote: NextPage = () => {
           onClick={() => handleVote(selectedBps)}
         >
           <div className={classes.centerFabContent}>
-            <Image src={linkIcon} />
+            <Image src={likeIcon} />
             <Typography
               className={classes.labelPadding}
               variant='subtitle1'

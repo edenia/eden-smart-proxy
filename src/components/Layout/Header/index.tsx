@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import { BaseSnackbar } from 'components'
 import { useTranslation } from 'next-i18next'
-import Link from '@mui/material/Link'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useRouter } from 'next/router'
 import { Button } from '@edenia/ui-kit'
@@ -17,9 +16,6 @@ import { useSharedState } from 'context/state.context'
 import LanguageSelector from 'components/LanguageSelector'
 
 import useStyles from './styles'
-import { default as routes } from './routes.json'
-
-const { mainRoutes } = routes
 
 type HeaderProps = {
   onDrawerToggle?(): void
@@ -37,6 +33,7 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
   const classes = useStyles()
   const router = useRouter()
   const [showDelegateButton, setShowDelegateButton] = useState<boolean>(true)
+  const [totalVotesDelegate, setTotalVotesDelegate] = useState<number>(0)
   const { asPath } = router
   const [pathName, setPathName] = useState<any>()
   const [message, setMessage] = useState<MessageObject>({
@@ -81,10 +78,13 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
   }
 
   const validateHasDelegateVote = async () => {
-    const delegateState = await eosioUtil.hasVoteForProxy(
+    const delegateState = await eosioUtil.getVotingState(
       state?.ual?.activeUser?.accountName
     )
-    setShowDelegateButton(!delegateState)
+    setShowDelegateButton(
+      delegateState === eosioUtil.VoteState.ForProxy ? false : true
+    )
+    setTotalVotesDelegate(await eosioUtil.getTotalEosVoteDelegate())
   }
 
   const onCloseSnackBar: any = useCallback(
@@ -104,7 +104,7 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
   useEffect(() => {
     validateHasDelegateVote()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state?.ual?.activeUser?.accountName])
+  }, [])
 
   return (
     <AppBar className={classes.appBar}>
@@ -117,36 +117,30 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
               <span className={classes.routeLabel}>
                 {t(`routes.${pathName}`)}
               </span>
-              <div className={classes.topBarMenu}>
-                {mainRoutes.map(route => {
-                  return (
-                    <Link key={route.id} href={route.path} underline='none'>
-                      <Typography
-                        color='white'
-                        variant='body1'
-                        className={clsx('text', {
-                          ['linkActive']: asPath === route.path
-                        })}
-                      >
-                        {route.name}
-                      </Typography>
-                    </Link>
-                  )
-                })}
-              </div>
             </div>
             <div className={classes.languageBox}>
               <div className={classes.paddingLenguajeSelector}>
                 <LanguageSelector />
               </div>
-              {showDelegateButton && (
-                <Button
-                  icon='/icons/like-white-icon.png'
-                  label='Delegate Vote'
-                  variant='primary'
-                  onClick={() => handleDelegateVote()}
-                />
-              )}
+              <div>
+                {showDelegateButton && (
+                  <Button
+                    icon='/icons/like-white-icon.png'
+                    label='Delegate Vote'
+                    variant='primary'
+                    externalStyles={classes.btnDelegate}
+                    onClick={() => handleDelegateVote()}
+                  />
+                )}
+                <Typography
+                  color='black'
+                  variant={showDelegateButton ? 'caption' : 'subtitle2'}
+                  display='flex'
+                  justifyContent='center'
+                >
+                  {`Votes delegated : ${totalVotesDelegate} EOS`}
+                </Typography>
+              </div>
             </div>
           </div>
           <div
