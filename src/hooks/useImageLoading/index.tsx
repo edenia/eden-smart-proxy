@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useSharedState } from 'context/state.context'
 
 const _cachedImage = async (img: string, setImgCallback: any) => {
-  const res = await fetch(`https://ipfs.io/ipfs/${img}`)
+  const res = await fetch(`https://eden-genesis.mypinata.cloud/ipfs/${img}`)
 
   const imageBlob = await res.blob()
   const imageObject = URL.createObjectURL(imageBlob)
@@ -18,8 +18,8 @@ const useImageOnLoad = (img: string) => {
   const [{ imgCached }, { setImg }] = useSharedState()
   const [imgUrl, setImgUrl] = useState<string | null>(null)
   const [css, setCss] = useState({
-    filter: 'blur(5px)',
-    backgroundSize: 'cover'
+    backgroundSize: 'cover',
+    animation: 'spin 1s linear infinite'
   })
 
   const fetchImage = async () => {

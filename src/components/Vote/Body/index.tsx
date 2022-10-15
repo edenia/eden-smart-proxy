@@ -51,9 +51,9 @@ const Body: React.FC<voteBodyProps> = ({
           name={bp.producer}
           imgChild={
             <ImgLoading
-              defaultImg='/images/transparent.svg'
               classes={classes.avatar}
               img={bp?.bpJsonData?.org?.branding?.logo_256}
+              defaultImg='/icons/spinner.gif'
             />
           }
           bgColor='rgba(0, 0, 0, 0.05)'

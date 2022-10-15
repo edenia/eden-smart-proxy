@@ -120,7 +120,7 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
             <ImgLoading
               classes={classes.avatar}
               img={delegate?.info?.image}
-              defaultImg='/images/user.svg'
+              defaultImg='/icons/spinner.gif'
             />
           }
           bgColor='rgba(0, 0, 0, 0.05)'

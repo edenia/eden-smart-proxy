@@ -7,8 +7,6 @@ import useImageOnLoad from 'hooks/useImageLoading'
 const ImgLoading = ({ img, classes, defaultImg }) => {
   const { imgUrl, css } = useImageOnLoad(img)
 
-  console.log({ imgUrl })
-
   return (
     <img
       className={classes}
