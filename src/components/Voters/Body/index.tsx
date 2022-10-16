@@ -156,7 +156,7 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
           }
           profileLink={`https://genesis.eden.eoscommunity.org/members/${delegate[1]?.account}`}
           targetProfile='_blank'
-          positionText={`${delegate?.info?.rank?.label} - Rate: n`}
+          positionText={`${delegate?.info?.rank?.label} - Vote Weight: 1`}
         />
       ))}
       {loadingData && (
