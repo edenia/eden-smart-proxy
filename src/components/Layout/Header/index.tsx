@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
   const { t } = useTranslation()
   const classes = useStyles()
   const router = useRouter()
-  const [showDelegateButton, setShowDelegateButton] = useState<boolean>(true)
+  const [showDelegateButton, setShowDelegateButton] = useState<boolean>(false)
   const [totalVotesDelegate, setTotalVotesDelegate] = useState<number>(0)
   const { asPath } = router
   const [pathName, setPathName] = useState<any>()
@@ -102,9 +102,11 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
   }, [asPath, setPathName])
 
   useEffect(() => {
+    if (!state?.ual?.activeUser?.accountName) return
+
     validateHasDelegateVote()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  })
 
   return (
     <AppBar className={classes.appBar}>
