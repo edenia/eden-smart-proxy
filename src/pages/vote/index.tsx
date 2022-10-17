@@ -71,7 +71,7 @@ const Vote: NextPage = () => {
         visible: true
       })
       setTimeout(async () => {
-        await loadBps(undefined, 20, true)
+        await loadBps(undefined, 30, true)
       }, 1500)
     } catch (error) {
       setMessage({
@@ -208,7 +208,7 @@ const Vote: NextPage = () => {
       <VoteBody
         bps={bps}
         state={state}
-        loadBps={() => loadBps(undefined, 20, true)}
+        loadBps={() => loadBps(undefined, 30, true)}
         selectedBps={selectedBps}
         setSelectedBps={setSelectedBps}
       />
@@ -223,7 +223,7 @@ const Vote: NextPage = () => {
             label={t('vote.loadMore')}
             variant='secondary'
             onClick={() =>
-              loadBps(bps?.data?.[bps?.data?.length - 1].next_key, 20, false)
+              loadBps(bps?.data?.[bps?.data?.length - 1].next_key, 30, false)
             }
           />
         </div>
