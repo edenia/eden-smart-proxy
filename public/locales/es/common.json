@@ -4,6 +4,7 @@
   "support": "Soporte",
   "es": "Español",
   "en": "Inglés",
+  "totalProxiedVotes": "Total de votos delegados",
   "routes": {
     "/": "Hogar",
     "voters": "Miembros",

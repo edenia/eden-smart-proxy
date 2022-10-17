@@ -4,6 +4,7 @@
   "support": "Support",
   "es": "Spanish",
   "en": "English",
+  "totalProxiedVotes": "Total proxied votes",
   "routes": {
     "/": "Home",
     "voters": "Members",

@@ -138,7 +138,7 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
                   display='flex'
                   justifyContent='center'
                 >
-                  {`Votes delegated : ${totalVotesDelegate} EOS`}
+                  {`${t('totalProxiedVotes')}: ${totalVotesDelegate} EOS`}
                 </Typography>
               </div>
             </div>
