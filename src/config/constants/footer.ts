@@ -11,7 +11,7 @@ const socialMediaItems = [
   },
   {
     name: 'GitHub',
-    ref: 'https://github.com/edenia/Eden',
+    ref: 'https://github.com/edenia/eden-smart-proxy',
     image: '/icons/github-icon.png'
   },
   {
