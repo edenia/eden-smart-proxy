@@ -17,6 +17,7 @@ The Eden Smart proxy is an app available only for eden on EOS members. The inten
 We apply a weighted calculation based on the number of voters for each election that delegates represent. The following formula is used to assign points for each delegates vote according to their election rank. 
 
 `Total Voters / Number of L1 Delegates = L1 Delegate Weight`
+
 `Total Voters / Number of L2 Delegates = L2 Delegate Weight`
 
 ### Notes
@@ -32,7 +33,9 @@ We apply a weighted calculation based on the number of voters for each election 
 For the fourth eden election we have the following [election results](https://bloks.io/account/genesis.eden?loadContract=true&tab=Tables&table=memberstats&account=genesis.eden&scope=0&limit=100):
 
 **Number of members that participated: 82**
+
 **Number of L1 delegates Elected: 20**
+
 **Number of L2 delegates Elected: 5**
 
 ```
