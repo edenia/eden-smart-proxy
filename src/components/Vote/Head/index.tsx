@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from 'react'
-import { Typography } from '@mui/material'
+import { Link, Typography } from '@mui/material'
+import { useTheme } from '@mui/styles'
 
 import SearchBar from 'components/SearchBar'
 import SortComponent from 'components/SortComponent'
@@ -13,6 +14,7 @@ type HeadVotersType = {
 
 const Head: React.FC<HeadVotersType> = ({ setSearchInput, sort }) => {
   const classes = useStyles()
+  const theme = useTheme()
 
   return (
     <div className={classes.container}>
@@ -21,7 +23,15 @@ const Head: React.FC<HeadVotersType> = ({ setSearchInput, sort }) => {
           Select and vote to whitelist your most trusted 21 BPs.
         </Typography>
         <Typography variant='body1'>
-          The BP whitelist is sustained by MyvoteEOS. Read more.
+          The BP whitelist is sustained by MyvoteEOS.{' '}
+          <Link
+            href='https://myvoteeos.com/home'
+            underline='none'
+            color={theme.palette.primary.light}
+          >
+            Read more
+          </Link>
+          .
         </Typography>
       </div>
       <div className={classes.searchSort}>
