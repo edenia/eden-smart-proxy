@@ -1,17 +1,49 @@
-import { Typography } from '@mui/material'
-import { Button } from '@edenia/ui-kit'
+import { useEffect, useState, useCallback } from 'react'
+import { Typography, AlertColor } from '@mui/material'
 import { useTranslation } from 'next-i18next'
-import { useRouter } from 'next/router'
 import clsx from 'clsx'
 
+import { BaseSnackbar } from 'components'
 import AuthButton from '../../AuthUAL'
+import { useSharedState } from 'context/state.context'
 
 import useStyles from './styles'
 
+type MessageObject = {
+  message: string
+  severity: AlertColor
+  visible: boolean
+}
+
 const Body: React.FC = () => {
   const classes = useStyles()
-  const router = useRouter()
   const { t } = useTranslation()
+  const [state] = useSharedState()
+  const [message, setMessage] = useState<MessageObject>({
+    message: '',
+    severity: 'success',
+    visible: false
+  })
+
+  const onCloseSnackBar: any = useCallback(
+    (event?: React.SyntheticEvent, reason?: string) => {
+      if (reason === 'clickaway') {
+        return
+      }
+      setMessage({ ...message, visible: false })
+    },
+    [message]
+  )
+
+  useEffect(() => {
+    if (!state?.validUser) {
+      setMessage({
+        severity: 'warning',
+        message: t('home.noEdenMember'),
+        visible: true
+      })
+    }
+  }, [state?.validUser, t])
 
   return (
     <div className={classes.container}>
@@ -30,12 +62,17 @@ const Body: React.FC = () => {
         className={clsx(classes.buttonContainer, classes.spaceTopComponents)}
       >
         <AuthButton btnLabel={t('home.signInLabel')} />
-        <Button
-          label={t('home.buttonLabel')}
-          variant='secondary'
-          onClick={() => router.push('/vote')}
-        />
       </div>
+      <BaseSnackbar
+        snackbarProps={{
+          open: message.visible,
+          onClose: onCloseSnackBar
+        }}
+        alertProps={{
+          severity: message.severity
+        }}
+        message={message.message}
+      />
     </div>
   )
 }

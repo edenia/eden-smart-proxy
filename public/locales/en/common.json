@@ -61,6 +61,7 @@
   },
   "home": {
     "homeMetaTitle": "Home",
+    "noEdenMember": "You must be an Eden member to be able to sign in",
     "title": {
       "first": "Choose Wisely",
       "second": "Choose Eden Smart Proxy"

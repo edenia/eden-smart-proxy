@@ -38,11 +38,13 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef<HTMLButtonElement>(null)
 
-  const getUserData = async () => {
-    const userData = await smartProxyUtil.getEdenMembers(
-      state?.ual?.activeUser?.accountName,
-      1
-    )
+  const getUserData = async account => {
+    const userData = await smartProxyUtil.getEdenMembers(account, 1)
+    if (userData?.rows?.length === 0) {
+      setUserData(undefined)
+      return
+    }
+
     const userInfo = await atomicAssetsUtil.getTemplate(
       userData.rows[0][1]?.nft_template_id
     )
@@ -73,9 +75,9 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
   const prevOpen = React.useRef(open)
 
   React.useEffect(() => {
-    if (prevOpen.current === true && open === false) {
+    if (prevOpen?.current === true && open === false) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      anchorRef.current!.focus()
+      anchorRef?.current?.focus()
     }
 
     prevOpen.current = open
@@ -84,7 +86,7 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
   useEffect(() => {
     if (!state?.ual?.activeUser?.accountName) return
 
-    getUserData()
+    getUserData(state?.ual?.activeUser?.accountName)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state?.ual?.activeUser?.accountName])
 
@@ -140,7 +142,7 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
           </div>
         </div>
         <div className={classes.footerBox}>
-          {state?.ual?.activeUser ? (
+          {userData ? (
             <>
               <button
                 ref={anchorRef}
@@ -156,17 +158,17 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
                   name={userData?.name}
                   nameSize='12px'
                   nameFontWeight='600'
-                  image={`https://ipfs.io/ipfs/${userData?.image}`}
+                  image={`https://eden-genesis.mypinata.cloud/ipfs/${userData?.image}`}
                   selectableItems={
                     <div className={classes.centerSelectableItems}>
                       <Typography variant='caption'>
                         <Link
-                          href={`https://t.me/${userData?.social?.telegram}`}
+                          href={`https://genesis.eden.eoscommunity.org/members/${state?.ual?.activeUser?.accountName}`}
                           rel='noreferrer'
                           underline='none'
                           target='_blank'
                         >
-                          @{userData?.social?.telegram}
+                          @ {state?.ual?.activeUser?.accountName}
                         </Link>
                       </Typography>
                     </div>

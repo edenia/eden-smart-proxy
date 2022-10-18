@@ -115,6 +115,7 @@ export const getEdenMembers = async <T>(
     table: 'member',
     json: true,
     lower_bound: lowerBound,
+    upper_bound: lowerBound,
     limit
   })) as TableResponse<T>
 }
