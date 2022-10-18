@@ -85,11 +85,12 @@ export const classifyMemberRank = (
   switch (true) {
     case RankType.Member === memberType:
       label = 'Member'
-      voteWeight = '4'
+      voteWeight = '1'
       break
 
     case RankType.N === memberType:
       label = `Level ${rank} Delegate`
+      voteWeight = '4'
       break
 
     case RankType.Chief === memberType:
@@ -100,6 +101,7 @@ export const classifyMemberRank = (
 
     default:
       label = 'Head Chief Delegate'
+      voteWeight = '16'
       break
   }
 
