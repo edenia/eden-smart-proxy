@@ -1,7 +1,7 @@
+import { useEffect, useState, useCallback } from 'react'
 import CircularProgress from '@mui/material/CircularProgress'
 import { DelegateItem, Button } from '@edenia/ui-kit'
 import { useTranslation } from 'next-i18next'
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
 import ImgLoading from '../../ImageLoad'
@@ -156,7 +156,7 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
           }
           profileLink={`https://genesis.eden.eoscommunity.org/members/${delegate[1]?.account}`}
           targetProfile='_blank'
-          positionText={`${delegate?.info?.rank?.label} - Vote Weight: 1`}
+          positionText={`${delegate?.info?.rank?.label} - Vote Weight: ${delegate?.info?.rank?.voteWeight}`}
         />
       ))}
       {loadingData && (
