@@ -54,7 +54,8 @@ namespace edenproxy {
     void     on_remove_vote( std::vector< eosio::name > producers,
                              uint16_t                   weight );
     bool     is_blacklisted( eosio::name bp );
-    uint16_t calculate_vote_weight( uint16_t rank );
+    uint16_t calculate_vote_weight( uint16_t                 rank,
+                                    std::vector< uint16_t > &stat_ranks );
 
   private:
     const eosio::name DAO_ACCOUNT = eosio::name( "myvoteeosdao" );
