@@ -9,8 +9,11 @@ const Styles = makeStyles(theme => ({
   },
   wrapperGrid: {
     paddingBottom: theme.spacing(4),
-    maxWidth: '100%',
-    margin: '0 auto'
+    width: '100%',
+    margin: '0 auto',
+    [theme.breakpoints.up('sm')]: {
+      width: 600
+    }
   },
   gridRow: {
     display: 'flex',

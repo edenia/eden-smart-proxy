@@ -89,9 +89,8 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
 
   const onCloseSnackBar: any = useCallback(
     (event?: React.SyntheticEvent, reason?: string) => {
-      if (reason === 'clickaway') {
-        return
-      }
+      if (reason === 'clickaway') return
+
       setMessage({ ...message, visible: false })
     },
     [message]

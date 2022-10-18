@@ -1,4 +1,4 @@
-import { Typography, Box, Link } from '@mui/material'
+import { Typography, Link } from '@mui/material'
 import { Footer } from '@edenia/ui-kit'
 import Image from 'next/image'
 import { useTheme } from '@mui/styles'
@@ -19,7 +19,7 @@ const FooterComp: React.FC<FooterCompType> = ({ showWhite }) => {
   const theme = useTheme()
 
   return (
-    <Box className={classes.root}>
+    <div className={classes.footerRoot}>
       <Footer
         socialMediaItems={
           !showWhite ? constantConfig?.footer?.socialMediaItems : undefined
@@ -31,7 +31,7 @@ const FooterComp: React.FC<FooterCompType> = ({ showWhite }) => {
             </div>
             <Typography variant='caption' color={theme.palette.grey[600]}>
               <Link href='https://edenia.com' color={theme.palette.grey[600]}>
-                Hosted by Edenia{' '}
+                {`Hosted by Edenia `}
               </Link>
               - Community Owned
             </Typography>
@@ -41,7 +41,7 @@ const FooterComp: React.FC<FooterCompType> = ({ showWhite }) => {
         bgColor={!showWhite ? '#343434' : '#FFFFFF'}
         color={!showWhite ? '#FFFFFF' : '#262626'}
       />
-    </Box>
+    </div>
   )
 }
 
