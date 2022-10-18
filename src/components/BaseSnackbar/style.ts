@@ -1,6 +1,6 @@
 import { makeStyles } from '@mui/styles'
 
-const Styles = makeStyles(theme => ({
+const Styles = makeStyles(() => ({
   navbarPosition: {
     left: 'auto !important'
   }

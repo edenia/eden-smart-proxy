@@ -127,6 +127,11 @@
     react "^18.2.0"
     react-dom "^18.2.0"
 
+"@edenos/eden-subchain-client@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@edenos/eden-subchain-client/-/eden-subchain-client-0.1.2.tgz#1324eb2f988309b90e689d6f0c28a129f7581fae"
+  integrity sha512-04xuNP3+BLyB3e3a9VHmjBHIILdXWOGr1tgFKzEt4lUZDcwcLsjMqf2pIL+Z7VcjC6TZ+QWJMiFy/+BKmONUFQ==
+
 "@emotion/babel-plugin@^11.10.0":
   version "11.10.2"
   resolved "https://registry.yarnpkg.com/@emotion/babel-plugin/-/babel-plugin-11.10.2.tgz#879db80ba622b3f6076917a1e6f648b1c7d008c7"

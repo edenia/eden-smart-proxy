@@ -3,6 +3,7 @@ import { DelegateItem, Button } from '@edenia/ui-kit'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import { useQuery as useBoxQuery } from '@edenos/eden-subchain-client/dist/ReactSubchain'
 
 import ImgLoading from '../../ImageLoad'
 import {
@@ -11,6 +12,8 @@ import {
   genesisEdenUtil,
   eosioUtil
 } from 'utils'
+import { Member, MembersQuery } from 'interfaces/members'
+import { formattersUtil } from 'utils'
 import yesVotingIcon from '/public/icons/yes-voting-icon.png'
 import notVotingIcon from '/public/icons/not-voting-icon.png'
 import votingOtherIcon from '/public/icons/voting-for-other-icon.png'
@@ -21,58 +24,84 @@ type BodyVoters = {
   searchValue: string | undefined
 }
 
+export const MEMBER_DATA_FRAGMENT = `
+    createdAt
+    account
+    profile {
+        name
+        img
+        attributions
+        social
+        bio
+    }
+    inductionVideo
+    participating
+`
+
+export const useMembers = () => {
+  const result = useBoxQuery<MembersQuery>(`{
+        members {
+            edges {
+                node {
+                    ${MEMBER_DATA_FRAGMENT}
+                }
+            }
+        }
+    }`)
+
+  let formattedMembers: Member[] = []
+
+  if (!result.data) return { ...result, data: formattedMembers }
+
+  const memberEdges = result.data.members.edges
+
+  if (memberEdges) {
+    formattedMembers = memberEdges.map(
+      member =>
+        formattersUtil.formatMembersQueryNodeAsMember(member.node) as Member
+    )
+  }
+
+  return { ...result, data: formattedMembers }
+}
+
 const Body: React.FC<BodyVoters> = ({ searchValue }) => {
   const { t } = useTranslation()
   const classes = useStyles()
   const [loadingData, setLoadingData] = useState<boolean>(true)
   const [edenMembers, setEdenMembers] = useState<any>([])
   const [currentEdenMembers, setCurrentEdenMembers] = useState<any>([])
+  const { data: allMembers, ...memberQueryMetaData } = useMembers()
 
-  const loadMembers = async nextKey => {
-    setLoadingData(true)
-    const members = await smartProxyUtil.getEdenMembers(
-      nextKey === '' ? undefined : nextKey,
-      50
-    )
+  console.log('🚀 ~ allMembers', allMembers)
+  const loadMembers = async () => {
+    // setLoadingData(true)
 
-    if (members) {
-      const activeMembers = members?.rows?.filter(
-        member => member[1]?.status === 1
-      )
-      const electionRankSize = await genesisEdenUtil.getRanks()
-      const membersCompleteDataPromise = activeMembers.map(async member => {
-        const { rows } = await smartProxyUtil.getVotes(
-          member[1]?.account,
-          member[1]?.account,
-          1
-        )
-
-        const memberInfo = await atomicAssetsUtil.getTemplate(
-          member[1]?.nft_template_id
-        )
-
-        const voteState = await eosioUtil.getVotingState(member[1]?.account)
-
-        return {
-          ...member,
-          info: {
-            ...memberInfo,
-            rank: genesisEdenUtil.classifyMemberRank(
-              member[1].election_rank,
-              electionRankSize.length - 1
-            )
-          },
-          next_key: members.next_key,
-          vote: {
-            state: voteState,
-            amount: rows.length > 0 ? rows[0]?.producers.length : 0
-          }
-        }
-      })
-      const membersCompleteData = await Promise?.all(membersCompleteDataPromise)
-      setEdenMembers([...edenMembers, ...membersCompleteData])
-    }
-    setLoadingData(false)
+    // const electionRankSize = await genesisEdenUtil.getRanks()
+    // const membersCompleteDataPromise = allMembers.map(async member => {
+    //   // const { rows } = await smartProxyUtil.getVotes(
+    //   //   member[1].accountName,
+    //   //   member[1].accountName,
+    //   //   1
+    //   // )
+    //   // const voteState = await eosioUtil.getVotingState(member[1]?.account)
+    //   return {
+    //     ...member
+    //     // info: {
+    //     //   rank: genesisEdenUtil.classifyMemberRank(
+    //     //     member[1].election_rank,
+    //     //     electionRankSize.length - 1
+    //     //   )
+    //     // }
+    //     // vote: {
+    //     //   state: voteState,
+    //     //   amount: rows.length > 0 ? rows[0]?.producers.length : 0
+    //     // }
+    //   }
+    // })
+    // // const membersCompleteData = await Promise?.all(membersCompleteDataPromise)
+    // console.log('🚀 ~ loadMembers ~ membersCompleteData', membersCompleteData)
+    setEdenMembers(allMembers)
   }
 
   const search = () => {
@@ -109,16 +138,16 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue])
 
-  useEffect(() => {
-    loadMembers(undefined)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // useEffect(() => {
+  //   setEdenMembers(allMembers)
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [allMembers])
 
   return (
     <div className={classes.container}>
-      {edenMembers?.map(delegate => (
+      {allMembers.map(delegate => (
         <DelegateItem
-          key={delegate[1].name}
+          key={delegate.profile.name}
           actionItemStyles={classes.itemActionStyle}
           text={
             delegate?.vote?.state !== eosioUtil.VoteState.ForProxy
@@ -127,11 +156,11 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
                 : t('voters.voteByOther')
               : `${t('voters.voteFor')} ${String(delegate?.vote?.amount)} `
           }
-          name={delegate[1].name}
+          name={delegate.profile.name}
           imgChild={
             <ImgLoading
               classes={classes.avatar}
-              img={delegate?.info?.image}
+              img={delegate.profile.image.cid}
               defaultImg='/icons/spinner.gif'
             />
           }
@@ -154,7 +183,7 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
               }
             />
           }
-          profileLink={`https://genesis.eden.eoscommunity.org/members/${delegate[1]?.account}`}
+          profileLink={`https://genesis.eden.eoscommunity.org/members/${delegate.accountName}`}
           targetProfile='_blank'
           positionText={`${delegate?.info?.rank?.label} - Vote Weight: 1`}
         />
@@ -162,17 +191,6 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
       {loadingData && (
         <div className={classes.loadMoreContainer}>
           <CircularProgress />
-        </div>
-      )}
-      {edenMembers[edenMembers?.length - 1]?.next_key !== '' && (
-        <div className={classes.loadMoreContainer}>
-          <Button
-            label='Load More'
-            variant='secondary'
-            onClick={() =>
-              loadMembers(edenMembers[edenMembers.length - 1].next_key)
-            }
-          />
         </div>
       )}
     </div>

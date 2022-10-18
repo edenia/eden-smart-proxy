@@ -12,9 +12,19 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { useRouter } from 'next/router'
 import { appWithTranslation } from 'next-i18next'
 import '@edenia/ui-kit/dist/index.css'
+import {
+  useCreateEdenChain,
+  EdenChainContext
+} from '@edenos/eden-subchain-client/dist/ReactSubchain'
 
 import '../global.css'
-import { themeConfig, seoConfig, analyticsConfig, i18nConfig } from 'config'
+import {
+  themeConfig,
+  seoConfig,
+  analyticsConfig,
+  i18nConfig,
+  sdkConfig
+} from 'config'
 import { Locale } from 'config/i18n'
 import { analyticsUtils } from 'utils'
 import { SharedStateProvider } from 'context/state.context'
@@ -29,6 +39,17 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppProps> = ({
 }: AppProps) => {
   const { locale, events } = useRouter()
   const currentLocale = (locale as Locale) || i18nConfig.defaultLocale
+  const subchain = useCreateEdenChain({
+    fetch: global.window?.fetch, // undefined for nodejs to prevent lambda perf issues
+    edenAccount: sdkConfig.genesisEdenContract,
+    tokenAccount: sdkConfig.eosioTokenContract,
+    atomicAccount: sdkConfig.aaContract,
+    atomicmarketAccount: sdkConfig.aaMarketContract,
+    wasmUrl: sdkConfig.subchainWasmUrl,
+    stateUrl: sdkConfig.subchainStateUrl,
+    blocksUrl: sdkConfig.subchainWsUrl,
+    slowmo: sdkConfig.subchainSlowMo
+  })
 
   useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side')
@@ -92,7 +113,9 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppProps> = ({
           >
             <CssBaseline />
             <Layout>
-              <Component {...pageProps} />
+              <EdenChainContext.Provider value={subchain}>
+                <Component {...pageProps} />
+              </EdenChainContext.Provider>
             </Layout>
           </LocalizationProvider>
         </ThemeProvider>

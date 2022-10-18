@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@edenia/ui-kit": "^0.4.0",
+    "@edenos/eden-subchain-client": "^0.1.2",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@google-cloud/recaptcha-enterprise": "^2.4.0",
