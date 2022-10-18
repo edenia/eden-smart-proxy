@@ -34,6 +34,13 @@ build-docker: ./Dockerfile
 		--build-arg next_public_genesiseden_contract="$(NEXT_PUBLIC_GENESISEDEN_CONTRACT)" \
 		--build-arg next_public_edensmartproxy_contract="$(NEXT_PUBLIC_EDENSMARTPROXY_CONTRACT)" \
 		--build-arg next_public_myvoteeosdao_contract="$(NEXT_PUBLIC_MYVOTEEOSDAO_CONTRACT)" \
+		--build-arg next_public_token_contract="$(NEXT_PUBLIC_TOKEN_CONTRACT)" \
+		--build-arg next_public_aa_contract="$(NEXT_PUBLIC_AA_CONTRACT)" \
+		--build-arg next_public_aa_market_contract="$(NEXT_PUBLIC_AA_MARKET_CONTRACT)" \
+		--build-arg next_public_subchain_wasm_url="$(NEXT_PUBLIC_SUBCHAIN_WASM_URL)" \
+		--build-arg next_public_subchain_state_url="$(NEXT_PUBLIC_SUBCHAIN_STATE_URL)" \
+		--build-arg next_public_subchain_ws_url="$(NEXT_PUBLIC_SUBCHAIN_WS_URL)" \
+		--build-arg next_public_subchain_slow_mo="$(NEXT_PUBLIC_SUBCHAIN_SLOW_MO)" \
 		.
 
 pull-image: ##@devops Pull the latest image from registry for caching

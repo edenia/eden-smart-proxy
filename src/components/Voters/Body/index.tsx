@@ -68,41 +68,57 @@ export const useMembers = () => {
 const Body: React.FC<BodyVoters> = ({ searchValue }) => {
   const { t } = useTranslation()
   const classes = useStyles()
-  const [loadingData, setLoadingData] = useState<boolean>(true)
+  // const [loadingData, setLoadingData] = useState<boolean>(true)
   const [edenMembers, setEdenMembers] = useState<any>([])
   const [currentEdenMembers, setCurrentEdenMembers] = useState<any>([])
   const { data: allMembers, ...memberQueryMetaData } = useMembers()
 
-  console.log('🚀 ~ allMembers', allMembers)
-  const loadMembers = async () => {
-    // setLoadingData(true)
+  // const loadMembers = async nextKey => {
+  //   setLoadingData(true)
+  //   const members = await smartProxyUtil.getEdenMembers(
+  //     nextKey === '' ? undefined : nextKey,
+  //     50
+  //   )
 
-    // const electionRankSize = await genesisEdenUtil.getRanks()
-    // const membersCompleteDataPromise = allMembers.map(async member => {
-    //   // const { rows } = await smartProxyUtil.getVotes(
-    //   //   member[1].accountName,
-    //   //   member[1].accountName,
-    //   //   1
-    //   // )
-    //   // const voteState = await eosioUtil.getVotingState(member[1]?.account)
-    //   return {
-    //     ...member
-    //     // info: {
-    //     //   rank: genesisEdenUtil.classifyMemberRank(
-    //     //     member[1].election_rank,
-    //     //     electionRankSize.length - 1
-    //     //   )
-    //     // }
-    //     // vote: {
-    //     //   state: voteState,
-    //     //   amount: rows.length > 0 ? rows[0]?.producers.length : 0
-    //     // }
-    //   }
-    // })
-    // // const membersCompleteData = await Promise?.all(membersCompleteDataPromise)
-    // console.log('🚀 ~ loadMembers ~ membersCompleteData', membersCompleteData)
-    setEdenMembers(allMembers)
-  }
+  //   if (members) {
+  //     const activeMembers = members?.rows?.filter(
+  //       member => member[1]?.status === 1
+  //     )
+  //     const electionRankSize = await genesisEdenUtil.getRanks()
+  //     const membersCompleteDataPromise = activeMembers.map(async member => {
+  //       const { rows } = await smartProxyUtil.getVotes(
+  //         member[1]?.account,
+  //         member[1]?.account,
+  //         1
+  //       )
+
+  //       const memberInfo = await atomicAssetsUtil.getTemplate(
+  //         member[1]?.nft_template_id
+  //       )
+
+  //       const voteState = await eosioUtil.getVotingState(member[1]?.account)
+
+  //       return {
+  //         ...member,
+  //         info: {
+  //           ...memberInfo,
+  //           rank: genesisEdenUtil.classifyMemberRank(
+  //             member[1].election_rank,
+  //             electionRankSize.length - 1
+  //           )
+  //         },
+  //         next_key: members.next_key,
+  //         vote: {
+  //           state: voteState,
+  //           amount: rows.length > 0 ? rows[0]?.producers.length : 0
+  //         }
+  //       }
+  //     })
+  //     const membersCompleteData = await Promise?.all(membersCompleteDataPromise)
+  //     setEdenMembers([...edenMembers, ...membersCompleteData])
+  //   }
+  //   setLoadingData(false)
+  // }
 
   const search = () => {
     if (typeof searchValue === 'string' && searchValue !== '') {
@@ -139,15 +155,15 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
   }, [searchValue])
 
   // useEffect(() => {
-  //   setEdenMembers(allMembers)
+  //   loadMembers(undefined)
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [allMembers])
+  // }, [])
 
   return (
     <div className={classes.container}>
-      {allMembers.map(delegate => (
+      {allMembers?.map(delegate => (
         <DelegateItem
-          key={delegate.profile.name}
+          key={delegate.accountName}
           actionItemStyles={classes.itemActionStyle}
           text={
             delegate?.vote?.state !== eosioUtil.VoteState.ForProxy
@@ -188,11 +204,6 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
           positionText={`${delegate?.info?.rank?.label} - Vote Weight: ${delegate?.info?.rank?.voteWeight}`}
         />
       ))}
-      {loadingData && (
-        <div className={classes.loadMoreContainer}>
-          <CircularProgress />
-        </div>
-      )}
     </div>
   )
 }

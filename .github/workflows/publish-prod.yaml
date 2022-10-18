@@ -37,6 +37,13 @@ jobs:
           NEXT_PUBLIC_GENESISEDEN_CONTRACT: genesis.eden
           NEXT_PUBLIC_EDENSMARTPROXY_CONTRACT: edensmartprx
           NEXT_PUBLIC_MYVOTEEOSDAO_CONTRACT: myvoteeosdao
+          NEXT_PUBLIC_TOKEN_CONTRACT: eosio.token
+          NEXT_PUBLIC_AA_CONTRACT: atomicassets
+          NEXT_PUBLIC_AA_MARKET_CONTRACT: atomicmarket
+          NEXT_PUBLIC_SUBCHAIN_WASM_URL: ${{ secrets.NEXT_PUBLIC_SUBCHAIN_WASM_URL }}
+          NEXT_PUBLIC_SUBCHAIN_STATE_URL: ${{ secrets.NEXT_PUBLIC_SUBCHAIN_STATE_URL }}
+          NEXT_PUBLIC_SUBCHAIN_WS_URL: ${{ secrets.NEXT_PUBLIC_SUBCHAIN_WS_URL }}
+          NEXT_PUBLIC_SUBCHAIN_SLOW_MO: false
           RELEASE_TAG: ${{ steps.tag.outputs.tag }}
 
       - name: Build kubernetes files
