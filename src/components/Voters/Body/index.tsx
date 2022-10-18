@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 import CircularProgress from '@mui/material/CircularProgress'
 import { DelegateItem, Button } from '@edenia/ui-kit'
 import { useTranslation } from 'next-i18next'
