@@ -6,15 +6,13 @@
 
 **A legitimate list of community backed quality BPs to vote for**
 
-
 ![](https://img.shields.io/github/license/edenia/eden-smart-proxy) ![](https://img.shields.io/badge/code%20style-standard-brightgreen.svg) ![](https://img.shields.io/badge/%E2%9C%93-collaborative_etiquette-brightgreen.svg) ![](https://img.shields.io/twitter/follow/edeniaWeb3.svg?style=social&logo=twitter) ![](https://img.shields.io/github/forks/edenia/eden-smart-proxy?style=social)
-
 
 The Eden Smart proxy is an app available only for eden on EOS members. The intention behind this project is to leverage the Eden democratic process to produce a legitimate list of community backed quality BPs to vote for. Eden members can delegate their vote to the eden smart proxy which then votes for the top 30 BPs according to a weighted calculation depending on members' election rank.
 
 ### Election Rank Vote Weight
 
-We apply a weighted calculation based on the number of voters for each election that delegates represent. The following formula is used to assign points for each delegates vote according to their election rank. 
+We apply a weighted calculation based on the number of voters for each election that delegates represent. The following formula is used to assign points for each delegates vote according to their election rank.
 
 `Total Voters / Number of L1 Delegates = L1 Delegate Weight`
 
@@ -45,16 +43,20 @@ Level 2 Delegate => 82 / 5 = 16 points
 ```
 
 ### Smart Contract
+
 To compile the Smart Contract, make sure you have `Docker` installed. To install docker, please follow [this guide](https://docs.docker.com/get-docker/).
 
 Run:
+
 1. `cd contracts`
 2. `docker_build.sh`
 
 ## Web Application
+
 We are using [Next.js](https://nextjs.org/) React Framework for building the web application.
 
 ## Smart Contract
+
 An Antelope smart contract that calculates the weighted votes for each eden member and casts a vote as an EOS proxy.
 
 ## System Components
@@ -107,7 +109,6 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-
 # Contributing
 
 Please read EOS Costa Rica's [Open Source Contributing Guidelines](https://developers.eoscostarica.io/docs/open-source-guidelines).
@@ -124,7 +125,6 @@ Please report bugs big and small by [opening an issue](https://github.com/edenia
 
 [![Twitter](https://img.shields.io/twitter/follow/EdeniaWeb3?style=for-the-badge)](https://twitter.com/EdeniaWeb3)
 [![Discord](https://img.shields.io/discord/946500573677625344?color=black&label=Discord&logo=discord&logoColor=white&style=for-the-badge)](https://discord.gg/YeGcF6QwhP)
-
 
 </div>
 
