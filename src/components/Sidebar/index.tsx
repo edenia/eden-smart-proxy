@@ -158,17 +158,17 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
                   name={userData?.name}
                   nameSize='12px'
                   nameFontWeight='600'
-                  image={`https://ipfs.io/ipfs/${userData?.image}`}
+                  image={`https://eden-genesis.mypinata.cloud/ipfs/${userData?.image}`}
                   selectableItems={
                     <div className={classes.centerSelectableItems}>
                       <Typography variant='caption'>
                         <Link
-                          href={`https://t.me/${userData?.social?.telegram}`}
+                          href={`https://genesis.eden.eoscommunity.org/members/${state?.ual?.activeUser?.accountName}`}
                           rel='noreferrer'
                           underline='none'
                           target='_blank'
                         >
-                          @{userData?.social?.telegram}
+                          @ {state?.ual?.activeUser?.accountName}
                         </Link>
                       </Typography>
                     </div>
