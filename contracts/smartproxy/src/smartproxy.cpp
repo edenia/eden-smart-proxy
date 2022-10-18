@@ -1,5 +1,6 @@
 #include <eosio/asset.hpp>
 #include <eosio/eosio.hpp>
+#include <numeric>
 
 #include <members.cpp>
 #include <myvoteeosdao/myvoteeosdao.hpp>
@@ -41,7 +42,8 @@ namespace edenproxy {
     uint8_t  member_rank = member.election_rank();
     bool     is_hd = member_rank == ranks.size() - 1 && is_election_completed;
     uint8_t  rank_factor = is_hd ? 1 : 0;
-    uint16_t vote_weight = calculate_vote_weight( member_rank - rank_factor );
+    uint16_t vote_weight =
+        calculate_vote_weight( member_rank - rank_factor, ranks );
 
     on_vote( vote_weight, voter, producers );
   }
@@ -134,7 +136,7 @@ namespace edenproxy {
         bool is_hd = member_rank == ranks.size() - 1 && is_election_completed;
         uint8_t  rank_factor = is_hd ? 1 : 0;
         uint16_t vote_weight =
-            calculate_vote_weight( member_rank - rank_factor );
+            calculate_vote_weight( member_rank - rank_factor, ranks );
 
         if ( votes_itr->weight != vote_weight ) {
           on_vote( vote_weight, votes_itr->account, votes_itr->producers );
@@ -312,8 +314,19 @@ namespace edenproxy {
     return blacklisted_itr != _blacklisted.end();
   }
 
-  uint16_t smartproxy_contract::calculate_vote_weight( uint16_t rank ) {
-    return rank ? MAX_EDEN_GROUP_SIZE * rank : 1;
+  uint16_t smartproxy_contract::calculate_vote_weight(
+      uint16_t                 rank,
+      std::vector< uint16_t > &stat_ranks ) {
+    if ( rank == 0 ) {
+      return 1;
+    }
+
+    uint64_t total_participating_members =
+        std::accumulate( stat_ranks.begin(), stat_ranks.end(), 0 );
+    uint64_t member_ranks =
+        std::accumulate( stat_ranks.begin() + rank, stat_ranks.end(), 0 );
+
+    return total_participating_members / member_ranks;
   }
 } // namespace edenproxy
 
