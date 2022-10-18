@@ -29,7 +29,6 @@ const Vote: NextPage = () => {
   const [loadingData, setLoadingData] = useState<boolean>(true)
   const [searchValue, setSearchValue] = useState<string | undefined>()
   const [currentBps, setCurrentBps] = useState<any>([])
-  const [selectedBps, setSelectedBps] = useState([])
   const [state] = useSharedState()
   const [bps, setBps] = useState<{ sort: string; data: Array<any> }>({
     sort: '',
@@ -62,7 +61,6 @@ const Vote: NextPage = () => {
         expireSeconds: 1200,
         broadcast: true
       })
-      setSelectedBps([])
       setBps({ ...bps, data: [] })
       setLoadingData(true)
       setMessage({
@@ -124,7 +122,8 @@ const Vote: NextPage = () => {
           voted: hasVoted,
           next_key: allBps.next_key,
           stats: (await rows[0]?.weight) || 0,
-          bpJsonData: bpJsonData || undefined
+          bpJsonData: bpJsonData || undefined,
+          selected: false
         }
       })
 
@@ -207,10 +206,9 @@ const Vote: NextPage = () => {
       <VoteHead setSearchInput={setSearchValue} sort={sort} />
       <VoteBody
         bps={bps}
+        setBps={setBps}
         state={state}
         loadBps={() => loadBps(undefined, 30, true)}
-        selectedBps={selectedBps}
-        setSelectedBps={setSelectedBps}
       />
       {loadingData && (
         <div className={classes.loadMoreContainer}>
@@ -238,18 +236,28 @@ const Vote: NextPage = () => {
         }}
         message={message.message}
       />
-      {selectedBps.length > 0 && (
+      {bps?.data?.filter(bp => bp?.selected)?.length > 0 && (
         <Fab
           extended
           externalStyles={classes.fabPosition}
-          onClick={() => handleVote(selectedBps)}
+          onClick={() =>
+            handleVote(
+              bps?.data
+                ?.filter(bp => bp?.selected)
+                .reduce((reduceList, bp) => {
+                  return [...reduceList, bp.producer]
+                }, [])
+            )
+          }
         >
           <div className={classes.centerFabContent}>
             <Image src={likeIcon} />
             <Typography
               className={classes.labelPadding}
               variant='subtitle1'
-            >{`${t('vote.voteSelected')} (${selectedBps.length})`}</Typography>
+            >{`${t('vote.voteSelected')} (${
+              bps?.data?.filter(bp => bp?.selected)?.length
+            })`}</Typography>
           </div>
         </Fab>
       )}

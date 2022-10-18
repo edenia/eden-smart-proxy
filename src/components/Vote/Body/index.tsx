@@ -1,37 +1,41 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BlockProducerItem } from '@edenia/ui-kit'
 import { Link, Typography } from '@mui/material'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { socialMediaInfo } from 'config/constants'
 
 import useStyles from './styles'
 
 type voteBodyProps = {
-  setSelectedBps(delegate: any): void
-  selectedBps: Array<any>
+  setBps(delegate: any): void
   state: any
   loadBps(): void
   bps: { sort: string; data: Array<any> }
 }
 
-const Body: React.FC<voteBodyProps> = ({
-  setSelectedBps,
-  selectedBps,
-  loadBps,
-  state,
-  bps
-}) => {
+const Body: React.FC<voteBodyProps> = ({ loadBps, setBps, state, bps }) => {
   const classes = useStyles()
+  const [seletedAllBps, setSelectedAllBps] = useState<boolean>(false)
 
   const handleSelected = pressBp => {
-    const selected = selectedBps.find(bp => bp === pressBp)
-    !selected ? setSelectedBps([...selectedBps, pressBp]) : deselect(pressBp)
+    const updatedBpState = bps?.data?.map(bp => {
+      if (bp.producer === pressBp) return { ...bp, selected: !bp?.selected }
+
+      return bp
+    })
+
+    setBps({ ...bps, data: updatedBpState })
   }
 
-  const deselect = pressBp => {
-    const currentSelectedBps = selectedBps.filter(bp => bp !== pressBp)
-    setSelectedBps(currentSelectedBps)
+  const selectedAll = () => {
+    setBps({
+      ...bps,
+      data: bps?.data?.map(bp => {
+        return { ...bp, selected: seletedAllBps ? false : true }
+      })
+    })
+    setSelectedAllBps(!seletedAllBps)
   }
 
   useEffect(() => {
@@ -41,13 +45,26 @@ const Body: React.FC<voteBodyProps> = ({
 
   return (
     <div className={classes.container}>
+      <div className={classes.paddingSelectedAll}>
+        <label>
+          <input
+            checked={seletedAllBps}
+            className={classes.delegateBpItemCheckbox}
+            type='checkbox'
+            id='checkbox'
+            name='checkbox'
+            onChange={() => selectedAll()}
+          />
+          Seleccionar todos
+        </label>
+      </div>
       {bps?.data?.map(bp => (
         <BlockProducerItem
-          key={bp.producer}
-          onClick={() => handleSelected(bp.producer)}
-          isSelected={selectedBps.includes(bp.producer)}
-          avatarIcon={bp.voted && '/icons/good-icon.png'}
-          name={bp.producer}
+          key={bp?.producer}
+          onClick={() => handleSelected(bp?.producer)}
+          isSelected={bp?.selected}
+          avatarIcon={bp?.voted && '/icons/good-icon.png'}
+          name={bp?.producer}
           image={
             bp?.bpJsonData?.org?.branding?.logo_256 || '/logos/no-logo.png'
           }
@@ -63,7 +80,7 @@ const Body: React.FC<voteBodyProps> = ({
                       <Link
                         className={classes.linkPadding}
                         rel='noreferrer'
-                        href={`${socialMediaInfo.links[item[0]]}${item[1]}`}
+                        href={`${socialMediaInfo?.links[item[0]]}${item[1]}`}
                         target='_blank'
                       >
                         {item[0]}
