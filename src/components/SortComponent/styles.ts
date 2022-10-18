@@ -7,7 +7,8 @@ const Styles = makeStyles(theme => ({
     margin: theme.spacing(1)
   },
   paddingImage: {
-    paddingRight: theme.spacing(1)
+    paddingRight: theme.spacing(1),
+    cursor: 'pointer'
   }
 }))
 

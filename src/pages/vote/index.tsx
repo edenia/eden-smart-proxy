@@ -8,7 +8,7 @@ import { Fab, Button } from '@edenia/ui-kit'
 import { NextSeo } from 'next-seo'
 import Image from 'next/image'
 
-import { routeUtils, smartProxyUtil, eosioUtil } from 'utils'
+import { routeUtils, smartProxyUtil } from 'utils'
 import { useSharedState } from 'context/state.context'
 import i18nUtils from 'utils/i18n'
 import { bpsInfo } from 'config/constants'
@@ -29,7 +29,6 @@ const Vote: NextPage = () => {
   const [loadingData, setLoadingData] = useState<boolean>(true)
   const [searchValue, setSearchValue] = useState<string | undefined>()
   const [currentBps, setCurrentBps] = useState<any>([])
-  const [selectedBps, setSelectedBps] = useState([])
   const [state] = useSharedState()
   const [bps, setBps] = useState<{ sort: string; data: Array<any> }>({
     sort: '',
@@ -41,29 +40,12 @@ const Vote: NextPage = () => {
     visible: false
   })
 
-  const validateHasDelegateVote = async () => {
-    return (await eosioUtil.getVotingState(
-      state?.ual?.activeUser?.accountName
-    )) === eosioUtil.VoteState.ForProxy
-      ? true
-      : false
-  }
-
   const handleVote = async selectedBps => {
     try {
       if (!state?.ual?.activeUser?.accountName) {
         setMessage({
           severity: 'warning',
           message: t('vote.mustLogin'),
-          visible: true
-        })
-        return
-      }
-
-      if (!(await validateHasDelegateVote())) {
-        setMessage({
-          severity: 'warning',
-          message: t('vote.beforeVoting'),
           visible: true
         })
         return
@@ -79,7 +61,6 @@ const Vote: NextPage = () => {
         expireSeconds: 1200,
         broadcast: true
       })
-      setSelectedBps([])
       setBps({ ...bps, data: [] })
       setLoadingData(true)
       setMessage({
@@ -88,7 +69,7 @@ const Vote: NextPage = () => {
         visible: true
       })
       setTimeout(async () => {
-        await loadBps(undefined, 20, true)
+        await loadBps(undefined, 30, true)
       }, 1500)
     } catch (error) {
       setMessage({
@@ -141,7 +122,8 @@ const Vote: NextPage = () => {
           voted: hasVoted,
           next_key: allBps.next_key,
           stats: (await rows[0]?.weight) || 0,
-          bpJsonData: bpJsonData || undefined
+          bpJsonData: bpJsonData || undefined,
+          selected: false
         }
       })
 
@@ -224,10 +206,9 @@ const Vote: NextPage = () => {
       <VoteHead setSearchInput={setSearchValue} sort={sort} />
       <VoteBody
         bps={bps}
+        setBps={setBps}
         state={state}
-        loadBps={() => loadBps(undefined, 20, true)}
-        selectedBps={selectedBps}
-        setSelectedBps={setSelectedBps}
+        loadBps={() => loadBps(undefined, 30, true)}
       />
       {loadingData && (
         <div className={classes.loadMoreContainer}>
@@ -240,7 +221,7 @@ const Vote: NextPage = () => {
             label={t('vote.loadMore')}
             variant='secondary'
             onClick={() =>
-              loadBps(bps?.data?.[bps?.data?.length - 1].next_key, 20, false)
+              loadBps(bps?.data?.[bps?.data?.length - 1].next_key, 30, false)
             }
           />
         </div>
@@ -255,18 +236,28 @@ const Vote: NextPage = () => {
         }}
         message={message.message}
       />
-      {selectedBps.length > 0 && (
+      {bps?.data?.filter(bp => bp?.selected)?.length > 0 && (
         <Fab
           extended
           externalStyles={classes.fabPosition}
-          onClick={() => handleVote(selectedBps)}
+          onClick={() =>
+            handleVote(
+              bps?.data
+                ?.filter(bp => bp?.selected)
+                .reduce((reduceList, bp) => {
+                  return [...reduceList, bp.producer]
+                }, [])
+            )
+          }
         >
           <div className={classes.centerFabContent}>
             <Image src={likeIcon} />
             <Typography
               className={classes.labelPadding}
               variant='subtitle1'
-            >{`${t('vote.voteSelected')} (${selectedBps.length})`}</Typography>
+            >{`${t('vote.voteSelected')} (${
+              bps?.data?.filter(bp => bp?.selected)?.length
+            })`}</Typography>
           </div>
         </Fab>
       )}

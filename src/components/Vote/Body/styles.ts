@@ -44,6 +44,15 @@ const Styles = makeStyles(theme => ({
     borderRadius: '50%',
     margin: 'auto',
     objectFit: 'cover'
+  },
+  delegateBpItemCheckbox: {
+    marginRight: '56px',
+    cursor: 'pointer',
+    width: '18px',
+    height: '18px'
+  },
+  paddingSelectedAll: {
+    padding: theme.spacing(1)
   }
 }))
 
