@@ -6,6 +6,7 @@ import { walletConfig } from 'config'
 
 const initialValue = {
   user: null,
+  validUser: true,
   openMenuWallets: false,
   elemRef: null,
   ual: null,
