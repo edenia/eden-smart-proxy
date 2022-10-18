@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
   const { t } = useTranslation()
   const classes = useStyles()
   const router = useRouter()
-  const [showDelegateButton, setShowDelegateButton] = useState<boolean>(true)
+  const [showDelegateButton, setShowDelegateButton] = useState<boolean>(false)
   const [totalVotesDelegate, setTotalVotesDelegate] = useState<number>(0)
   const { asPath } = router
   const [pathName, setPathName] = useState<any>()
@@ -89,9 +89,8 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
 
   const onCloseSnackBar: any = useCallback(
     (event?: React.SyntheticEvent, reason?: string) => {
-      if (reason === 'clickaway') {
-        return
-      }
+      if (reason === 'clickaway') return
+
       setMessage({ ...message, visible: false })
     },
     [message]
@@ -102,9 +101,11 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
   }, [asPath, setPathName])
 
   useEffect(() => {
+    if (!state?.ual?.activeUser?.accountName) return
+
     validateHasDelegateVote()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  })
 
   return (
     <AppBar className={classes.appBar}>
@@ -138,7 +139,7 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
                   display='flex'
                   justifyContent='center'
                 >
-                  {`Votes delegated : ${totalVotesDelegate} EOS`}
+                  {`${t('totalProxiedVotes')}: ${totalVotesDelegate} EOS`}
                 </Typography>
               </div>
             </div>

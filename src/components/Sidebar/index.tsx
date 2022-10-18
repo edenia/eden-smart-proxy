@@ -99,6 +99,19 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
           </div>
           <div className={classes.scrollbar}>
             <Link
+              href={'/about'}
+              underline={'none'}
+              className={clsx(classes.navLink, {
+                [classes.selected]: '/about' === router.pathname
+              })}
+            >
+              <AboutSvg />
+              <Typography variant='subtitle1' className={classes.navLabel}>
+                {t('routes.about')}
+              </Typography>
+              <p />
+            </Link>
+            <Link
               href={'/voters'}
               underline={'none'}
               className={clsx(classes.navLink, {
@@ -121,19 +134,6 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
               <VoteSvg />
               <Typography variant='subtitle1' className={classes.navLabel}>
                 {t('routes.vote')}
-              </Typography>
-              <p />
-            </Link>
-            <Link
-              href={'/about'}
-              underline={'none'}
-              className={clsx(classes.navLink, {
-                [classes.selected]: '/about' === router.pathname
-              })}
-            >
-              <AboutSvg />
-              <Typography variant='subtitle1' className={classes.navLabel}>
-                {t('routes.about')}
               </Typography>
               <p />
             </Link>

@@ -32,15 +32,12 @@ export const getVotingState = async (account: string): Promise<VoteState> => {
 }
 
 export const getTotalEosVoteDelegate = async (): Promise<number> => {
-  const { rows } = await eosApi.getTableRows({
-    code: sdkConfig.eosioContract,
-    scope: sdkConfig.eosioContract,
-    table: 'voters',
-    lower_bound: sdkConfig.edenSmartProxyContract,
-    uppper_bound: sdkConfig.edenSmartProxyContract,
-    json: true,
-    limit: 1
-  })
+  const response = await fetch(
+    'https://www.alohaeos.com/vote/proxy/edensmartprx?output=json',
+    {
+      method: 'GET'
+    }
+  )
 
-  return rows?.staked || 0
+  return (await response.json())?.proxy?.proxied_vote_eos || 0
 }

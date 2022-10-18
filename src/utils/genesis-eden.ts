@@ -10,7 +10,7 @@ enum RankType {
 
 enum BadgeLink {
   Delegate = '/icons/chiefdelegate-icon.png',
-  N = '/icons/circle-icon.png'
+  N = '/icons/lv1-icon.png'
 }
 
 export interface MemberStats {
@@ -24,6 +24,7 @@ interface MemberClassification {
   memberType: RankType
   label: string
   badge?: string
+  voteWeight: string
 }
 
 export const getRanks = async <T = any>(): Promise<T> => {
@@ -54,31 +55,58 @@ export const classifyMemberRank = (
   rank: number,
   electionRankSize: number
 ): MemberClassification => {
-  const memberType =
-    rank === electionRankSize
-      ? RankType.HeadChief
-      : rank === electionRankSize - 1
-      ? RankType.Chief
-      : rank !== 0
-      ? RankType.N
-      : RankType.Member
-  const label =
-    RankType.Member === memberType
-      ? 'Member'
-      : RankType.N === memberType
-      ? `Level ${rank} Delegate`
-      : RankType.Chief === memberType
-      ? 'Chief Delegate'
-      : 'Head Chief Delegate'
+  let memberType = 0
+  let label: string
+  let badge: any = undefined
+  let voteWeight = '1'
+
+  switch (true) {
+    case rank === electionRankSize:
+      memberType = RankType.HeadChief
+      badge = BadgeLink.Delegate
+      break
+
+    case rank === electionRankSize - 1:
+      memberType = RankType.Chief
+      badge = BadgeLink.Delegate
+      break
+
+    case rank !== 0:
+      memberType = RankType.N
+      badge = BadgeLink.N
+
+      break
+
+    default:
+      memberType = RankType.Member
+      break
+  }
+
+  switch (true) {
+    case RankType.Member === memberType:
+      label = 'Member'
+      voteWeight = '4'
+      break
+
+    case RankType.N === memberType:
+      label = `Level ${rank} Delegate`
+      break
+
+    case RankType.Chief === memberType:
+      label = 'Chief Delegate'
+      voteWeight = '16'
+
+      break
+
+    default:
+      label = 'Head Chief Delegate'
+      break
+  }
 
   return {
     memberType,
     label,
-    badge:
-      memberType === RankType.Chief || memberType === RankType.HeadChief
-        ? BadgeLink.Delegate
-        : memberType === RankType.N
-        ? BadgeLink.N
-        : undefined
+    badge,
+    voteWeight
   }
 }
