@@ -317,7 +317,6 @@ namespace edenproxy {
   uint16_t smartproxy_contract::calculate_vote_weight(
       uint16_t                 rank,
       std::vector< uint16_t > &stat_ranks ) {
-
     if ( rank == 0 ) {
       return 1;
     }
