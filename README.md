@@ -1,5 +1,5 @@
 <p align="center">
-   <img src="./docs/images/logo_edeneos.png" width="300">
+   <img src="./docs/images/EDEN_Smart_Proxy_Preview.png" width="400">
 </p>
 
 # Eden Members Smart Proxy
