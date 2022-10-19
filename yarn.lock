@@ -118,10 +118,10 @@
   dependencies:
     "@date-io/core" "^2.16.0"
 
-"@edenia/ui-kit@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@edenia/ui-kit/-/ui-kit-0.4.0.tgz#6492bf5796907ecb71e57a44ce1927469f1cd246"
-  integrity sha512-HzGKPHJiAvCJowrTV1C3MkZDepAiBgXqm2cSg3kOx/P5QxCfl1auNPMT4g+Cwomjxn6g87w3mEqCgt5zSmsDmA==
+"@edenia/ui-kit@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@edenia/ui-kit/-/ui-kit-0.4.1.tgz#6fcc9f0c01f67c595510ce0f09b7d5883f775617"
+  integrity sha512-75zlWqhPbqQhlxMp8I/ESG1DmuaCH75nQ9gb/nRkdNRYgylNiMgLXWl/GaFgFeg5AHxyaVpVFJLUjSQX6anrag==
   dependencies:
     clsx "^1.2.1"
     react "^18.2.0"
@@ -629,6 +629,11 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
+
+"@remix-run/router@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.0.2.tgz#1c17eadb2fa77f80a796ad5ea9bf108e6993ef06"
+  integrity sha512-GRSOFhJzjGN+d4sKHTMSvNeUPoZiDHWmRnXfzaxrqe7dE/Nzlc8BiMSJdLDESZlndM7jIUrZ/F4yWqVYlI0rwQ==
 
 "@rushstack/eslint-patch@^1.0.6":
   version "1.2.0"
@@ -3470,6 +3475,21 @@ react-is@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
+
+react-router-dom@^6.4.2:
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.4.2.tgz#115b37d501d6d8ac870683694978c51c43e6c0d2"
+  integrity sha512-yM1kjoTkpfjgczPrcyWrp+OuQMyB1WleICiiGfstnQYo/S8hPEEnVjr/RdmlH6yKK4Tnj1UGXFSa7uwAtmDoLQ==
+  dependencies:
+    "@remix-run/router" "1.0.2"
+    react-router "6.4.2"
+
+react-router@6.4.2:
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.4.2.tgz#300628ee9ed81b8ef1597b5cb98b474efe9779b8"
+  integrity sha512-Rb0BAX9KHhVzT1OKhMvCDMw776aTYM0DtkxqUBP8dNBom3mPXlfNs76JNGK8wKJ1IZEY1+WGj+cvZxHVk/GiKw==
+  dependencies:
+    "@remix-run/router" "1.0.2"
 
 react-swipeable-views-core@^0.14.0:
   version "0.14.0"

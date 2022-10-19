@@ -27,7 +27,7 @@ const useAuthBottonState = (): any => {
   }
 
   useEffect(() => {
-    if (!state?.ual?.activeUser?.accountName) return
+    if (!state?.ual?.activeUser?.accountName || router?.pathname !== '/') return
 
     validateMember()
     router.push('/voters')
