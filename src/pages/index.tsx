@@ -4,7 +4,7 @@ import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 
 import { HomeHead, HomeBody, HomeBottom } from 'components'
-import bgImage from '/public/images/bg-home.png'
+import bgImage from '/public/images/bg-home.jpg'
 import { routeUtils } from 'utils'
 import i18nUtils from 'utils/i18n'
 
