@@ -86,13 +86,13 @@ const About: NextPage = () => {
         <Typography variant='subtitle2' fontWeight='bold'>
           {t('about.github')}{' '}
           <Link
-            href='https://www.github.com/'
+            href='https://github.com/edenia/eden-smart-proxy'
             fontWeight='normal'
             target='_blank'
             rel='noreferrer'
           >
             {' '}
-            https://www.github.com/
+            https://github.com/edenia/eden-smart-proxy
           </Link>
         </Typography>
       </div>
