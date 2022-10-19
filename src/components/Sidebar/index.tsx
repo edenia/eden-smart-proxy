@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo, useEffect, useState, useRef } from 'react'
 import Image from 'next/image'
 import { Drawer, DrawerProps, Typography, Link } from '@mui/material'
 import { useTranslation } from 'next-i18next'
@@ -35,8 +35,8 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
   const classes = useStyles()
   const [state, { logout }] = useSharedState()
   const [userData, setUserData] = useState<any>()
-  const [open, setOpen] = React.useState(false)
-  const anchorRef = React.useRef<HTMLButtonElement>(null)
+  const [open, setOpen] = useState(false)
+  const anchorRef = useRef<HTMLButtonElement>(null)
 
   const getUserData = async account => {
     const userData = await smartProxyUtil.getEdenMembers(account, 1)
@@ -72,9 +72,9 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
     setOpen(false)
   }
 
-  const prevOpen = React.useRef(open)
+  const prevOpen = useRef(open)
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (prevOpen?.current === true && open === false) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       anchorRef?.current?.focus()
