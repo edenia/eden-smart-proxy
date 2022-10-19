@@ -1,13 +1,8 @@
 const socialMediaItems = [
   {
     name: 'Twitter',
-    ref: 'google.com',
+    ref: 'https://twitter.com/edensmartproxy',
     image: '/icons/twitter-white-icon.png'
-  },
-  {
-    name: 'Reddit',
-    ref: 'google.com',
-    image: '/icons/reddit-icon.png'
   },
   {
     name: 'GitHub',
@@ -16,7 +11,7 @@ const socialMediaItems = [
   },
   {
     name: 'Telegram',
-    ref: 'google.com',
+    ref: 'https://t.me/edensmartproxy',
     image: '/icons/telegram-icon.png'
   }
 ]
