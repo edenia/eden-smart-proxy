@@ -97,10 +97,10 @@ const Vote: NextPage = () => {
       )
       let votes
 
-      if (state?.ual?.accountName) {
+      if (state?.ual?.activeUser?.accountName) {
         votes = await smartProxyUtil.getVotes(
-          state?.ual?.accountName,
-          state?.ual?.accountName,
+          state?.ual?.activeUser?.accountName,
+          state?.ual?.activeUser?.accountName,
           1
         )
       }
@@ -200,16 +200,22 @@ const Vote: NextPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue])
 
+  useEffect(() => {
+    if (state.validUser && !state?.ual?.activeUser?.accountName) return
+
+    const handleLoader = async () => {
+      await loadBps(undefined, 30, true)
+    }
+
+    handleLoader()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state?.ual?.activeUser?.accountName])
+
   return (
     <>
       <NextSeo title={t('vote.voteMetaTitle')} />
       <VoteHead setSearchInput={setSearchValue} sort={sort} />
-      <VoteBody
-        bps={bps}
-        setBps={setBps}
-        state={state}
-        loadBps={() => loadBps(undefined, 30, true)}
-      />
+      <VoteBody bps={bps} setBps={setBps} />
       {loadingData && (
         <div className={classes.loadMoreContainer}>
           <CircularProgress />

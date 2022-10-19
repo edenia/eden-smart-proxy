@@ -1,6 +1,12 @@
-import React, { memo, useEffect, useState, useRef } from 'react'
+import React, { memo, useEffect, useState, useRef, useCallback } from 'react'
 import Image from 'next/image'
-import { Drawer, DrawerProps, Typography, Link } from '@mui/material'
+import {
+  Drawer,
+  DrawerProps,
+  Typography,
+  Link,
+  AlertColor
+} from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import { PreviewProfile } from '@edenia/ui-kit'
@@ -16,6 +22,7 @@ import { useSharedState } from 'context/state.context'
 import { atomicAssetsUtil, smartProxyUtil } from 'utils'
 import logoImage from '/public/logos/eden-proxy-logo.png'
 import AuthButton from 'components/AuthUAL'
+import { BaseSnackbar } from 'components'
 
 import Styles from './styles'
 import VoterSvg from './Voter.svg'
@@ -23,6 +30,12 @@ import VoteSvg from './Vote.svg'
 import AboutSvg from './About.svg'
 
 const useStyles = Styles
+
+type MessageObject = {
+  message: string
+  severity: AlertColor
+  visible: boolean
+}
 
 type SidebarType = {
   onClose?(): void
@@ -37,6 +50,11 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
   const [userData, setUserData] = useState<any>()
   const [open, setOpen] = useState(false)
   const anchorRef = useRef<HTMLButtonElement>(null)
+  const [message, setMessage] = useState<MessageObject>({
+    message: '',
+    severity: 'success',
+    visible: false
+  })
 
   const getUserData = async account => {
     const userData = await smartProxyUtil.getEdenMembers(account, 1)
@@ -60,6 +78,16 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
     handleClose(event)
     router.push('/')
   }
+
+  const onCloseSnackBar: any = useCallback(
+    (event?: React.SyntheticEvent, reason?: string) => {
+      if (reason === 'clickaway') {
+        return
+      }
+      setMessage({ ...message, visible: false })
+    },
+    [message]
+  )
 
   const handleClose = (event: Event | React.SyntheticEvent) => {
     if (
@@ -212,11 +240,24 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
             </>
           ) : (
             <div className={classes.btnLoginBox}>
-              <AuthButton btnLabel={t('routes.signin')} />
+              <AuthButton
+                setMessage={setMessage}
+                btnLabel={t('routes.signin')}
+              />
             </div>
           )}
         </div>
       </div>
+      <BaseSnackbar
+        snackbarProps={{
+          open: message.visible,
+          onClose: onCloseSnackBar
+        }}
+        alertProps={{
+          severity: message.severity
+        }}
+        message={message.message}
+      />
     </Drawer>
   )
 }

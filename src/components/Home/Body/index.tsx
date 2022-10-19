@@ -1,11 +1,10 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { Typography, AlertColor } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import clsx from 'clsx'
 
 import { BaseSnackbar } from 'components'
 import AuthButton from '../../AuthUAL'
-import { useSharedState } from 'context/state.context'
 
 import useStyles from './styles'
 
@@ -18,7 +17,6 @@ type MessageObject = {
 const Body: React.FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
-  const [state] = useSharedState()
   const [message, setMessage] = useState<MessageObject>({
     message: '',
     severity: 'success',
@@ -34,16 +32,6 @@ const Body: React.FC = () => {
     },
     [message]
   )
-
-  useEffect(() => {
-    if (!state?.validUser) {
-      setMessage({
-        severity: 'warning',
-        message: t('home.noEdenMember'),
-        visible: true
-      })
-    }
-  }, [state?.validUser, t])
 
   return (
     <div className={classes.container}>
@@ -61,7 +49,7 @@ const Body: React.FC = () => {
       <div
         className={clsx(classes.buttonContainer, classes.spaceTopComponents)}
       >
-        <AuthButton btnLabel={t('home.signInLabel')} />
+        <AuthButton setMessage={setMessage} btnLabel={t('home.signInLabel')} />
       </div>
       <BaseSnackbar
         snackbarProps={{
