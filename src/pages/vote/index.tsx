@@ -65,7 +65,7 @@ const Vote: NextPage = () => {
       setLoadingData(true)
       setMessage({
         severity: 'success',
-        message: t('vote.successVote'),
+        message: t('vote.successfulVote'),
         visible: true
       })
       setTimeout(async () => {
