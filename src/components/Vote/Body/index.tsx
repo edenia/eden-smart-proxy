@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BlockProducerItem } from '@edenia/ui-kit'
 import { Link, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { socialMediaInfo } from 'config/constants'
 
@@ -9,12 +9,10 @@ import useStyles from './styles'
 
 type voteBodyProps = {
   setBps(delegate: any): void
-  state: any
-  loadBps(): void
   bps: { sort: string; data: Array<any> }
 }
 
-const Body: React.FC<voteBodyProps> = ({ loadBps, setBps, state, bps }) => {
+const Body: React.FC<voteBodyProps> = ({ setBps, bps }) => {
   const classes = useStyles()
   const [seletedAllBps, setSelectedAllBps] = useState<boolean>(false)
 
@@ -37,11 +35,6 @@ const Body: React.FC<voteBodyProps> = ({ loadBps, setBps, state, bps }) => {
     })
     setSelectedAllBps(!seletedAllBps)
   }
-
-  useEffect(() => {
-    loadBps()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state?.ual?.activeUser?.accountName])
 
   return (
     <div className={classes.container}>

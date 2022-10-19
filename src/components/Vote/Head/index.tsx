@@ -26,6 +26,8 @@ const Head: React.FC<HeadVotersType> = ({ setSearchInput, sort }) => {
           The BP whitelist is sustained by MyvoteEOS.{' '}
           <Link
             href='https://myvoteeos.com/home'
+            target='_blank'
+            rel='noreferrer'
             underline='none'
             color={theme.palette.primary.light}
           >

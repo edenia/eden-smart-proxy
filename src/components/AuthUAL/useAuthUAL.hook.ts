@@ -11,6 +11,7 @@ const useAuthBottonState = (): any => {
 
   const handleSignOut = () => {
     logout()
+    setState({ validUser: false })
     router.push('/')
   }
 
@@ -19,20 +20,22 @@ const useAuthBottonState = (): any => {
       state?.ual?.activeUser?.accountName,
       1
     )
-
+    setState({ validUser: true })
     if (!rows.length) {
       handleSignOut()
-      setState({ validUser: false })
     }
   }
 
   useEffect(() => {
-    if (!state?.ual?.activeUser?.accountName || router?.pathname !== '/') return
+    if (!state?.ual?.activeUser?.accountName && state?.validUser) return
 
     validateMember()
-    router.push('/voters')
+
+    if (state?.validUser) {
+      router.push('/voters')
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state?.ual?.activeUser, router])
+  }, [state?.ual?.activeUser])
 
   return [
     { state },
