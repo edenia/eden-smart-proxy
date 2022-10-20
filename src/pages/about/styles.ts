@@ -9,6 +9,18 @@ const Styles = makeStyles(theme => ({
   },
   paddingBulletPoint: {
     padding: theme.spacing(1, 0, 1, 2)
+  },
+  link: {
+    padding: theme.spacing(0, 1)
+  },
+  linkInitial: {
+    paddingRight: theme.spacing(1)
+  },
+  blockDescription: {
+    padding: theme.spacing(1, 0)
+  },
+  blockAnswer: {
+    paddingBottom: theme.spacing(1)
   }
 }))
 
