@@ -24,7 +24,7 @@ const ImgLoading = ({ img, classes }) => {
           className={classes}
           alt='img Loaded'
           style={{ ...css }}
-          src={imgUrl || ''}
+          src={imgUrl || '/images/user.svg'}
         />
       )}
     </>
