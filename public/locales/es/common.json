@@ -100,6 +100,7 @@
   "home": {
     "homeMetaTitle": "Inicio",
     "noEdenMember": "Debe ser miembro de Eden para registrarse",
+    "voteBPs":"Vota por BPs",
     "title": {
       "first": "Elige sabiamente",
       "second": "Elija Eden Smart Proxy"

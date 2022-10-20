@@ -76,7 +76,7 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
   const handleLogout = (event: Event | React.SyntheticEvent) => {
     logout()
     handleClose(event)
-    router.push('/')
+    router.reload()
   }
 
   const onCloseSnackBar: any = useCallback(

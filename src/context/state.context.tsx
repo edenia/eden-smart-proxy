@@ -117,6 +117,7 @@ export const useSharedState = (): any => {
     stateTemp.ual.login(type)
   }
   const logout = () => {
+    localStorage.setItem('loginUser', 'false')
     dispatchTemp({ type: 'logout' })
     stateTemp.ual.logout()
   }
