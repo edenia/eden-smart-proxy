@@ -12,7 +12,7 @@ const ImgLoading = ({ img, classes }) => {
   useEffect(() => {
     setTimeout(async () => {
       await setShow(false)
-    }, 2000)
+    }, 1500)
   }, [])
 
   return (
