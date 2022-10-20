@@ -55,6 +55,18 @@ const Styles = makeStyles(theme => ({
   },
   buttonPadding: {
     paddingRight: theme.spacing(1)
+  },
+  '@keyframes nprogress-spinner': {
+    '0%': {
+      transform: 'rotate(0deg)'
+    },
+    '100%': {
+      transform: 'rotate(360deg)'
+    }
+  },
+  testSyule: {
+    animation: 'spin 1s linear infinite',
+    animationName: '$nprogress-spinner'
   }
 }))
 
