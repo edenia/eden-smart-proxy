@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import CircularProgress from '@mui/material/CircularProgress'
 import { DelegateItem, Button } from '@edenia/ui-kit'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
@@ -11,6 +10,7 @@ import {
   genesisEdenUtil,
   eosioUtil
 } from 'utils'
+import { Spinner } from 'components'
 import yesVotingIcon from '/public/icons/yes-voting-icon.png'
 import notVotingIcon from '/public/icons/not-voting-icon.png'
 import votingOtherIcon from '/public/icons/voting-for-other-icon.png'
@@ -129,11 +129,7 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
           }
           name={delegate[1].name}
           imgChild={
-            <ImgLoading
-              classes={classes.avatar}
-              img={delegate?.info?.image}
-              defaultImg='/icons/spinner.gif'
-            />
+            <ImgLoading classes={classes.avatar} img={delegate?.info?.image} />
           }
           bgColor='#fff'
           target='_blank'
@@ -161,7 +157,7 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
       ))}
       {loadingData && (
         <div className={classes.loadMoreContainer}>
-          <CircularProgress />
+          <Spinner />
         </div>
       )}
       {edenMembers[edenMembers?.length - 1]?.next_key !== '' && (
