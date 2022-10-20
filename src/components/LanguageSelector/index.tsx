@@ -112,7 +112,7 @@ const LanguageSelector: React.FC = () => {
                       translateSite('en')
                     }}
                   >
-                    English
+                    {t('en')}
                   </MenuItem>
                   <MenuItem
                     onClick={e => {
@@ -120,7 +120,23 @@ const LanguageSelector: React.FC = () => {
                       translateSite('es')
                     }}
                   >
-                    Spanish
+                    {t('es')}
+                  </MenuItem>
+                  <MenuItem
+                    onClick={e => {
+                      handleClose(e)
+                      translateSite('kr')
+                    }}
+                  >
+                    {t('kr')}
+                  </MenuItem>
+                  <MenuItem
+                    onClick={e => {
+                      handleClose(e)
+                      translateSite('cn')
+                    }}
+                  >
+                    {t('cn')}
                   </MenuItem>
                 </MenuList>
               </ClickAwayListener>
