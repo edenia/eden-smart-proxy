@@ -38,7 +38,7 @@ const AuthButton: React.FC<{
         <Button onClick={handleLogin} label={btnLabel} variant='primary' />
       )}
       <p />
-      {!loader && <Spinner />}
+      {loader && <Spinner />}
     </div>
   )
 }
