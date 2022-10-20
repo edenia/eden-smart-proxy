@@ -1,8 +1,11 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { Typography, AlertColor } from '@mui/material'
 import { useTranslation } from 'next-i18next'
+import { Button } from '@edenia/ui-kit'
+import { useRouter } from 'next/router'
 import clsx from 'clsx'
 
+import { useSharedState } from 'context/state.context'
 import { BaseSnackbar } from 'components'
 import AuthButton from '../../AuthUAL'
 
@@ -15,8 +18,10 @@ type MessageObject = {
 }
 
 const Body: React.FC = () => {
+  const router = useRouter()
   const classes = useStyles()
   const { t } = useTranslation()
+  const [state] = useSharedState()
   const [message, setMessage] = useState<MessageObject>({
     message: '',
     severity: 'success',
@@ -32,6 +37,20 @@ const Body: React.FC = () => {
     },
     [message]
   )
+
+  useEffect(() => {
+    if (!state?.validUser) return
+
+    if (
+      !localStorage.getItem('loginUser') ||
+      localStorage.getItem('loginUser') === 'false'
+    ) {
+      localStorage.setItem('loginUser', 'true')
+      router.push('/voters')
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state?.validUser])
 
   return (
     <div className={classes.container}>
@@ -49,7 +68,18 @@ const Body: React.FC = () => {
       <div
         className={clsx(classes.buttonContainer, classes.spaceTopComponents)}
       >
-        <AuthButton setMessage={setMessage} btnLabel={t('home.signInLabel')} />
+        {!state?.ual?.activeUser?.accountName || !state?.validUser ? (
+          <AuthButton
+            setMessage={setMessage}
+            btnLabel={t('home.signInLabel')}
+          />
+        ) : (
+          <Button
+            onClick={() => router.push('/vote')}
+            label={t('home.voteBPs')}
+            variant='primary'
+          />
+        )}
       </div>
       <BaseSnackbar
         snackbarProps={{

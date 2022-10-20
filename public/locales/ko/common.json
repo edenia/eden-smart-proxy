@@ -100,6 +100,7 @@
   "home": {
     "homeMetaTitle": "Home",
     "noEdenMember": "You must be an Eden member to be able to sign in",
+    "voteBPs":"BP에 투표하세요",
     "title": {
       "first": "Choose Wisely",
       "second": "Choose Eden Smart Proxy"
