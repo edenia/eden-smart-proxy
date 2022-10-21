@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import { DelegateItem, Button, Spinner } from '@edenia/ui-kit'
 import { useTranslation } from 'next-i18next'
+import { gql, useLazyQuery } from '@apollo/client'
 import Image from 'next/image'
 
 import ImgLoading from '../../ImageLoad'
 import {
-  smartProxyUtil,
-  atomicAssetsUtil,
-  genesisEdenUtil,
+  // smartProxyUtil,
+  // atomicAssetsUtil,
+  // genesisEdenUtil,
   eosioUtil
 } from 'utils'
 import yesVotingIcon from '/public/icons/yes-voting-icon.png'
@@ -20,59 +21,122 @@ type BodyVoters = {
   searchValue: string | undefined
 }
 
+// test graphql
+interface IMembers {
+  account: string
+  election_participation_status: number
+  election_rank: number
+  encryption_key: string
+  name: string
+  nft_template_id: number
+  profile: any
+  representative: string
+  status: number
+  vote: {
+    account: string
+    producers: any
+    weight: any
+  }
+}
+
+interface IMembersData {
+  members: IMembers[]
+}
+
+const GET_MEMBERS = gql`
+  query getMemebers($value: String, $orderBy: [member_order_by!]) {
+    member_aggregate(
+      order_by: $orderBy
+      where: {
+        _or: [{ account: { _like: $value } }, { name: { _like: $value } }]
+      }
+    ) {
+      aggregate {
+        count
+      }
+    }
+    member(
+      order_by: $orderBy
+      where: {
+        _or: [{ account: { _like: $value } }, { name: { _like: $value } }]
+      }
+    ) {
+      account
+      election_participation_status
+      election_rank
+      encryption_key
+      name
+      nft_template_id
+      profile
+      representative
+      status
+      vote {
+        account
+        producers
+        weight
+      }
+    }
+  }
+`
+// end test graphql
+
 const Body: React.FC<BodyVoters> = ({ searchValue }) => {
   const { t } = useTranslation()
   const classes = useStyles()
-  const [loadingData, setLoadingData] = useState<boolean>(true)
+  // const [loadingData, setLoadingData] = useState<boolean>(true)
   const [edenMembers, setEdenMembers] = useState<any>([])
   const [currentEdenMembers, setCurrentEdenMembers] = useState<any>([])
+  const [getMembers, { loading, data }] =
+    useLazyQuery<IMembersData>(GET_MEMBERS)
 
-  const loadMembers = async nextKey => {
-    setLoadingData(true)
-    const members = await smartProxyUtil.getEdenMembers(
-      nextKey === '' ? undefined : nextKey,
-      50
-    )
+  console.log({ loading, data })
 
-    if (members) {
-      const activeMembers = members?.rows?.filter(
-        member => member[1]?.status === 1
-      )
-      const electionRankSize = await genesisEdenUtil.getRanks()
-      const membersCompleteDataPromise = activeMembers.map(async member => {
-        const { rows } = await smartProxyUtil.getVotes(
-          member[1]?.account,
-          member[1]?.account,
-          1
-        )
+  // const loadMembers = async nextKey => {
+  //   setLoadingData(true)
+  //   const members = await smartProxyUtil.getEdenMembers(
+  //     nextKey === '' ? undefined : nextKey,
+  //     50
+  //   )
 
-        const memberInfo = await atomicAssetsUtil.getTemplate(
-          member[1]?.nft_template_id
-        )
+  //   if (members) {
+  //     const activeMembers = members?.rows?.filter(
+  //       member => member[1]?.status === 1
+  //     )
+  //     const electionRankSize = await genesisEdenUtil.getRanks()
+  //     const membersCompleteDataPromise = activeMembers.map(async member => {
+  //       const { rows } = await smartProxyUtil.getVotes(
+  //         member[1]?.account,
+  //         member[1]?.account,
+  //         1
+  //       )
 
-        const voteState = await eosioUtil.getVotingState(member[1]?.account)
+  //       const memberInfo = await atomicAssetsUtil.getTemplate(
+  //         member[1]?.nft_template_id
+  //       )
 
-        return {
-          ...member,
-          info: {
-            ...memberInfo,
-            rank: genesisEdenUtil.classifyMemberRank(
-              member[1].election_rank,
-              electionRankSize.length - 1
-            )
-          },
-          next_key: members.next_key,
-          vote: {
-            state: voteState,
-            amount: rows.length > 0 ? rows[0]?.producers.length : 0
-          }
-        }
-      })
-      const membersCompleteData = await Promise?.all(membersCompleteDataPromise)
-      setEdenMembers([...edenMembers, ...membersCompleteData])
-    }
-    setLoadingData(false)
-  }
+  //       const voteState = await eosioUtil.getVotingState(member[1]?.account)
+
+  //       return {
+  //         ...member,
+  //         info: {
+  //           ...memberInfo,
+  //           rank: genesisEdenUtil.classifyMemberRank(
+  //             member[1].election_rank,
+  //             electionRankSize.length - 1
+  //           )
+  //         },
+  //         next_key: members.next_key,
+  //         vote: {
+  //           state: voteState,
+  //           amount: rows.length > 0 ? rows[0]?.producers.length : 0
+  //         }
+  //       }
+  //     })
+  //     const membersCompleteData = await Promise?.all(membersCompleteDataPromise)
+  //     setEdenMembers([...edenMembers, ...membersCompleteData])
+  //   }
+  //   setLoadingData(false)
+  // }
 
   const search = () => {
     if (typeof searchValue === 'string' && searchValue !== '') {
@@ -109,9 +173,19 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
   }, [searchValue])
 
   useEffect(() => {
-    loadMembers(undefined)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    getMembers({
+      variables: {
+        value: '%pe%',
+        orderBy: [
+          {
+            vote: {
+              weight: 'asc'
+            }
+          }
+        ]
+      }
+    })
+  }, [getMembers])
 
   return (
     <div className={classes.container}>
@@ -156,18 +230,19 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
           )}: ${delegate?.info?.rank?.voteWeight}`}
         />
       ))}
-      {loadingData && (
+      {/* {loadingData && (
         <div className={classes.loadMoreContainer}>
           <Spinner />
         </div>
-      )}
+      )} */}
       {edenMembers[edenMembers?.length - 1]?.next_key !== '' && (
         <div className={classes.loadMoreContainer}>
           <Button
             label={t('loadMore')}
             variant='secondary'
             onClick={() =>
-              loadMembers(edenMembers[edenMembers.length - 1].next_key)
+              // loadMembers(edenMembers[edenMembers.length - 1].next_key)
+              console.log('test')
             }
           />
         </div>
