@@ -152,7 +152,9 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
           }
           profileLink={`https://genesis.eden.eoscommunity.org/members/${delegate[1]?.account}`}
           targetProfile='_blank'
-          positionText={`${delegate?.info?.rank?.label} - Vote Weight: ${delegate?.info?.rank?.voteWeight}`}
+          positionText={`${delegate?.info?.rank?.label} - ${t(
+            'voters.voteWeight'
+          )}: ${delegate?.info?.rank?.voteWeight}`}
         />
       ))}
       {loadingData && (
@@ -163,7 +165,7 @@ const Body: React.FC<BodyVoters> = ({ searchValue }) => {
       {edenMembers[edenMembers?.length - 1]?.next_key !== '' && (
         <div className={classes.loadMoreContainer}>
           <Button
-            label='Load More'
+            label={t('loadMore')}
             variant='secondary'
             onClick={() =>
               loadMembers(edenMembers[edenMembers.length - 1].next_key)
