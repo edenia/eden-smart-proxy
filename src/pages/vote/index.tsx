@@ -2,7 +2,7 @@ import type { NextPage, GetStaticProps } from 'next'
 import { useState, useCallback, useEffect } from 'react'
 import { useTranslation } from 'next-i18next'
 import { AlertColor, Typography } from '@mui/material'
-import { Fab, Button } from '@edenia/ui-kit'
+import { Fab, Button, Spinner } from '@edenia/ui-kit'
 import { NextSeo } from 'next-seo'
 import Image from 'next/image'
 
@@ -11,7 +11,7 @@ import { useSharedState } from 'context/state.context'
 import i18nUtils from 'utils/i18n'
 import { bpsInfo } from 'config/constants'
 import likeIcon from '/public/icons/like-icon.png'
-import { VoteHead, VoteBody, Spinner, BaseSnackbar } from 'components'
+import { VoteHead, VoteBody, BaseSnackbar } from 'components'
 
 import useStyles from './styles'
 
