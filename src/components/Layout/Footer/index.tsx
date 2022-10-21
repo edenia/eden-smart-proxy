@@ -37,7 +37,7 @@ const FooterComp: React.FC<FooterCompType> = ({ showWhite }) => {
                 rel='noreferrer'
                 color={theme.palette.grey[600]}
               >
-                {`Developed by Edenia `}
+                {` Developed by Edenia `}
               </Link>
             </Typography>
           </div>
