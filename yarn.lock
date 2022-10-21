@@ -118,14 +118,15 @@
   dependencies:
     "@date-io/core" "^2.16.0"
 
-"@edenia/ui-kit@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@edenia/ui-kit/-/ui-kit-0.4.1.tgz#6fcc9f0c01f67c595510ce0f09b7d5883f775617"
-  integrity sha512-75zlWqhPbqQhlxMp8I/ESG1DmuaCH75nQ9gb/nRkdNRYgylNiMgLXWl/GaFgFeg5AHxyaVpVFJLUjSQX6anrag==
+"@edenia/ui-kit@^0.4.3":
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/@edenia/ui-kit/-/ui-kit-0.4.3.tgz#deb64fb0c1cc40df41c220f4c656f9608375ad72"
+  integrity sha512-RxzcCylqNu3vrODAguLPdcj0QaPhaIEum0B3Ak0YIJ5NGZTC/MellNmKp+Wcfl8/YGXtRr/gIOB6ViLJfaXgeQ==
   dependencies:
     clsx "^1.2.1"
     react "^18.2.0"
     react-dom "^18.2.0"
+    react-icons "^4.6.0"
 
 "@emotion/babel-plugin@^11.10.0":
   version "11.10.2"

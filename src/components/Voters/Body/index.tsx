@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { DelegateItem, Button } from '@edenia/ui-kit'
+import { DelegateItem, Button, Spinner } from '@edenia/ui-kit'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 
@@ -10,7 +10,6 @@ import {
   genesisEdenUtil,
   eosioUtil
 } from 'utils'
-import { Spinner } from 'components'
 import yesVotingIcon from '/public/icons/yes-voting-icon.png'
 import notVotingIcon from '/public/icons/not-voting-icon.png'
 import votingOtherIcon from '/public/icons/voting-for-other-icon.png'

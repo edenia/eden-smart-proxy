@@ -1,8 +1,6 @@
-import { Button } from '@edenia/ui-kit'
+import { Button, Spinner } from '@edenia/ui-kit'
 import { useTranslation } from 'next-i18next'
 import { useState, useEffect } from 'react'
-
-import { Spinner } from 'components'
 
 import useAuthUAL from './useAuthUAL.hook'
 import useStyles from './styles'
