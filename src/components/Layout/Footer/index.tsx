@@ -30,7 +30,12 @@ const FooterComp: React.FC<FooterCompType> = ({ showWhite }) => {
               <Image src={edeniaLogo} />
             </div>
             <Typography variant='caption' color={theme.palette.grey[600]}>
-              <Link href='https://edenia.com' color={theme.palette.grey[600]}>
+              <Link
+                target='_blank'
+                href='https://edenia.com'
+                rel='noreferrer'
+                color={theme.palette.grey[600]}
+              >
                 {`Hosted by Edenia `}
               </Link>
               - Community Owned
