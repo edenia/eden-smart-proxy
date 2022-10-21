@@ -93,7 +93,7 @@
     "title1": "Seleccione y vote para incluir en la lista blanca a sus 21 BPs más confiables.",
     "title2": "La lista blanca de BP es sostenida por MyvoteEOS.",
     "readMore": "Lea mas",
-    "selectedAll": "Seleccionar todos"
+    "selectAll": "Seleccionar todos"
   },
   "voters": {
     "votersMetaTitle": "Miembros",
@@ -116,7 +116,7 @@
     "description": "EdenBPsProxy es un proxy de votación de EOS BP que maximiza la voz de los titulares individuales de EOS al aprovechar su voz con el proceso de democracia fractal de Eden. Solo los miembros de Edens que revelaron su identidad serán elegibles para opinar sobre el proxy que votos BPs."
   },
   "footer": {
-    "communityOwnedPublic": "Un bien público de propiedad comunitaria",
+    "communityOwnedPublic": "Un bien publico comunitario",
     "developedEdenia": "Desarrollo por Edenia"
   }
 }

@@ -8,7 +8,7 @@
   "cn": "중국어",
   "totalProxiedVotes": "총 프록시 투표 수",
   "loadMore": "더 보기",
-  "searchName": "Search by name",
+  "searchName": "이름으로 찾기",
   "buttonLabel": "투표 위임",
   "routes": {
     "/": "메인",
@@ -90,10 +90,10 @@
     "successfulVote": "투표 완료",
     "somethingWrong": "문제가 발생했습니다. 다시 시도해주세요.",
     "voteSelected": "선택한 항목에 투표합니다.",
-    "title1": "Select and vote to whitelist your most trusted 21 BPs.",
-    "title2": "The BP whitelist is sustained by MyvoteEOS",
-    "readMore": "Read more",
-    "selectedAll": "Selecte All"
+    "title1": "당신이 신뢰하는 21개 BP를 선택하세요.",
+    "title2": "BP 화이트리스트는 MyvoteEOS로부터 제공됩니다.",
+    "readMore": "더 알아보기",
+    "selectAll": "전부 선택"
   },
   "voters": {
     "votersMetaTitle": "에덴 회원",
@@ -102,7 +102,7 @@
     "noVoting": "투표하지 않음",
     "voteByOther": "다른 사람에게 투표",
     "voteFor": "투표 BP",
-    "voteWeight": "Vote Weight"
+    "voteWeight": "투표 가중치"
   },
   "home": {
     "homeMetaTitle": "메인",
@@ -116,7 +116,7 @@
     "description": "EdenBPsProxy는 에덴의 프랙탈 민주주의 프로세스를 통해 EOS 보유자들의 목소리를 극대화하는 EOS BP 투표 프록시입니다. 신원을 공개한 에덴 회원만이 BP에 투표하는 프록시에 대해 발언권을 가질 수 있습니다."
   },
   "footer": {
-    "communityOwnedPublic": "A Community Owned Public Good",
+    "communityOwnedPublic": "커뮤니티가 소유하는 공공재",
     "developedEdenia": "Developed by Edenia"
   }
 }

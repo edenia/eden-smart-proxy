@@ -93,7 +93,7 @@
     "title1": "Select and vote to whitelist your most trusted 21 BPs.",
     "title2": "The BP whitelist is sustained by MyvoteEOS",
     "readMore": "Read more",
-    "selectedAll": "Selecte All"
+    "selectAll": "Selecte All"
   },
   "voters": {
     "votersMetaTitle": "Eden Members",

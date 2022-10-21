@@ -50,7 +50,7 @@ const Body: React.FC<voteBodyProps> = ({ setBps, bps }) => {
             name='checkbox'
             onChange={() => selectedAll()}
           />
-          {t('vote.selectedAll')}
+          {t('vote.selectAll')}
         </label>
       </div>
       {bps?.data?.map(bp => (
