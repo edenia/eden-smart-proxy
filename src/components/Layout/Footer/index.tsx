@@ -30,7 +30,7 @@ const FooterComp: React.FC<FooterCompType> = ({ showWhite }) => {
               <Image src={edeniaLogo} />
             </div>
             <Typography variant='caption' color={theme.palette.grey[600]}>
-              A Community Owned Public Good 
+              A Community Owned Public Good
               <Link
                 target='_blank'
                 href='https://edenia.com'
