@@ -21,6 +21,7 @@ const Styles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     height: 45,
+    cursor: 'pointer',
     padding: theme.spacing(1),
     margin: `${theme.spacing(1)} !important`,
     textDecoration: 'none',
@@ -90,6 +91,9 @@ const Styles = makeStyles(theme => ({
     '&:hover': {
       cursor: 'pointer'
     }
+  },
+  cursor: {
+    cursor: 'pointer'
   }
 }))
 
