@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { DelegateItem, Button, Spinner } from '@edenia/ui-kit'
+// import CircularProgress from '@mui/material/CircularProgress'
 import { useTranslation } from 'next-i18next'
 import { gql, useLazyQuery } from '@apollo/client'
 import Image from 'next/image'
