@@ -7,6 +7,9 @@
   "ko": "Coreano",
   "cn": "Chino",
   "totalProxiedVotes": "Total de votos delegados",
+  "loadMore": "Cargar más",
+  "searchName": "Buscar por nombre",
+  "buttonLabel": "Delegar voto",
   "routes": {
     "/": "Hogar",
     "voters": "Miembros",
@@ -86,8 +89,11 @@
     "beforeVoting": "Antes de votar por los productores de bloques, debes delegar tu voto al proxy.",
     "successfulVote": "Voto Exitoso",
     "somethingWrong": "Algo salió mal, inténtalo de nuevo",
-    "loadMore": "Cargar más",
-    "voteSelected": "Voto seleccionado"
+    "voteSelected": "Voto seleccionado",
+    "title1": "Seleccione y vote para incluir en la lista blanca a sus 21 BPs más confiables.",
+    "title2": "La lista blanca de BP es sostenida por MyvoteEOS.",
+    "readMore": "Lea mas",
+    "selectedAll": "Seleccionar todos"
   },
   "voters": {
     "votersMetaTitle": "Miembros",
@@ -95,18 +101,22 @@
     "lastElection": "Última elección el",
     "noVoting": "Sin votar",
     "voteByOther": "Votó por otro",
-    "voteFor": "Votado por"
+    "voteFor": "Votado por",
+    "voteWeight": "Peso del voto"
   },
   "home": {
     "homeMetaTitle": "Inicio",
     "noEdenMember": "Debe ser miembro de Eden para registrarse",
-    "voteBPs":"Vota por BPs",
+    "voteBPs": "Vota por BPs",
     "title": {
       "first": "Elige sabiamente",
       "second": "Elija Eden Smart Proxy"
     },
-    "buttonLabel": "Voto delegado",
     "signInLabel": "Inicie sesión y vote",
     "description": "EdenBPsProxy es un proxy de votación de EOS BP que maximiza la voz de los titulares individuales de EOS al aprovechar su voz con el proceso de democracia fractal de Eden. Solo los miembros de Edens que revelaron su identidad serán elegibles para opinar sobre el proxy que votos BPs."
+  },
+  "footer": {
+    "communityOwnedPublic": "Un bien público de propiedad comunitaria",
+    "developedEdenia": "Desarrollo por Edenia"
   }
 }

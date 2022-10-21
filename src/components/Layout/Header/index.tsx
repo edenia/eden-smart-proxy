@@ -127,7 +127,7 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
                 {showDelegateButton && (
                   <Button
                     icon='/icons/like-white-icon.png'
-                    label='Delegate Vote'
+                    label={t('buttonLabel')}
                     variant='primary'
                     externalStyles={classes.btnDelegate}
                     onClick={() => handleDelegateVote()}

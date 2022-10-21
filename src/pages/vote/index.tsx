@@ -222,7 +222,7 @@ const Vote: NextPage = () => {
       {bps?.data[bps?.data?.length - 1]?.next_key !== '' && (
         <div className={classes.loadMoreContainer}>
           <Button
-            label={t('vote.loadMore')}
+            label={t('loadMore')}
             variant='secondary'
             onClick={() =>
               loadBps(bps?.data?.[bps?.data?.length - 1].next_key, 30, false)

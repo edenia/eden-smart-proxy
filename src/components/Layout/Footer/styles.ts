@@ -24,7 +24,12 @@ const Styles = makeStyles(theme => ({
     }
   },
   paddinR: {
-    paddingRight: theme.spacing(0.5)
+    padding: theme.spacing(0, 0.5, 0, 1),
+    display: 'flex'
+  },
+  linkStyle: {
+    display: 'flex',
+    alignItems: 'center'
   }
 }))
 

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BlockProducerItem } from '@edenia/ui-kit'
 import { Link, Typography } from '@mui/material'
+import { useTranslation } from 'next-i18next'
 import { useState } from 'react'
 
 import { socialMediaInfo } from 'config/constants'
@@ -14,6 +15,7 @@ type voteBodyProps = {
 
 const Body: React.FC<voteBodyProps> = ({ setBps, bps }) => {
   const classes = useStyles()
+  const { t } = useTranslation()
   const [seletedAllBps, setSelectedAllBps] = useState<boolean>(false)
 
   const handleSelected = pressBp => {
@@ -48,7 +50,7 @@ const Body: React.FC<voteBodyProps> = ({ setBps, bps }) => {
             name='checkbox'
             onChange={() => selectedAll()}
           />
-          Seleccionar todos
+          {t('vote.selectedAll')}
         </label>
       </div>
       {bps?.data?.map(bp => (
