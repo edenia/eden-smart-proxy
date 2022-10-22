@@ -10,6 +10,7 @@ import { DefaultSeo } from 'next-seo'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { useRouter } from 'next/router'
+import { ApolloProvider } from '@apollo/client'
 import { appWithTranslation } from 'next-i18next'
 import '@edenia/ui-kit/dist/index.css'
 
@@ -17,6 +18,7 @@ import '../global.css'
 import { themeConfig, seoConfig, analyticsConfig, i18nConfig } from 'config'
 import { Locale } from 'config/i18n'
 import { analyticsUtils } from 'utils'
+import { client } from '../graphql'
 import { SharedStateProvider } from 'context/state.context'
 
 const Layout = dynamic(() => import('../components/Layout'), {
@@ -51,19 +53,20 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppProps> = ({
 
   return (
     <>
-      <SharedStateProvider>
-        <DefaultSeo {...seoConfig} />
+      <ApolloProvider client={client}>
+        <SharedStateProvider>
+          <DefaultSeo {...seoConfig} />
 
-        <Script
-          strategy='afterInteractive'
-          src={`https://www.googletagmanager.com/gtag/js?id=${analyticsConfig.trackingCode}`}
-        />
+          <Script
+            strategy='afterInteractive'
+            src={`https://www.googletagmanager.com/gtag/js?id=${analyticsConfig.trackingCode}`}
+          />
 
-        <Script
-          id='gtag-init'
-          strategy='afterInteractive'
-          dangerouslySetInnerHTML={{
-            __html: `
+          <Script
+            id='gtag-init'
+            strategy='afterInteractive'
+            dangerouslySetInnerHTML={{
+              __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
@@ -71,32 +74,33 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppProps> = ({
               page_path: window.location.pathname,
             });
           `
-          }}
-        />
+            }}
+          />
 
-        <Head>
-          <link rel='icon' href='/favicon.ico' />
-          <meta
-            name='viewport'
-            content='minimum-scale=1, initial-scale=1, width=device-width'
-          />
-          <meta
-            name='theme-color'
-            content={themeConfig.lightTheme.palette.primary.main}
-          />
-        </Head>
-        <ThemeProvider theme={themeConfig.lightTheme}>
-          <LocalizationProvider
-            dateAdapter={AdapterDateFns}
-            adapterLocale={i18nConfig?.dateFnsLocaleMap?.[currentLocale]}
-          >
-            <CssBaseline />
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </LocalizationProvider>
-        </ThemeProvider>
-      </SharedStateProvider>
+          <Head>
+            <link rel='icon' href='/favicon.ico' />
+            <meta
+              name='viewport'
+              content='minimum-scale=1, initial-scale=1, width=device-width'
+            />
+            <meta
+              name='theme-color'
+              content={themeConfig.lightTheme.palette.primary.main}
+            />
+          </Head>
+          <ThemeProvider theme={themeConfig.lightTheme}>
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
+              adapterLocale={i18nConfig?.dateFnsLocaleMap?.[currentLocale]}
+            >
+              <CssBaseline />
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </LocalizationProvider>
+          </ThemeProvider>
+        </SharedStateProvider>
+      </ApolloProvider>
     </>
   )
 }

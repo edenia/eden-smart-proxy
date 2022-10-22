@@ -4,18 +4,21 @@ import { useTranslation } from 'next-i18next'
 
 import { routeUtils } from 'utils'
 import i18nUtils from 'utils/i18n'
+import useDebounce from '../../hooks/useDebounce'
+
 import { VotersHead, VotersBody } from 'components'
 import { useState } from 'react'
 
 const Voters: NextPage = () => {
   const { t } = useTranslation()
-  const [searchInput, setSearchInput] = useState<string | undefined>()
+  const [searchInput, setSearchInput] = useState<string>('')
+  const debouncedFilterBy = useDebounce(searchInput, 300)
 
   return (
     <>
       <NextSeo title={t('voters.votersMetaTitle')} />
       <VotersHead setSearchInput={setSearchInput} />
-      <VotersBody searchValue={searchInput} />
+      <VotersBody searchValue={debouncedFilterBy} />
     </>
   )
 }
