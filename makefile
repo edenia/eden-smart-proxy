@@ -90,7 +90,7 @@ build-docker-cached-voter: ./Dockerfile
 		--cache-from $(DOCKER_REGISTRY)/$(IMAGE_NAME_VOTER):$(LATEST_TAG) \
 		-t $(DOCKER_REGISTRY)/$(IMAGE_NAME_VOTER):$(VERSION) \
 		-t $(DOCKER_REGISTRY)/$(IMAGE_NAME_VOTER):$(LATEST_TAG) \
-		.
+		./voter
 
 push-image-voter: ##@devops Push the freshly built image and tag with release or latest tag
 push-image-voter:
