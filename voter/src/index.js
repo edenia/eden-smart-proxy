@@ -19,7 +19,6 @@ async function init() {
           }
         ])
         .catch(er => {
-          retry = false
           console.log(er.toString())
         })
 
