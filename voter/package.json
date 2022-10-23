@@ -1,0 +1,37 @@
+{
+  "name": "proxyvoter",
+  "version": "1.0.0",
+  "description": "Eden Smart Proxy Voter Script",
+  "repository": "https://github.com/edenia/eden-smart-proxy.git",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "proxyvote": "node src/index.js",
+    "prepare": "husky install .husky"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint",
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "eosjs": "^22.1.0",
+    "eosjs-api": "^7.0.4",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "env-cmd": "^10.1.0",
+    "eslint": "^8.21.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.0.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1",
+    "standard": "^17.0.0"
+  }
+}

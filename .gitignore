@@ -4,6 +4,7 @@
 
 # dependencies
 /node_modules
+voter/node_modules
 /.pnp
 .pnp.js
 
