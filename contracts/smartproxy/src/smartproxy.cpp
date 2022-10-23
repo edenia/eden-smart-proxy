@@ -83,28 +83,19 @@ namespace edenproxy {
                  return a.second > b.second;
                } );
 
-    int edge = bps.size() <= 30 ? bps.size() : 30;
-    std::vector< std::pair< eosio::name, uint16_t > > final_bps( bps.begin(),
-                                                                 bps.begin() +
-                                                                     edge );
+    int                        edge = bps.size() <= 30 ? bps.size() : 30;
+    std::vector< eosio::name > bps_to_vote;
 
-    std::sort( final_bps.begin(),
-               final_bps.end(),
-               []( std::pair< eosio::name, uint16_t > a,
-                   std::pair< eosio::name, uint16_t > b ) {
-                 return a.first < b.first;
-               } );
-
-    std::vector< eosio::name > sorted_bps;
-
-    for ( auto bp : bps ) {
-      sorted_bps.push_back( bp.first );
+    for ( auto bp_itr = bps.begin(); bp_itr < bps.begin() + edge; ++bp_itr ) {
+      bps_to_vote.push_back( bp_itr->first );
     }
+
+    std::sort( bps_to_vote.begin(), bps_to_vote.end() );
 
     eosio::action{ { get_self(), "active"_n },
                    "eosio"_n,
                    "voteproducer"_n,
-                   std::tuple( get_self(), eosio::name{}, sorted_bps ) }
+                   std::tuple( get_self(), eosio::name{}, bps_to_vote ) }
         .send();
   }
 
