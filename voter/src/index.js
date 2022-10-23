@@ -6,9 +6,7 @@ const voter = eosConfig.voterAccount
 const votePerms = eosConfig.votePerms
 
 async function init() {
-  let retry = true
   try {
-    while ( retry ) {
       console.log('Calling proxyvote action on Smart Proxy Account:', proxyAccount)
 
       const transact = await eosUtil
@@ -26,8 +24,6 @@ async function init() {
         })
 
       if (transact) {console.log(transact)}
-      
-    }
   } catch (error) {
     console.error(error)
   }
