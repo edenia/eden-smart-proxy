@@ -44,6 +44,12 @@ jobs:
           make \
             build-docker-voter \
             push-image-voter
+
+      - name: Build kubernetes files
+        id: build_kubernetes_files
+        run: |
+          make \
+            build-kubernetes
         env:
           LATEST_TAG: latest
           EOS_API_ENDPOINT: 'https://eos.edenia.cloud'
@@ -52,12 +58,6 @@ jobs:
           EOS_VOTER_PERMISSION: 'proxyvote'
           EOS_VOTER_PRIVATE_KEY: ${{ secrets.EOS_VOTER_PRIVATE_KEY }}
           EOS_PROXY_ACCOUNT: 'edensmartprx'
-
-      - name: Build kubernetes files
-        id: build_kubernetes_files
-        run: |
-          make \
-            build-kubernetes
 
       - name: Setup and deploy kubernetes environment
         uses: steebchen/kubectl@v1.1.0
