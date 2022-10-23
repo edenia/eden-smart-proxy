@@ -52,7 +52,7 @@ jobs:
             build-kubernetes
         env:
           LATEST_TAG: latest
-          EOS_API_ENDPOINT: 'https://eos.edenia.cloud'
+          EOS_API_ENDPOINT: 'https://api.eosn.io'
           EOS_API_CHAIN_ID: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
           EOS_VOTER_ACCOUNT: 'edensmartprx'
           EOS_VOTER_PERMISSION: 'proxyvote'
