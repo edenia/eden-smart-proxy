@@ -21,9 +21,7 @@ const Body: React.FC<BodyVoters> = ({ searchValue = '' }) => {
   const [limit, setLimit] = useState<number>(50)
   const [sortBy] = useState<any>({
     value: {
-      vote: {
-        weight: 'desc_nulls_last'
-      }
+      election_rank: 'desc_nulls_last'
     },
     sortName: 'weight'
   })
