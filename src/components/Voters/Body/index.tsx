@@ -91,7 +91,6 @@ const Body: React.FC<BodyVoters> = ({ searchValue = '' }) => {
             <ImgLoading
               classes={classes.avatar}
               img={delegate?.profile?.image}
-              defaultImg={undefined}
             />
           }
           bgColor='#fff'
