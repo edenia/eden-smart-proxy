@@ -8,9 +8,6 @@ import ImgLoading from '../../ImageLoad'
 import { GET_MEMBERS } from '../../../gql/voters.gql'
 import { BodyVoters, IMembersData } from '../../../@types/member'
 import { genesisEdenUtil, eosioUtil } from 'utils'
-import yesVotingIcon from '/public/icons/yes-voting-icon.png'
-import notVotingIcon from '/public/icons/not-voting-icon.png'
-import votingOtherIcon from '/public/icons/voting-for-other-icon.png'
 
 import useStyles from './styles'
 
@@ -21,9 +18,8 @@ const Body: React.FC<BodyVoters> = ({ searchValue = '' }) => {
   const [limit, setLimit] = useState<number>(50)
   const [sortBy] = useState<any>({
     value: {
-      election_rank: 'desc_nulls_last'
-    },
-    sortName: 'weight'
+      election_rank: 'desc'
+    }
   })
   const [edenMembers, setEdenMembers] = useState<any>([])
   const [getMembers, { loading, data }] =
@@ -44,10 +40,16 @@ const Body: React.FC<BodyVoters> = ({ searchValue = '' }) => {
       const members = (data || []).map(member => {
         const rank = genesisEdenUtil.classifyMemberRank(
           member.election_rank,
-          rankSize.length - 1
+          rankSize.length
         )
 
-        return { ...member, rank }
+        const voteState = genesisEdenUtil.getVotingState({
+          proxy: member?.eosioVoters?.proxy || null,
+          producers: member?.eosioVoters?.producers || [],
+          votedProducer: member?.vote?.producers || []
+        })
+
+        return { ...member, rank, voteState }
       })
 
       return members
@@ -60,7 +62,7 @@ const Body: React.FC<BodyVoters> = ({ searchValue = '' }) => {
       variables: {
         limit,
         value: `%${searchValue}%`,
-        orderBy: [sortBy.value]
+        orderBy: sortBy.value
       }
     })
     getElectionRankSize()
@@ -79,13 +81,9 @@ const Body: React.FC<BodyVoters> = ({ searchValue = '' }) => {
         <DelegateItem
           key={delegate.name}
           actionItemStyles={classes.itemActionStyle}
-          text={
-            delegate?.vote?.state !== eosioUtil.VoteState.ForProxy
-              ? delegate?.vote?.state === eosioUtil.VoteState.NoVoting
-                ? t('voters.noVoting')
-                : t('voters.voteByOther')
-              : `${t('voters.voteFor')} ${String(delegate?.vote?.amount)} `
-          }
+          text={`${t(delegate.voteState.label)} ${
+            delegate.voteState.aditionalInfo || ''
+          }`}
           name={delegate.name}
           imgChild={
             <ImgLoading
@@ -101,17 +99,7 @@ const Body: React.FC<BodyVoters> = ({ searchValue = '' }) => {
             '/icons/ref-icon.png'
           }
           avatarIcon={delegate?.rank?.badge}
-          headItem={
-            <Image
-              src={
-                delegate.vote?.state !== eosioUtil.VoteState.ForProxy
-                  ? delegate.vote?.state === eosioUtil.VoteState.ForOther
-                    ? votingOtherIcon
-                    : notVotingIcon
-                  : yesVotingIcon
-              }
-            />
-          }
+          headItem={<Image src={delegate.voteState?.img} />}
           profileLink={`https://genesis.eden.eoscommunity.org/members/${delegate?.account}`}
           targetProfile='_blank'
           positionText={`${delegate?.rank?.label} - ${t(
