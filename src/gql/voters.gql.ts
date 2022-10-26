@@ -4,9 +4,7 @@ export const GET_MEMBERS = gql`
   query getMemebers($value: String, $orderBy: [member_order_by!], $limit: Int) {
     memberPag: member_aggregate(
       order_by: $orderBy
-      where: {
-        _or: [{ account: { _like: $value } }, { name: { _like: $value } }]
-      }
+      where: { name: { _like: $value } }
     ) {
       aggregate {
         count
@@ -15,9 +13,7 @@ export const GET_MEMBERS = gql`
     members: member(
       limit: $limit
       order_by: $orderBy
-      where: {
-        _or: [{ account: { _like: $value } }, { name: { _like: $value } }]
-      }
+      where: { name: { _like: $value } }
     ) {
       account
       election_participation_status
@@ -28,6 +24,10 @@ export const GET_MEMBERS = gql`
       profile
       representative
       status
+      eosioVoters: eosio_voters {
+        producers
+        proxy
+      }
       vote {
         account
         producers
