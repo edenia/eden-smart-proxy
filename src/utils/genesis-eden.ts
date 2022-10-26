@@ -72,8 +72,6 @@ export const classifyMemberRank = (
   let badge: any = undefined
   let voteWeight = '1'
 
-  console.log({ electionRankSize, rank })
-
   switch (true) {
     case rank === electionRankSize:
       memberType = RankType.HeadChief
