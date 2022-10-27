@@ -40,7 +40,7 @@ const Body: React.FC<BodyVoters> = ({ searchValue = '' }) => {
       const members = (data || []).map(member => {
         const rank = genesisEdenUtil.classifyMemberRank(
           member.election_rank,
-          rankSize.length
+          rankSize.length - 1
         )
 
         const voteState = genesisEdenUtil.getVotingState({
