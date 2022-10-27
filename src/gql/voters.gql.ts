@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-export const GET_MEMBERS = gql`
+export const GET_MEMBERS_DATA = gql`
   query getMemebers($value: String, $orderBy: [member_order_by!], $limit: Int) {
     memberPag: member_aggregate(
       order_by: $orderBy
