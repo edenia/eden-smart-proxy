@@ -1,4 +1,10 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+  useCallback
+} from 'react'
 import { Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 
@@ -8,7 +14,7 @@ import { genesisEdenUtil } from 'utils'
 import useStyles from './styles'
 
 type HeadVotersType = {
-  setSearchInput: Dispatch<SetStateAction<string | undefined>>
+  setSearchInput: Dispatch<SetStateAction<string>>
 }
 
 const Head: React.FC<HeadVotersType> = ({ setSearchInput }) => {
@@ -16,15 +22,15 @@ const Head: React.FC<HeadVotersType> = ({ setSearchInput }) => {
   const { t } = useTranslation()
   const [lastElectionDate, setLastElectionDate] = useState<string>('')
 
-  const getLastElectionDate = async () => {
+  const getLastElectionDate = useCallback(async () => {
     const test = await genesisEdenUtil.getLastElectionDate()
+
     setLastElectionDate(test)
-  }
+  }, [])
 
   useEffect(() => {
     getLastElectionDate()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [getLastElectionDate])
 
   return (
     <div className={classes.container}>

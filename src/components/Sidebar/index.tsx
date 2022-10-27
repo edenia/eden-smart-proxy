@@ -4,10 +4,11 @@ import {
   Drawer,
   DrawerProps,
   Typography,
-  Link,
+  Link as MLink,
   AlertColor
 } from '@mui/material'
 import { useTranslation } from 'next-i18next'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { PreviewProfile } from '@edenia/ui-kit'
 import ClickAwayListener from '@mui/material/ClickAwayListener'
@@ -123,49 +124,49 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
       <div className={classes.drawer}>
         <div>
           <div className={classes.sidebarHeader}>
-            <Link href={'/'} underline={'none'}>
-              <Image src={logoImage} />
+            <Link href={'/'} passHref>
+              <Image src={logoImage} className={classes.cursor} />
             </Link>
           </div>
           <div className={classes.scrollbar}>
-            <Link
-              href={'/about'}
-              underline={'none'}
-              className={clsx(classes.navLink, {
-                [classes.selected]: '/about' === router.pathname
-              })}
-            >
-              <AboutSvg />
-              <Typography variant='subtitle1' className={classes.navLabel}>
-                {t('routes.about')}
-              </Typography>
-              <p />
+            <Link href={'/about'} passHref>
+              <div
+                className={clsx(classes.navLink, {
+                  [classes.selected]: '/about' === router.pathname
+                })}
+              >
+                <AboutSvg />
+                <Typography variant='subtitle1' className={classes.navLabel}>
+                  {t('routes.about')}
+                </Typography>
+                <p />
+              </div>
             </Link>
-            <Link
-              href={'/voters'}
-              underline={'none'}
-              className={clsx(classes.navLink, {
-                [classes.selected]: '/voters' === router.pathname
-              })}
-            >
-              <VoterSvg />
-              <Typography variant='subtitle1' className={classes.navLabel}>
-                {t('routes.voters')}
-              </Typography>
-              <p />
+            <Link href={'/voters'} passHref>
+              <div
+                className={clsx(classes.navLink, {
+                  [classes.selected]: '/voters' === router.pathname
+                })}
+              >
+                <VoterSvg />
+                <Typography variant='subtitle1' className={classes.navLabel}>
+                  {t('routes.voters')}
+                </Typography>
+                <p />
+              </div>
             </Link>
-            <Link
-              href={'/vote'}
-              underline={'none'}
-              className={clsx(classes.navLink, {
-                [classes.selected]: '/vote' === router.pathname
-              })}
-            >
-              <VoteSvg />
-              <Typography variant='subtitle1' className={classes.navLabel}>
-                {t('routes.vote')}
-              </Typography>
-              <p />
+            <Link href={'/vote'} passHref>
+              <div
+                className={clsx(classes.navLink, {
+                  [classes.selected]: '/vote' === router.pathname
+                })}
+              >
+                <VoteSvg />
+                <Typography variant='subtitle1' className={classes.navLabel}>
+                  {t('routes.vote')}
+                </Typography>
+                <p />
+              </div>
             </Link>
           </div>
         </div>
@@ -190,14 +191,14 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
                   selectableItems={
                     <div className={classes.centerSelectableItems}>
                       <Typography variant='caption'>
-                        <Link
+                        <MLink
                           href={`https://genesis.eden.eoscommunity.org/members/${state?.ual?.activeUser?.accountName}`}
                           rel='noreferrer'
                           underline='none'
                           target='_blank'
                         >
                           @ {state?.ual?.activeUser?.accountName}
-                        </Link>
+                        </MLink>
                       </Typography>
                     </div>
                   }

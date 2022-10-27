@@ -1,7 +1,8 @@
 import { Typography, Link } from '@mui/material'
+import { useTranslation } from 'next-i18next'
 import { Footer } from '@edenia/ui-kit'
-import Image from 'next/image'
 import { useTheme } from '@mui/styles'
+import Image from 'next/image'
 
 import { constantConfig } from 'config'
 import edeniaLogo from '/public/logos/edenia-isotipo-grey.png'
@@ -15,6 +16,7 @@ type FooterCompType = {
 }
 
 const FooterComp: React.FC<FooterCompType> = ({ showWhite }) => {
+  const { t } = useTranslation()
   const classes = useStyles()
   const theme = useTheme()
 
@@ -26,14 +28,24 @@ const FooterComp: React.FC<FooterCompType> = ({ showWhite }) => {
         }
         buttomContent={
           <div className={classes.footerContainer}>
-            <div className={classes.paddinR}>
-              <Image src={edeniaLogo} />
-            </div>
-            <Typography variant='caption' color={theme.palette.grey[600]}>
-              <Link href='https://edenia.com' color={theme.palette.grey[600]}>
-                {`Hosted by Edenia `}
+            <Typography
+              variant='caption'
+              color={theme.palette.grey[600]}
+              display='flex'
+            >
+              {t('footer.communityOwnedPublic')}{' '}
+              <Link
+                target='_blank'
+                href='https://edenia.com'
+                rel='noreferrer'
+                color={theme.palette.grey[600]}
+                className={classes.linkStyle}
+              >
+                <div className={classes.paddinR}>
+                  <Image src={edeniaLogo} />
+                </div>
+                {` ${t('footer.developedEdenia')} `}
               </Link>
-              - Community Owned
             </Typography>
           </div>
         }

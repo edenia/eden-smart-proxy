@@ -69,3 +69,29 @@ deploy-kubernetes: $(K8S_BUILD_DIR)
 	@for file in $(shell find $(K8S_BUILD_DIR) -name '*.yml' | sed 's:$(K8S_BUILD_DIR)/::g'); do \
 		kubectl apply -n edenproxy -f $(K8S_BUILD_DIR)/$$file; \
 	done
+
+build-docker-voter: ##@devops Build the docker image
+build-docker-voter: ./Dockerfile
+	@docker pull $(DOCKER_REGISTRY)/$(IMAGE_NAME_VOTER):$(VERSION) || true
+	@docker build \
+		--target release \
+		-t $(DOCKER_REGISTRY)/$(IMAGE_NAME_VOTER):$(VERSION) \
+		-t $(DOCKER_REGISTRY)/$(IMAGE_NAME_VOTER):$(LATEST_TAG) \
+		./voter
+
+pull-image-voter: ##@devops Pull the latest image from registry for caching
+pull-image-voter:
+	@docker pull $(DOCKER_REGISTRY)/$(IMAGE_NAME_VOTER):$(LATEST_TAG) || true
+
+build-docker-cached-voter: ##@devops Build the docker image using cached layers
+build-docker-cached-voter: ./Dockerfile
+	@docker build \
+		--target prod-stage \
+		--cache-from $(DOCKER_REGISTRY)/$(IMAGE_NAME_VOTER):$(LATEST_TAG) \
+		-t $(DOCKER_REGISTRY)/$(IMAGE_NAME_VOTER):$(VERSION) \
+		-t $(DOCKER_REGISTRY)/$(IMAGE_NAME_VOTER):$(LATEST_TAG) \
+		./voter
+
+push-image-voter: ##@devops Push the freshly built image and tag with release or latest tag
+push-image-voter:
+	@docker push $(DOCKER_REGISTRY)/$(IMAGE_NAME_VOTER):$(VERSION)

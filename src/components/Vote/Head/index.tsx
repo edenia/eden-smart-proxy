@@ -1,9 +1,10 @@
 import { Dispatch, SetStateAction } from 'react'
 import { Link, Typography } from '@mui/material'
+import { useTranslation } from 'next-i18next'
 import { useTheme } from '@mui/styles'
 
-import SearchBar from 'components/SearchBar'
 import SortComponent from 'components/SortComponent'
+import SearchBar from 'components/SearchBar'
 
 import useStyles from './styles'
 
@@ -13,17 +14,16 @@ type HeadVotersType = {
 }
 
 const Head: React.FC<HeadVotersType> = ({ setSearchInput, sort }) => {
+  const { t } = useTranslation()
   const classes = useStyles()
   const theme = useTheme()
 
   return (
     <div className={classes.container}>
       <div className='titleWrapper'>
+        <Typography variant='body1'>{t('vote.title1')}</Typography>
         <Typography variant='body1'>
-          Select and vote to whitelist your most trusted 21 BPs.
-        </Typography>
-        <Typography variant='body1'>
-          The BP whitelist is sustained by MyvoteEOS.{' '}
+          {`${t('vote.title2')} `}
           <Link
             href='https://myvoteeos.com/home'
             target='_blank'
@@ -31,7 +31,7 @@ const Head: React.FC<HeadVotersType> = ({ setSearchInput, sort }) => {
             underline='none'
             color={theme.palette.primary.light}
           >
-            Read more
+            {t('vote.readMore')}
           </Link>
           .
         </Typography>

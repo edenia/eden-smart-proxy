@@ -1,5 +1,11 @@
-import { eosApi } from './eos'
+import { StaticImageData } from 'next/image'
+
 import { sdkConfig } from 'config'
+import yesVotingIcon from '/public/icons/yes-voting-icon.png'
+import notVotingIcon from '/public/icons/not-voting-icon.png'
+import votingOtherIcon from '/public/icons/voting-for-other-icon.png'
+
+import { eosApi } from './eos'
 
 enum RankType {
   Member,
@@ -25,6 +31,12 @@ interface MemberClassification {
   label: string
   badge?: string
   voteWeight: string
+}
+
+interface MemberVoteInfo {
+  proxy: string
+  producers: Array<string>
+  votedProducer: Array<string>
 }
 
 export const getRanks = async <T = any>(): Promise<T> => {
@@ -111,4 +123,20 @@ export const classifyMemberRank = (
     badge,
     voteWeight
   }
+}
+
+export const getVotingState = (
+  data: MemberVoteInfo
+): { img: StaticImageData; label: string; aditionalInfo?: number } => {
+  if (!data?.proxy && !data?.producers?.length)
+    return { img: notVotingIcon, label: 'voters.noVoting' }
+
+  if (data.proxy === sdkConfig.edenSmartProxyContract)
+    return {
+      img: yesVotingIcon,
+      label: 'voters.voteFor',
+      aditionalInfo: data.votedProducer.length
+    }
+
+  return { img: votingOtherIcon, label: 'voters.voteByOther' }
 }

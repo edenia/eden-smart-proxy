@@ -7,6 +7,9 @@
   "ko": "Korean",
   "cn": "Chinese",
   "totalProxiedVotes": "Total proxied votes",
+  "loadMore": "Load More",
+  "searchName": "Search by name",
+  "buttonLabel": "Delegate Vote",
   "routes": {
     "/": "Home",
     "voters": "Members",
@@ -86,8 +89,11 @@
     "beforeVoting": "Before voting for Block producers, you must delegate your vote to the proxy.",
     "successfulVote": "Voted Successfully",
     "somethingWrong": "Something went wrong, try again",
-    "loadMore": "Load More",
-    "voteSelected": "Vote Selected"
+    "voteSelected": "Vote Selected",
+    "title1": "Select and vote to whitelist your most trusted 21 BPs.",
+    "title2": "The BP whitelist is sustained by MyvoteEOS",
+    "readMore": "Read more",
+    "selectAll": "Selecte All"
   },
   "voters": {
     "votersMetaTitle": "Eden Members",
@@ -95,18 +101,22 @@
     "lastElection": "Last election on",
     "noVoting": "Not Voting",
     "voteByOther": "Voted for other",
-    "voteFor": "Voted for"
+    "voteFor": "Voted for",
+    "voteWeight": "Vote Weight"
   },
   "home": {
     "homeMetaTitle": "Home",
     "noEdenMember": "You must be an Eden member to be able to sign in",
-    "voteBPs":"投票给 BP",
+    "voteBPs": "投票给 BP",
     "title": {
       "first": "Choose Wisely",
       "second": "Choose Eden Smart Proxy"
     },
-    "buttonLabel": "Delegate Vote",
     "signInLabel": "Sign in and vote",
     "description": "EdenBPsProxy is a EOS BP voting proxy that maximizes voice of individual EOS holders by leveraging their voice with Eden`s fractal democracy process. Only members of Edens who revealed their identity will be eligible to have a say on the proxy that votes BPs."
+  },
+  "footer": {
+    "communityOwnedPublic": "A Community Owned Public Good",
+    "developedEdenia": "Developed by Edenia"
   }
 }

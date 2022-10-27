@@ -1,5 +1,4 @@
-import CircularProgress from '@mui/material/CircularProgress'
-import { Button } from '@edenia/ui-kit'
+import { Button, Spinner } from '@edenia/ui-kit'
 import { useTranslation } from 'next-i18next'
 import { useState, useEffect } from 'react'
 
@@ -37,7 +36,7 @@ const AuthButton: React.FC<{
         <Button onClick={handleLogin} label={btnLabel} variant='primary' />
       )}
       <p />
-      {loader && <CircularProgress />}
+      {loader && <Spinner />}
     </div>
   )
 }

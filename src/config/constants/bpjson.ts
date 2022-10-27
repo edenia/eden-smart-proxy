@@ -1,5 +1,69 @@
 const bpJson = [
   {
+    producer_account_name: 'sentnlagents',
+    org: {
+      candidate_name: 'Sentnl',
+      website: 'https://www.sentnl.io',
+      code_of_conduct:
+        'https://medium.com/@charles.holtzkampf/wax-code-of-conduct-c135050c49a4',
+      ownership_disclosure:
+        'https://medium.com/@charles.holtzkampf/wax-code-of-conduct-c135050c49a4#2dd3',
+      email: 'charles@sentnl.io',
+      branding: {
+        logo_256: 'https://www.sentnl.io/sentnl_256.png',
+        logo_1024: 'https://www.sentnl.io/sentnl_1024.png',
+        logo_svg: 'https://www.sentnl.io/sentnl.svg'
+      },
+      location: {
+        name: 'London',
+        country: 'GB',
+        latitude: 51.51118829,
+        longitude: -0.09617353
+      },
+      social: {
+        steemit: '',
+        twitter: 'sentnl_io',
+        facebook: '',
+        github: 'ankh2054',
+        reddit: '',
+        keybase: 'ankh2054',
+        telegram: 'ankh2054'
+      }
+    },
+    nodes: [
+      {
+        location: {
+          name: 'United Kingdom',
+          country: 'GB',
+          latitude: 51.51118829,
+          longitude: -0.09617353
+        },
+        node_type: 'full',
+        api_endpoint: 'http://eosapi.sentnl.io:8080',
+        ssl_endpoint: 'https://eosapi.sentnl.io:4343'
+      },
+      {
+        location: {
+          name: 'United Kingdom',
+          country: 'GB',
+          latitude: 51.51118829,
+          longitude: -0.09617353
+        },
+        node_type: 'seed',
+        p2p_endpoint: 'eosp2p.sentnl.io:4242'
+      },
+      {
+        location: {
+          name: 'United Kingdom',
+          country: 'GB',
+          latitude: 51.5099,
+          longitude: -0.1181
+        },
+        node_type: 'producer'
+      }
+    ]
+  },
+  {
     producer_account_name: 'heliosblocks',
     org: {
       candidate_name: 'heliosblocks',

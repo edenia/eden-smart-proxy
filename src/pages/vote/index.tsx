@@ -1,10 +1,8 @@
-import CircularProgress from '@mui/material/CircularProgress'
 import type { NextPage, GetStaticProps } from 'next'
 import { useState, useCallback, useEffect } from 'react'
 import { useTranslation } from 'next-i18next'
 import { AlertColor, Typography } from '@mui/material'
-import { BaseSnackbar } from 'components'
-import { Fab, Button } from '@edenia/ui-kit'
+import { Fab, Button, Spinner } from '@edenia/ui-kit'
 import { NextSeo } from 'next-seo'
 import Image from 'next/image'
 
@@ -13,7 +11,7 @@ import { useSharedState } from 'context/state.context'
 import i18nUtils from 'utils/i18n'
 import { bpsInfo } from 'config/constants'
 import likeIcon from '/public/icons/like-icon.png'
-import { VoteHead, VoteBody } from 'components'
+import { VoteHead, VoteBody, BaseSnackbar } from 'components'
 
 import useStyles from './styles'
 
@@ -224,13 +222,13 @@ const Vote: NextPage = () => {
       <VoteBody bps={bps} setBps={setBps} />
       {loadingData && (
         <div className={classes.loadMoreContainer}>
-          <CircularProgress />
+          <Spinner />
         </div>
       )}
       {bps?.data[bps?.data?.length - 1]?.next_key !== '' && (
         <div className={classes.loadMoreContainer}>
           <Button
-            label={t('vote.loadMore')}
+            label={t('loadMore')}
             variant='secondary'
             onClick={() =>
               loadBps(bps?.data?.[bps?.data?.length - 1].next_key, 30, false)
