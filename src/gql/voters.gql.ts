@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const GET_MEMBERS_DATA = gql`
-  query getMemebers($value: String, $orderBy: [member_order_by!], $limit: Int) {
+  query getMembers($value: String, $orderBy: [member_order_by!], $limit: Int) {
     memberPag: member_aggregate(
       order_by: $orderBy
       where: { name: { _like: $value } }
