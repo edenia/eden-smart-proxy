@@ -5,7 +5,7 @@ import { useLazyQuery } from '@apollo/client'
 import Image from 'next/image'
 
 import ImgLoading from '../../ImageLoad'
-import { GET_MEMBERS } from '../../../gql/voters.gql'
+import { GET_MEMBERS_DATA } from '../../../gql/voters.gql'
 import { BodyVoters, IMembersData } from '../../../@types/member'
 import { genesisEdenUtil, eosioUtil } from 'utils'
 
@@ -23,7 +23,7 @@ const Body: React.FC<BodyVoters> = ({ searchValue = '' }) => {
   })
   const [edenMembers, setEdenMembers] = useState<any>([])
   const [getMembers, { loading, data }] =
-    useLazyQuery<IMembersData>(GET_MEMBERS)
+    useLazyQuery<IMembersData>(GET_MEMBERS_DATA)
 
   const handlerLoadMore = () => {
     setLimit(curr => curr + 50)
