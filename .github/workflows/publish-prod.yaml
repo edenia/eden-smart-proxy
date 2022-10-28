@@ -37,6 +37,7 @@ jobs:
           NEXT_PUBLIC_GENESISEDEN_CONTRACT: genesis.eden
           NEXT_PUBLIC_EDENSMARTPROXY_CONTRACT: edensmartprx
           NEXT_PUBLIC_MYVOTEEOSDAO_CONTRACT: myvoteeosdao
+          NEXT_PUBLIC_PRODUCERS_INFO_API_URL: https://graphql-eos.antelope.tools/api/rest/get-producers-info
           RELEASE_TAG: ${{ steps.tag.outputs.tag }}
 
       - name: Build voter image and push
