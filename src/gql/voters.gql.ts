@@ -4,7 +4,7 @@ export const GET_MEMBERS_DATA = gql`
   query getMembers($value: String, $orderBy: [member_order_by!], $limit: Int) {
     memberPag: member_aggregate(
       order_by: $orderBy
-      where: { name: { _like: $value } }
+      where: { name: { _ilike: $value } }
     ) {
       aggregate {
         count
@@ -13,7 +13,7 @@ export const GET_MEMBERS_DATA = gql`
     members: member(
       limit: $limit
       order_by: $orderBy
-      where: { name: { _like: $value } }
+      where: { name: { _ilike: $value } }
     ) {
       account
       election_participation_status
