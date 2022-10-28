@@ -16,7 +16,7 @@ type voteBodyProps = {
 const Body: React.FC<voteBodyProps> = ({ setBps, bps }) => {
   const classes = useStyles()
   const { t } = useTranslation()
-  const [seletedAllBps, setSelectedAllBps] = useState<boolean>(false)
+  const [seletedAllBps, setSelectedAllBps] = useState<boolean>(true)
 
   const handleSelected = pressBp => {
     const updatedBpState = bps?.data?.map(bp => {
@@ -40,19 +40,21 @@ const Body: React.FC<voteBodyProps> = ({ setBps, bps }) => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.paddingSelectedAll}>
-        <label>
-          <input
-            checked={seletedAllBps}
-            className={classes.delegateBpItemCheckbox}
-            type='checkbox'
-            id='checkbox'
-            name='checkbox'
-            onChange={() => selectedAll()}
-          />
-          {t('vote.selectAll')}
-        </label>
-      </div>
+      {bps?.data?.length > 0 && (
+        <div className={classes.paddingSelectedAll}>
+          <label>
+            <input
+              checked={seletedAllBps}
+              className={classes.delegateBpItemCheckbox}
+              type='checkbox'
+              id='checkbox'
+              name='checkbox'
+              onChange={() => selectedAll()}
+            />
+            {t('vote.selectAll')}
+          </label>
+        </div>
+      )}
       {bps?.data?.map(bp => (
         <BlockProducerItem
           key={bp?.producer}
