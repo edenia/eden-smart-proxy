@@ -81,9 +81,7 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
     const delegateState = await eosioUtil.getVotingState(
       state?.ual?.activeUser?.accountName
     )
-    setShowDelegateButton(
-      delegateState === eosioUtil.VoteState.ForProxy ? false : true
-    )
+    setShowDelegateButton(!(delegateState === eosioUtil.VoteState.ForProxy))
     setTotalVotesDelegate(await eosioUtil.getTotalEosVoteDelegate())
   }
 
@@ -101,7 +99,18 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
   }, [asPath, setPathName])
 
   useEffect(() => {
-    if (!state?.ual?.activeUser?.accountName) return
+    const totalVotes = async () => {
+      setTotalVotesDelegate(await eosioUtil.getTotalEosVoteDelegate())
+    }
+
+    totalVotes()
+  }, [])
+
+  useEffect(() => {
+    if (!state?.ual?.activeUser?.accountName) {
+      setShowDelegateButton(false)
+      return
+    }
 
     validateHasDelegateVote()
     // eslint-disable-next-line react-hooks/exhaustive-deps
