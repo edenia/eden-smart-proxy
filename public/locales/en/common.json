@@ -13,11 +13,11 @@
   "routes": {
     "/": "Home",
     "voters": "Members",
-    "vote": "Vote",
+    "vote": "Vote for BPs",
     "about": "About",
-    "mustLogin": "You must login",
-    "successfulVote": "Voted Successfully",
-    "somethingWrong": "Something went wrong, try again",
+    "mustLogin": "You must login.",
+    "successfulVote": "Voted Successfully.",
+    "somethingWrong": "Something went wrong, try again.",
     "signin": "Login",
     "logout": "Logout"
   },
@@ -85,12 +85,12 @@
     "asc": "Ascending",
     "descending": "Descending",
     "voteMetaTitle": "Vote",
-    "mustLogin": "You must login",
-    "beforeVoting": "Before voting for Block producers, you must delegate your vote to the proxy.",
-    "successfulVote": "Voted Successfully",
-    "somethingWrong": "Something went wrong, try again",
-    "voteSelected": "Vote Selected",
-    "title1": "Select and vote to whitelist your most trusted 21 BPs.",
+    "mustLogin": "You must login.",
+    "beforeVoting": "Before voting for BPs, you must delegate your vote to the proxy.",
+    "successfulVote": "Voted Successfully.",
+    "somethingWrong": "Something went wrong, try again.",
+    "voteSelected": "Cast vote for selected BPs",
+    "title1": "Choose up to 30 BPs to cast your vote.",
     "title2": "The BP whitelist is sustained by MyvoteEOS.",
     "readMore": "Read more",
     "selectAll": "Select All"
@@ -106,14 +106,14 @@
   },
   "home": {
     "homeMetaTitle": "Home",
-    "noEdenMember": "You must be an Eden member to be able to sign in",
+    "noEdenMember": "You must be an Eden member to be able to sign in.",
     "voteBPs": "Vote for BPs",
     "title": {
       "first": "Choose Wisely",
       "second": "Choose Eden Smart Proxy"
     },
     "signInLabel": "Sign in and vote",
-    "description": "EdenBPsProxy is a EOS BP voting proxy that maximizes voice of individual EOS holders by leveraging their voice with Eden`s fractal democracy process. Only members of Edens who revealed their identity will be eligible to have a say on the proxy that votes BPs."
+    "description": "Eden Smart Proxy is a EOS BP voting proxy that maximizes voice of individual EOS holders by leveraging peer-vetted accountability of Eden members."
   },
   "footer": {
     "communityOwnedPublic": "A Community Owned Public Good",
