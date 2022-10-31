@@ -6,7 +6,7 @@ import { Fab, Button, Spinner } from '@edenia/ui-kit'
 import { NextSeo } from 'next-seo'
 import Image from 'next/image'
 
-import { routeUtils, smartProxyUtil } from 'utils'
+import { routeUtils, smartProxyUtil, bpsUtil } from 'utils'
 import { useSharedState } from 'context/state.context'
 import i18nUtils from 'utils/i18n'
 import { bpsInfo } from 'config/constants'
@@ -106,21 +106,27 @@ const Vote: NextPage = () => {
       const validBps = allBps?.rows?.filter(
         bp => !invalidBps.includes(bp?.producer)
       )
-
+      const bpjsonsInfo = await bpsUtil.getBpJons(
+        validBps.reduce((reduceList, element) => {
+          return [...reduceList, element.producer]
+        }, [])
+      )
       const validBpsAllData = validBps.map(async bp => {
         const hasVoted = votes?.rows[0]?.producers?.includes(bp?.producer)
         const { rows = [] } = await smartProxyUtil.getStats(bp?.producer, 1)
-
-        const bpJsonData = bpsInfo?.bpJson?.find(
-          bpj => bpj.producer_account_name === bp?.producer
-        )
+        const bpJsonData =
+          bpjsonsInfo.length > 0
+            ? bpjsonsInfo?.find(bpj => bpj?.owner === bp?.producer)
+            : bpsInfo?.bpJson?.find(
+                bpj => bpj.producer_account_name === bp?.producer
+              )
 
         return {
           ...bp,
           voted: hasVoted,
           next_key: allBps.next_key,
           stats: (await rows[0]?.weight) || 0,
-          bpJsonData: bpJsonData || undefined,
+          bpJsonData: bpJsonData?.bp_json || bpJsonData,
           selected: true
         }
       })

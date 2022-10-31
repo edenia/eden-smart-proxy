@@ -34,6 +34,7 @@ build-docker: ./Dockerfile
 		--build-arg next_public_genesiseden_contract="$(NEXT_PUBLIC_GENESISEDEN_CONTRACT)" \
 		--build-arg next_public_edensmartproxy_contract="$(NEXT_PUBLIC_EDENSMARTPROXY_CONTRACT)" \
 		--build-arg next_public_myvoteeosdao_contract="$(NEXT_PUBLIC_MYVOTEEOSDAO_CONTRACT)" \
+		--build-arg next_public_producers_info_api_url="$(NEXT_PUBLIC_PRODUCERS_INFO_API_URL)" \
 		.
 
 pull-image: ##@devops Pull the latest image from registry for caching

@@ -53,6 +53,21 @@ const Styles = makeStyles(theme => ({
   },
   paddingSelectedAll: {
     padding: theme.spacing(1)
+  },
+  bpLogoStyle: {
+    '& .delegate-bp-item-container': {
+      '& .flex': {
+        '& .linkStyle': {
+          '& .preview-profile-container': {
+            '& .avatar-container': {
+              '& .app-avatar': {
+                objectFit: 'contain'
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }))
 
