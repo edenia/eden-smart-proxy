@@ -33,7 +33,7 @@ const FooterComp: React.FC<FooterCompType> = ({ showWhite }) => {
               color={theme.palette.grey[600]}
               display='flex'
             >
-              {t('footer.communityOwnedPublic')}{' '}
+              {t('footer.communityOwnedPublic')}&ensp;
               <Link
                 target='_blank'
                 href='https://edenia.com'
@@ -41,12 +41,13 @@ const FooterComp: React.FC<FooterCompType> = ({ showWhite }) => {
                 color={theme.palette.grey[600]}
                 className={classes.linkStyle}
               >
-                <div className={classes.paddinR}>
-                  <Image src={edeniaLogo} />
-                </div>
-                {` ${t('footer.developedEdenia')} `}
-              </Link>
+                {`${t('footer.developedEdenia')}`}
+              </Link>{' '}
+              &ensp;
             </Typography>
+            <div>
+              <Image src={edeniaLogo} />
+            </div>
           </div>
         }
         itemsFooter={constantConfig?.footer?.footerItems}
