@@ -1,7 +1,8 @@
 import type { NextPage, GetStaticProps } from 'next'
-import { NextSeo } from 'next-seo'
-import { useTranslation } from 'next-i18next'
 import { Link, Typography } from '@mui/material'
+import { useTranslation } from 'next-i18next'
+import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo'
 
 import { routeUtils } from 'utils'
 import i18nUtils from 'utils/i18n'
@@ -11,6 +12,7 @@ import useStyles from './styles'
 const About: NextPage = () => {
   const { t } = useTranslation()
   const classes = useStyles()
+  const router = useRouter()
 
   return (
     <>
@@ -20,11 +22,6 @@ const About: NextPage = () => {
         <Typography variant='body2'>{t('about.whatIsEden')}</Typography>
         <Typography variant='subtitle1'>
           {t('about.edenDescription')}
-        </Typography>
-        <br />
-        <Typography variant='body2'>{t('about.intention')}</Typography>
-        <Typography variant='subtitle1'>
-          {t('about.intentionDescription')}
         </Typography>
         <br />
         <Typography variant='body2'>{t('about.howDoesWork')}</Typography>
@@ -70,28 +67,32 @@ const About: NextPage = () => {
           <Typography variant='subtitle1'>{`• ${t('about.rule1')}`}</Typography>
           <Typography variant='subtitle1'>{`• ${t('about.rule2')}`}</Typography>
           <Typography variant='subtitle1'>{`• ${t('about.rule3')}`}</Typography>
+          <p />
           <Typography variant='subtitle1'>{`• ${t('about.rule4')}`}</Typography>
           <Typography variant='subtitle1'>{`• ${t('about.rule5')}`}</Typography>
           <Typography variant='subtitle1'>{`• ${t('about.rule6')}`}</Typography>
         </div>
+        <p />
         <Typography variant='subtitle1'>
           {t('about.exampleDescription2')}
         </Typography>
         <Typography variant='subtitle1'>
           {t('about.exampleDescription3')}
         </Typography>
-        <Typography variant='subtitle1'>
-          {t('about.exampleDescription4')}
-          <a
-            className={classes.link}
-            href='https://myvoteeos.com/home'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            MyvoteEOS
-          </a>
-          {t('about.exampleDescription5')}
-        </Typography>
+        {router.locale !== 'ko' && (
+          <Typography variant='subtitle1'>
+            {t('about.exampleDescription4')}
+            <a
+              className={classes.link}
+              href='https://myvoteeos.com/home'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              MyvoteEOS
+            </a>
+            {t('about.exampleDescription5')}
+          </Typography>
+        )}
         <br />
         <Typography variant='body2'>{t('about.whatMyvoteEOS')}</Typography>
         <Typography variant='subtitle1'>
@@ -161,12 +162,6 @@ const About: NextPage = () => {
           {t('about.qa')}
         </Typography>
         <Typography variant='subtitle1' fontWeight='bold'>
-          {t('about.question1')}
-        </Typography>
-        <Typography variant='subtitle1' className={classes.blockAnswer}>
-          {t('about.answer1')}
-        </Typography>
-        <Typography variant='subtitle1' fontWeight='bold'>
           {t('about.question2')}
         </Typography>
         <Typography variant='subtitle1' className={classes.blockAnswer}>
@@ -190,7 +185,12 @@ const About: NextPage = () => {
         <Typography variant='subtitle1' className={classes.blockAnswer}>
           {t('about.answer5')}
         </Typography>
-
+        <Typography variant='subtitle1' fontWeight='bold'>
+          {t('about.question6')}
+        </Typography>
+        <Typography variant='subtitle1' className={classes.blockAnswer}>
+          {t('about.answer6')}
+        </Typography>
         <Typography variant='subtitle2' fontWeight='bold'>
           {`${t('about.joinDiscussion')} `}
           <Link
