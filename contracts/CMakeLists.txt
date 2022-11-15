@@ -10,5 +10,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(clsdk REQUIRED)
 
 add_subdirectory(smartproxy)
+add_subdirectory(proxyreward)
 add_subdirectory(myvoteeosdao)
 add_subdirectory(eden)
