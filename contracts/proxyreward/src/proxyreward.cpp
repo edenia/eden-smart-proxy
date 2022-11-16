@@ -103,8 +103,7 @@ namespace edenproxy {
 
     voters_table _voter( get_self(), get_self().value );
     auto         voter_index = _voter.get_index< name( "bylastupdate" ) >();
-
-    auto end_itr = voter_index.upper_bound( ctp.sec_since_epoch() );
+    auto         end_itr = voter_index.upper_bound( ctp.sec_since_epoch() );
 
     for ( auto voter_itr = voter_index.lower_bound( 0 );
           max_steps > 0 && voter_itr != end_itr;
