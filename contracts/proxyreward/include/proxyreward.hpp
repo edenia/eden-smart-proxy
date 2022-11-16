@@ -4,7 +4,6 @@
 namespace edenproxy {
 
   // eosio
-
   struct voter_info {
     name                owner;
     name                proxy;
@@ -38,7 +37,7 @@ namespace edenproxy {
                  reserved3 )
   typedef eosio::multi_index< "eosiovoters"_n, voter_info > eosio_voters_table;
 
-  int64_t get_staked( eosio::name account ) {
+  int64_t get_staked_amount( eosio::name account ) {
     eosio_voters_table _voters( "eosio"_n, "eosio"_n.value );
 
     auto voters_itr = _voters.find( account.value );
@@ -46,6 +45,13 @@ namespace edenproxy {
     return voters_itr->staked;
   }
 
+  eosio::name get_voter_proxy( eosio::name account ) {
+    eosio_voters_table _voters( "eosio"_n, "eosio"_n.value );
+
+    auto voters_itr = _voters.find( account.value );
+
+    return voters_itr->proxy;
+  }
   // END - eosio
 
   struct state {
@@ -62,20 +68,22 @@ namespace edenproxy {
   typedef eosio::singleton< "settings"_n, settings > settings_singleton;
 
   struct voters {
-    eosio::name           account;
+    eosio::name           owner;
+    eosio::name           recipient;
     uint64_t              staked;
     uint64_t              claimed;
     uint64_t              unclaimed;
     eosio::time_point_sec last_update_time;
     eosio::time_point_sec last_claim_time;
 
-    uint64_t primary_key() const { return account.value; }
+    uint64_t primary_key() const { return owner.value; }
     uint64_t by_last_update() const {
       return last_update_time.sec_since_epoch();
     }
   };
   EOSIO_REFLECT( voters,
-                 account,
+                 owner,
+                 recipient,
                  staked,
                  claimed,
                  unclaimed,
@@ -94,19 +102,26 @@ namespace edenproxy {
     using eosio::contract::contract;
 
     void init( uint8_t distribution_hour, uint16_t apr );
-    void addvoter( eosio::name account );
-    void claim( eosio::name account );
-    void update( eosio::name account );
+    void singup( eosio::name owner, eosio::name recipient );
+    void remove( eosio::name owner );
+    void changercpt( eosio::name owner, eosio::name recipient );
+    void claim( eosio::name owner );
+    void update( eosio::name owner );
     void updateall( uint32_t max_steps );
     void setrate( uint16_t apr );
     void setdisthour( uint8_t distribution_hour );
     void receipt( uint32_t              elapsed_sec,
                   eosio::time_point_sec last_claim_time,
-                  eosio::name           account,
+                  eosio::name           owner,
                   eosio::asset          reward,
                   eosio::asset          staked,
                   eosio::asset          unclaimed );
     void clearall();
+
+    void update_voter( eosio::name owner );
+    void send_rewards( eosio::name owner );
+    bool is_vote_delegated( eosio::name owner );
+    // void inactivate_member( eosio::name owner );
 
   private:
     const eosio::name   PROXY_CONTRACT = "edensmartprx"_n;
@@ -117,9 +132,11 @@ namespace edenproxy {
   EOSIO_ACTIONS( proxyreward_contract,
                  "edenproxyrwd"_n,
                  action( init, distribution_hour, apr ),
-                 action( addvoter, account ),
-                 action( claim, account ),
-                 action( update, account ),
+                 action( singup, owner, recipient ),
+                 action( remove, owner ),
+                 action( changercpt, owner, recipient ),
+                 action( claim, owner ),
+                 action( update, owner ),
                  action( updateall, max_steps ),
                  action( setrate, apr ),
                  action( setdisthour, distribution_hour ),
