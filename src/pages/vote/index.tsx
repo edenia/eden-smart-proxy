@@ -127,6 +127,7 @@ const Vote: NextPage = () => {
           next_key: allBps.next_key,
           stats: (await rows[0]?.weight) || 0,
           bpJsonData: bpJsonData?.bp_json || bpJsonData,
+          totalVotes: bpJsonData?.total_votes,
           selected: true
         }
       })

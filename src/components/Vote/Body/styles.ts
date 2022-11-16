@@ -28,7 +28,6 @@ const Styles = makeStyles(theme => ({
     }
   },
   socialItems: {
-    paddingTop: '8px',
     display: 'flex',
     flexDirection: 'column',
     [theme.breakpoints.up('sm')]: {
