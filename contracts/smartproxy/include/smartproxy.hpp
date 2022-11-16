@@ -2,6 +2,49 @@
 #include <eosio/eosio.hpp>
 
 namespace edenproxy {
+
+  struct global {
+    uint8_t  total_communities;
+    uint32_t total_members;
+  };
+
+  struct state_none {};
+  EOSIO_REFLECT( state_none )
+  EOSIO_COMPARE( state_none );
+
+  struct state_banning_community {
+    uint8_t total_communities;
+  };
+  EOSIO_REFLECT( state_banning_community, total_communities )
+  EOSIO_COMPARE( state_banning_community );
+
+  struct state_updating_vote_weight {
+    uint8_t total_communities;
+  };
+  EOSIO_REFLECT( state_updating_vote_weight, total_communities )
+  EOSIO_COMPARE( state_updating_vote_weight );
+
+  struct state_ready_to_vote {
+    uint8_t total_communities;
+  };
+  EOSIO_REFLECT( state_ready_to_vote, total_communities )
+  EOSIO_COMPARE( state_ready_to_vote );
+
+  using state_state = std::variant< state_none,
+                                    state_banning_community,
+                                    state_updating_vote_weight,
+                                    state_ready_to_vote >;
+  using state_state_singleton = eosio::singleton< "state"_n, state_state >;
+
+  struct community {
+    eosio::name account;
+    std::string name;
+
+    uint64_t primary_key() const { return account.value; }
+  };
+  EOSIO_REFLECT( community, account, name )
+  typedef eosio::multi_index< "community"_n, community > community_table;
+
   struct votes {
     eosio::name                account;
     std::vector< eosio::name > producers;
