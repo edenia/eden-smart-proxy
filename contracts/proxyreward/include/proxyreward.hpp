@@ -1,5 +1,6 @@
 #include <eosio/asset.hpp>
 #include <eosio/eosio.hpp>
+#include <utils.hpp>
 
 namespace edenproxy {
 
@@ -50,24 +51,26 @@ namespace edenproxy {
 
     auto voters_itr = _voters.find( account.value );
 
-    return voters_itr->proxy;
+    return voters_itr != _voters.end() ? voters_itr->proxy : eosio::name{};
   }
   // END - eosio
 
-  struct state {
+  struct state_v0 {
     eosio::time_point_sec next_reward;
   };
-  EOSIO_REFLECT( state, next_reward )
-  typedef eosio::singleton< "state"_n, state > state_singleton;
+  EOSIO_REFLECT( state_v0, next_reward )
+  using state_variant = std::variant< state_v0 >;
+  using state_singleton = eosio::singleton< "state"_n, state_variant >;
 
-  struct settings {
+  struct settings_v0 {
     uint8_t  distribution_hour;
     uint16_t apr;
   };
-  EOSIO_REFLECT( settings, distribution_hour, apr )
-  typedef eosio::singleton< "settings"_n, settings > settings_singleton;
+  EOSIO_REFLECT( settings_v0, distribution_hour, apr )
+  using settings_variant = std::variant< settings_v0 >;
+  using settings_singleton = eosio::singleton< "settings"_n, settings_variant >;
 
-  struct voters {
+  struct voter_v0 {
     eosio::name           owner;
     eosio::name           recipient;
     uint64_t              staked;
@@ -81,28 +84,48 @@ namespace edenproxy {
       return last_update_time.sec_since_epoch();
     }
   };
-  EOSIO_REFLECT( voters,
-                 owner,
-                 recipient,
-                 staked,
-                 claimed,
-                 unclaimed,
-                 last_update_time,
-                 last_claim_time )
+  EOSIO_REFLECT( voter_v0, owner, recipient, unclaimed, last_claim_time )
+
+  struct voter_v1 : voter_v0 {
+    eosio::name           owner;
+    eosio::name           recipient;
+    uint64_t              staked;
+    uint64_t              claimed;
+    uint64_t              unclaimed;
+    eosio::time_point_sec last_update_time;
+    eosio::time_point_sec last_claim_time;
+  };
+  EOSIO_REFLECT( voter_v1, base voter_v0, staked, claimed, last_claim_time )
+
+  using voter_variant = std::variant< voter_v0, voter_v1 >;
+
+  struct voter {
+    voter_variant value;
+    FORWARD_MEMBERS( value,
+                     owner,
+                     recipient,
+                     staked,
+                     claimed,
+                     unclaimed,
+                     last_update_time,
+                     last_claim_time );
+    FORWARD_FUNCTIONS( value, primary_key, by_last_update )
+  };
+  EOSIO_REFLECT( voter, value )
   typedef eosio::multi_index<
-      "voters"_n,
-      voters,
+      "voter"_n,
+      voter,
       eosio::indexed_by<
           "bylastupdate"_n,
-          const_mem_fun< voters, uint64_t, &voters::by_last_update > > >
-      voters_table;
+          const_mem_fun< voter, uint64_t, &voter::by_last_update > > >
+      voter_table;
 
   struct proxyreward_contract : public eosio::contract {
   public:
     using eosio::contract::contract;
 
     void init( uint8_t distribution_hour, uint16_t apr );
-    void singup( eosio::name owner, eosio::name recipient );
+    void signup( eosio::name owner, eosio::name recipient );
     void remove( eosio::name owner );
     void changercpt( eosio::name owner, eosio::name recipient );
     void claim( eosio::name owner );
@@ -118,10 +141,10 @@ namespace edenproxy {
                   eosio::asset          unclaimed );
     void clearall();
 
-    void update_voter( eosio::name owner );
+    bool update_voter( eosio::name owner );
     void send_rewards( eosio::name owner );
     bool is_vote_delegated( eosio::name owner );
-    // void inactivate_member( eosio::name owner );
+    void update_voter_state( eosio::name owner, bool active );
 
   private:
     const eosio::name   PROXY_CONTRACT = "edensmartprx"_n;
@@ -132,7 +155,7 @@ namespace edenproxy {
   EOSIO_ACTIONS( proxyreward_contract,
                  "edenproxyrwd"_n,
                  action( init, distribution_hour, apr ),
-                 action( singup, owner, recipient ),
+                 action( signup, owner, recipient ),
                  action( remove, owner ),
                  action( changercpt, owner, recipient ),
                  action( claim, owner ),

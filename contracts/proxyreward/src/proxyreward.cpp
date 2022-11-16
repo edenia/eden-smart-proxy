@@ -8,7 +8,6 @@
 #include <proxyreward.hpp>
 
 namespace edenproxy {
-
   void proxyreward_contract::init( uint8_t distribution_hour, uint16_t apr ) {
     settings_singleton settings_sing( get_self(), get_self().value );
 
@@ -16,13 +15,13 @@ namespace edenproxy {
 
     settings_sing.get_or_create(
         get_self(),
-        settings{ .distribution_hour = distribution_hour, .apr = apr } );
+        settings_v0{ .distribution_hour = distribution_hour, .apr = apr } );
 
     state_singleton state_sing( get_self(), get_self().value );
     state_sing.get_or_create( get_self() );
   }
 
-  void proxyreward_contract::singup( eosio::name owner,
+  void proxyreward_contract::signup( eosio::name owner,
                                      eosio::name recipient ) {
     require_auth( owner );
 
@@ -31,22 +30,21 @@ namespace edenproxy {
                       PROXY_CONTRACT.to_string() );
     eosio::check( eosio::is_account( recipient ), "Account does not exist" );
 
-    voters_table _voter( get_self(), get_self().value );
-    auto         voter_itr = _voter.find( owner.value );
+    voter_table _voter( get_self(), get_self().value );
+    auto        voter_itr = _voter.find( owner.value );
 
     eosio::check( voter_itr == _voter.end(), "Voter already exist" );
 
     _voter.emplace( get_self(), [&]( auto &row ) {
-      row.owner = owner;
-      row.recipient = recipient;
+      row.value = voter_v1{ .owner = owner, .recipient = recipient };
     } );
   }
 
   void proxyreward_contract::remove( eosio::name owner ) {
     require_auth( owner );
 
-    voters_table _voter( get_self(), get_self().value );
-    auto         voter_itr = _voter.find( owner.value );
+    voter_table _voter( get_self(), get_self().value );
+    auto        voter_itr = _voter.find( owner.value );
 
     eosio::check( voter_itr != _voter.end(), "Voter does not exist" );
 
@@ -60,55 +58,51 @@ namespace edenproxy {
                                          eosio::name new_recipient ) {
     require_auth( owner );
 
-    voters_table _voter( get_self(), get_self().value );
-    auto         voter_itr = _voter.find( owner.value );
+    voter_table _voter( get_self(), get_self().value );
+    auto        voter_itr = _voter.find( owner.value );
 
     eosio::check( voter_itr != _voter.end(), "Voter does not exist" );
 
     _voter.modify( voter_itr, eosio::same_payer, [&]( auto &row ) {
-      row.recipient = new_recipient;
+      row.recipient() = new_recipient;
     } );
   }
 
   void proxyreward_contract::claim( eosio::name owner ) {
     require_auth( owner );
 
-    voters_table _voter( get_self(), get_self().value );
-    auto         voter_itr = _voter.find( owner.value );
+    voter_table _voter( get_self(), get_self().value );
+    auto        voter_itr = _voter.find( owner.value );
 
     eosio::check( voter_itr != _voter.end(), "Voter does not exist" );
-    eosio::check( voter_itr->unclaimed > 0, "No funds to claim" );
+    eosio::check( voter_itr->unclaimed() > 0, "No funds to claim" );
 
     send_rewards( owner );
   }
 
   void proxyreward_contract::update( eosio::name owner ) {
-    voters_table _voter( get_self(), get_self().value );
-    auto         voter_itr = _voter.find( owner.value );
+    voter_table _voter( get_self(), get_self().value );
+    auto        voter_itr = _voter.find( owner.value );
 
     eosio::check( voter_itr != _voter.end(), "Voter does not exist" );
 
     update_voter( owner );
-
-    action( permission_level{ get_self(), "active"_n },
-            get_self(),
-            eosio::name( "claim" ),
-            std::make_tuple( voter_itr->owner ) )
-        .send();
   }
 
   void proxyreward_contract::updateall( uint32_t max_steps ) {
     uint32_t copy_max_steps = max_steps;
     auto     ctp = eosio::current_time_point();
 
-    voters_table _voter( get_self(), get_self().value );
-    auto         voter_index = _voter.get_index< name( "bylastupdate" ) >();
-    auto         end_itr = voter_index.upper_bound( ctp.sec_since_epoch() );
+    voter_table _voter( get_self(), get_self().value );
+    auto        voter_index = _voter.get_index< name( "bylastupdate" ) >();
+    auto        end_itr = voter_index.upper_bound( ctp.sec_since_epoch() );
 
     for ( auto voter_itr = voter_index.lower_bound( 0 );
           max_steps > 0 && voter_itr != end_itr;
-          --max_steps, voter_itr = voter_index.lower_bound( 0 ) ) {
-      update_voter( voter_itr->owner );
+          voter_itr = voter_index.lower_bound( 0 ) ) {
+      if ( update_voter( voter_itr->owner() ) ) {
+        --max_steps;
+      }
     }
 
     eosio::check( max_steps != copy_max_steps, "Nothing to do" );
@@ -122,7 +116,7 @@ namespace edenproxy {
     eosio::check( settings_sing.exists(),
                   "You must initialize the smart contract first" );
 
-    auto settings = settings_sing.get();
+    auto settings = std::get< settings_v0 >( settings_sing.get() );
     settings.apr = apr;
     settings_sing.set( settings, get_self() );
   }
@@ -135,7 +129,7 @@ namespace edenproxy {
     eosio::check( settings_sing.exists(),
                   "You must initialize the smart contract first" );
 
-    auto settings = settings_sing.get();
+    auto settings = std::get< settings_v0 >( settings_sing.get() );
     settings.distribution_hour = distribution_hour;
     settings_sing.set( settings, get_self() );
   }
@@ -156,58 +150,76 @@ namespace edenproxy {
     state_singleton state_sing( get_self(), get_self().value );
     state_sing.remove();
 
-    voters_table _voters( get_self(), get_self().value );
-    auto         voters_iter = _voters.begin();
+    voter_table _voters( get_self(), get_self().value );
+    auto        voters_iter = _voters.begin();
 
     while ( voters_iter != _voters.end() ) {
       voters_iter = _voters.erase( voters_iter );
     }
   }
 
-  void proxyreward_contract::update_voter( eosio::name owner ) {
-    voters_table       _voter( get_self(), get_self().value );
-    auto               voter_itr = _voter.find( owner.value );
-    settings_singleton setting_sing( get_self(), get_self().value );
+  bool proxyreward_contract::update_voter( eosio::name owner ) {
+    voter_table _voter( get_self(), get_self().value );
+    auto        voter_itr = _voter.find( owner.value );
 
-    auto     total_staked = get_staked_amount( owner );
-    uint64_t reward = is_vote_delegated( owner )
-                          ? total_staked * setting_sing.get().apr / 10000 / 365
-                          : 0;
-    auto     elapse = eosio::current_time_point().sec_since_epoch() -
-                  voter_itr->last_update_time.sec_since_epoch();
+    bool is_active = is_vote_delegated( owner );
 
-    _voter.modify( voter_itr, eosio::same_payer, [&]( auto &row ) {
-      row.staked = total_staked;
-      row.unclaimed += reward;
-      row.last_update_time = eosio::current_time_point();
-    } );
+    if ( auto *itr = std::get_if< voter_v1 >( &voter_itr->value ) ) {
+      if ( !is_active ) {
+        update_voter_state( owner, false );
+        return false;
+      }
 
-    action( permission_level{ get_self(), "active"_n },
-            get_self(),
-            "receipt"_n,
-            std::make_tuple( elapse,
-                             voter_itr->last_claim_time,
-                             voter_itr->owner,
-                             reward,
-                             voter_itr->staked,
-                             voter_itr->unclaimed ) )
-        .send();
+      settings_singleton settings_sing( get_self(), get_self().value );
+      auto     settings = std::get< settings_v0 >( settings_sing.get() );
+      auto     total_staked = get_staked_amount( owner );
+      uint64_t reward =
+          is_active ? total_staked * settings.apr / 10000 / 365 : 0;
+      auto elapse = eosio::current_time_point().sec_since_epoch() -
+                    itr->last_update_time.sec_since_epoch();
+
+      _voter.modify( voter_itr, eosio::same_payer, [&]( auto &row ) {
+        row.staked() = total_staked;
+        row.unclaimed() += reward;
+        row.last_update_time() = eosio::current_time_point();
+      } );
+
+      action( permission_level{ get_self(), "active"_n },
+              get_self(),
+              "receipt"_n,
+              std::make_tuple( elapse,
+                               itr->last_claim_time,
+                               itr->owner,
+                               reward,
+                               itr->staked,
+                               itr->unclaimed ) )
+          .send();
+
+      return true;
+    } else {
+      if ( is_active ) {
+        update_voter_state( owner, false );
+      }
+
+      return false;
+    }
   }
 
   void proxyreward_contract::send_rewards( eosio::name owner ) {
-    voters_table _voter( get_self(), get_self().value );
-    auto         voter_itr = _voter.find( owner.value );
+    voter_table _voter( get_self(), get_self().value );
+    auto        voter_itr = _voter.find( owner.value );
 
-    if ( !( voter_itr->unclaimed > 0 ) ) {
+    if ( !( voter_itr->unclaimed() > 0 ) ) {
       return;
     }
 
-    auto payout = eosio::asset( voter_itr->unclaimed, SUPPORTED_TOKEN_SYMBOL );
+    auto payout =
+        eosio::asset( voter_itr->unclaimed(), SUPPORTED_TOKEN_SYMBOL );
 
     _voter.modify( voter_itr, eosio::same_payer, [&]( auto &row ) {
-      row.claimed += payout.amount;
-      row.unclaimed = 0;
-      row.last_claim_time = eosio::current_time_point();
+      row.claimed() += payout.amount;
+      row.unclaimed() = 0;
+      row.last_claim_time() = eosio::current_time_point();
     } );
 
     // send tokens
@@ -215,7 +227,7 @@ namespace edenproxy {
             SUPPORTED_TOKEN_CONTRACT,
             eosio::name( "transfer" ),
             std::make_tuple( get_self(),
-                             voter_itr->recipient,
+                             voter_itr->recipient(),
                              payout,
                              "Reward for delegating your vote to: " +
                                  PROXY_CONTRACT.to_string() ) )
@@ -223,14 +235,24 @@ namespace edenproxy {
   }
 
   bool proxyreward_contract::is_vote_delegated( eosio::name owner ) {
-    return PROXY_CONTRACT == get_voter_proxy( owner );
+    return PROXY_CONTRACT.value == get_voter_proxy( owner ).value;
   }
 
+  void proxyreward_contract::update_voter_state( eosio::name owner,
+                                                 bool        active ) {
+    voter_table _voter( get_self(), get_self().value );
+    auto        voter_itr = _voter.find( owner.value );
+    _voter.modify( voter_itr, eosio::same_payer, [&]( auto &row ) {
+      row.value = std::visit(
+          [&]( auto &v ) { return active ? voter_v1{ v } : voter_v0{ v }; },
+          row.value );
+    } );
+  }
 } // namespace edenproxy
 
 EOSIO_ACTION_DISPATCHER( edenproxy::actions )
 
 EOSIO_ABIGEN( actions( edenproxy::actions ),
-              table( "state"_n, edenproxy::state ),
-              table( "settings"_n, edenproxy::settings ),
-              table( "voters"_n, edenproxy::voters ) )
+              table( "state"_n, edenproxy::state_variant ),
+              table( "settings"_n, edenproxy::settings_variant ),
+              table( "voter"_n, edenproxy::voter_variant ) )
