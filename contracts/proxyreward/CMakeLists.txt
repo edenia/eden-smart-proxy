@@ -24,10 +24,10 @@ add_custom_command(TARGET proxyreward-abigen POST_BUILD
 
 # Builds tests.wasm
 # Tests must link to either cltestlib (runs faster) or cltestlib-debug (supports debugging)
-# add_executable(tests tests/tests.cpp)
-# target_include_directories(tests PUBLIC include ./tests/include ../eden/src ../eden/include ../myvoteeosdao/include)
-# target_link_libraries(tests cltestlib-debug)
-# set_target_properties(tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+add_executable(tests-proxyreward tests/tests-proxyreward.cpp)
+target_include_directories(tests-proxyreward PUBLIC include ./tests/include ../eden/src ../eden/include ../myvoteeosdao/include)
+target_link_libraries(tests-proxyreward cltestlib-debug)
+set_target_properties(tests-proxyreward PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 
 # These symlinks help vscode
 execute_process(COMMAND ln -sf ${clsdk_DIR} ${CMAKE_CURRENT_BINARY_DIR}/clsdk)
