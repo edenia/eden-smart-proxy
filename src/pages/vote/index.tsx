@@ -128,11 +128,17 @@ const Vote: NextPage = () => {
           stats: (await rows[0]?.weight) || 0,
           bpJsonData: bpJsonData?.bp_json || bpJsonData,
           totalVotes: bpJsonData?.total_votes,
+          rank: bpJsonData?.rank,
           selected: true
         }
       })
 
-      const resolvePromise = await Promise?.all(validBpsAllData)
+      let resolvePromise = await Promise?.all(validBpsAllData)
+
+      if (resolvePromise[0].rank)
+        resolvePromise = resolvePromise.sort((a, b) =>
+          a.rank > b.rank ? 1 : b.rank > a.rank ? -1 : 0
+        )
 
       resetData
         ? setBps({ ...bps, data: resolvePromise })
@@ -178,13 +184,33 @@ const Vote: NextPage = () => {
       ? setBps({
           sort: method,
           data: bps?.data?.sort((a, b) =>
-            a.producer > b.producer ? 1 : b.producer > a.producer ? -1 : 0
+            a.rank
+              ? a.rank > b.rank
+                ? 1
+                : b.rank > a.rank
+                ? -1
+                : 0
+              : a.producer > b.producer
+              ? 1
+              : b.producer > a.producer
+              ? -1
+              : 0
           )
         })
       : setBps({
           sort: method,
           data: bps?.data?.sort((a, b) =>
-            a.producer < b.producer ? 1 : b.producer < a.producer ? -1 : 0
+            a.rank
+              ? a.rank < b.rank
+                ? 1
+                : b.rank < a.rank
+                ? -1
+                : 0
+              : a.producer < b.producer
+              ? 1
+              : b.producer < a.producer
+              ? -1
+              : 0
           )
         })
   }
