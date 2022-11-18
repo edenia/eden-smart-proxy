@@ -72,6 +72,7 @@ const Body: React.FC<voteBodyProps> = ({ setBps, bps }) => {
             avatarIcon={bp?.voted && '/icons/good-icon.png'}
             name={bp?.producer}
             nameFontWeight={600}
+            rankValue={bp?.rank}
             image={
               bp?.bpJsonData?.org?.branding?.logo_256 || '/logos/no-logo.svg'
             }
