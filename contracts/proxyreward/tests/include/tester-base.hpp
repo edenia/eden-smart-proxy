@@ -11,23 +11,14 @@
 using namespace eosio;
 using user_context = test_chain::user_context;
 
-void eden_setup( test_chain &t ) {
-  t.set_code( "genesis.eden"_n, "eden.wasm" );
-}
-
-void myvoteeosdao_setup( test_chain &t ) {
-  t.set_code( "myvoteeosdao"_n, "myvoteeosdao.wasm" );
-}
-
-void smartproxy_setup( test_chain &t ) {
-  t.set_code( "smartproxy"_n, "smartproxy.wasm" );
+void proxyreward_setup( test_chain &t ) {
+  t.set_code( "edenproxyrwd"_n, "proxyreward.wasm" );
 }
 
 struct tester {
   test_chain   chain;
   user_context eden = chain.as( "genesis.eden"_n );
-  user_context myvoteeosdao = chain.as( "myvoteeosdao"_n );
-  user_context smartproxy = chain.as( "smartproxy"_n );
+  user_context edenproxyrwd = chain.as( "edenproxyrwd"_n );
 
   user_context alice = chain.as( "alice"_n );
   user_context bob = chain.as( "bob"_n );
@@ -37,22 +28,13 @@ struct tester {
   user_context ahab = chain.as( "ahab"_n );
 
   tester() {
-    // chain.create_code_account( "genesis.eden"_n );
-    // chain.create_code_account( "smartproxy"_n );
-    // chain.create_code_account( "myvoteeosdao"_n );
-    // eden_setup( chain );
-    // myvoteeosdao_setup( chain );
-    // smartproxy_setup( chain );
-    // for ( auto account :
-    //       { "alice"_n, "bob"_n, "pip"_n, "egeon"_n, "bertie"_n, "ahab"_n } ) {
-    //   chain.create_account( account );
-    // }
-  }
-
-  void genesis() {
-    // eden.act< eden::actions::createmember >( "alice"_n );
-    // eden.act< eden::actions::createmember >( "bob"_n );
-    // eden.act< eden::actions::createmember >( "pip"_n );
+    chain.create_code_account( "genesis.eden"_n );
+    chain.create_code_account( "edenproxyrwd"_n );
+    proxyreward_setup( chain );
+    for ( auto account :
+          { "alice"_n, "bob"_n, "pip"_n, "egeon"_n, "bertie"_n, "ahab"_n } ) {
+      chain.create_account( account );
+    }
   }
 
   void create_producers() {

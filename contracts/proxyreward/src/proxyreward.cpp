@@ -9,6 +9,12 @@
 
 namespace edenproxy {
   void proxyreward_contract::init( uint8_t distribution_hour, uint16_t apr ) {
+    require_auth( get_self() );
+
+    eosio::check( distribution_hour <= 23,
+                  "Wrong hour time, it expects a 24 hours format" );
+    eosio::check( apr > 0, "APR must be higher than 0" );
+
     settings_singleton settings_sing( get_self(), get_self().value );
 
     eosio::check( !settings_sing.exists(), "Contract is already initialized" );
@@ -57,6 +63,9 @@ namespace edenproxy {
   void proxyreward_contract::changercpt( eosio::name owner,
                                          eosio::name new_recipient ) {
     require_auth( owner );
+
+    eosio::check( eosio::is_account( new_recipient ),
+                  "Recipient account does not exist" );
 
     voter_table _voter( get_self(), get_self().value );
     auto        voter_itr = _voter.find( owner.value );
@@ -111,6 +120,8 @@ namespace edenproxy {
   void proxyreward_contract::setrate( uint16_t apr ) {
     require_auth( get_self() );
 
+    eosio::check( apr > 0, "APR must be higher than 0" );
+
     settings_singleton settings_sing( get_self(), get_self().value );
 
     eosio::check( settings_sing.exists(),
@@ -123,6 +134,9 @@ namespace edenproxy {
 
   void proxyreward_contract::setdisthour( uint8_t distribution_hour ) {
     require_auth( get_self() );
+
+    eosio::check( distribution_hour <= 23,
+                  "Wrong hour time, it expects a 24 hours format" );
 
     settings_singleton settings_sing( get_self(), get_self().value );
 
@@ -173,9 +187,8 @@ namespace edenproxy {
       settings_singleton settings_sing( get_self(), get_self().value );
       auto     settings = std::get< settings_v0 >( settings_sing.get() );
       auto     total_staked = get_staked_amount( owner );
-      uint64_t reward =
-          is_active ? total_staked * settings.apr / 10000 / 365 : 0;
-      auto elapse = eosio::current_time_point().sec_since_epoch() -
+      uint64_t reward = total_staked * settings.apr / 10000 / 365;
+      auto     elapse = eosio::current_time_point().sec_since_epoch() -
                     itr->last_update_time.sec_since_epoch();
 
       _voter.modify( voter_itr, eosio::same_payer, [&]( auto &row ) {
