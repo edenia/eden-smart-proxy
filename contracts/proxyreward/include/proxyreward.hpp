@@ -86,15 +86,7 @@ namespace edenproxy {
   };
   EOSIO_REFLECT( voter_v0, owner, recipient, unclaimed, last_claim_time )
 
-  struct voter_v1 : voter_v0 {
-    eosio::name           owner;
-    eosio::name           recipient;
-    uint64_t              staked;
-    uint64_t              claimed;
-    uint64_t              unclaimed;
-    eosio::time_point_sec last_update_time;
-    eosio::time_point_sec last_claim_time;
-  };
+  struct voter_v1 : voter_v0 {};
   EOSIO_REFLECT( voter_v1, base voter_v0, staked, claimed, last_claim_time )
 
   using voter_variant = std::variant< voter_v0, voter_v1 >;

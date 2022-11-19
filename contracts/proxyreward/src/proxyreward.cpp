@@ -42,7 +42,7 @@ namespace edenproxy {
     eosio::check( voter_itr == _voter.end(), "Voter already exist" );
 
     _voter.emplace( get_self(), [&]( auto &row ) {
-      row.value = voter_v1{ .owner = owner, .recipient = recipient };
+      row.value = voter_v1{ { .owner = owner, .recipient = recipient } };
     } );
   }
 
@@ -120,12 +120,11 @@ namespace edenproxy {
   void proxyreward_contract::setrate( uint16_t apr ) {
     require_auth( get_self() );
 
-    eosio::check( apr > 0, "APR must be higher than 0" );
-
     settings_singleton settings_sing( get_self(), get_self().value );
 
     eosio::check( settings_sing.exists(),
                   "You must initialize the smart contract first" );
+    eosio::check( apr > 0, "APR must be higher than 0" );
 
     auto settings = std::get< settings_v0 >( settings_sing.get() );
     settings.apr = apr;
@@ -135,13 +134,12 @@ namespace edenproxy {
   void proxyreward_contract::setdisthour( uint8_t distribution_hour ) {
     require_auth( get_self() );
 
-    eosio::check( distribution_hour <= 23,
-                  "Wrong hour time, it expects a 24 hours format" );
-
     settings_singleton settings_sing( get_self(), get_self().value );
 
     eosio::check( settings_sing.exists(),
                   "You must initialize the smart contract first" );
+    eosio::check( distribution_hour <= 23,
+                  "Wrong hour time, it expects a 24 hours format" );
 
     auto settings = std::get< settings_v0 >( settings_sing.get() );
     settings.distribution_hour = distribution_hour;
@@ -255,6 +253,7 @@ namespace edenproxy {
                                                  bool        active ) {
     voter_table _voter( get_self(), get_self().value );
     auto        voter_itr = _voter.find( owner.value );
+
     _voter.modify( voter_itr, eosio::same_payer, [&]( auto &row ) {
       row.value = std::visit(
           [&]( auto &v ) { return active ? voter_v1{ v } : voter_v0{ v }; },

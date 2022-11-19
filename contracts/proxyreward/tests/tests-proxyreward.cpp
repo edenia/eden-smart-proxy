@@ -39,9 +39,8 @@ TEST_CASE( "Check Sign Up Validation" ) {
   t.alice.act< edenproxy::actions::signup >( "alice"_n, "alice"_n );
   t.chain.start_block();
 
-  // CHECK: this is failing, check why
-  //   expect( t.alice.trace< edenproxy::actions::signup >( "alice"_n, "alice"_n ),
-  //           "Voter already exist" );
+  expect( t.alice.trace< edenproxy::actions::signup >( "alice"_n, "alice"_n ),
+          "Voter already exist" );
 
   // (READ-TABLES) Check values are correct in the table
 }
@@ -49,13 +48,13 @@ TEST_CASE( "Check Sign Up Validation" ) {
 TEST_CASE( "Remove Non-existing Account" ) {
   tester t;
 
-  t.alice.trace< edenproxy::actions::signup >( "alice"_n, "alice"_n );
-
   expect( t.bob.trace< edenproxy::actions::remove >( "alice"_n ),
           "Missing required authority" );
-
   expect( t.alice.trace< edenproxy::actions::remove >( "alice"_n ),
           "Voter does not exist" );
+
+  t.alice.act< edenproxy::actions::signup >( "alice"_n, "alice"_n );
+  t.alice.trace< edenproxy::actions::remove >( "alice"_n );
 
   // (READ-TABLES) Check values are removed in the table
 }
@@ -122,12 +121,14 @@ TEST_CASE( "Set Rate" ) {
 
   expect( t.alice.trace< edenproxy::actions::setrate >( 185 ),
           "Missing required authority" );
-  expect( t.edenproxyrwd.trace< edenproxy::actions::setrate >( 0 ),
-          "APR must be higher than 0" );
   expect( t.edenproxyrwd.trace< edenproxy::actions::setrate >( 185 ),
           "You must initialize the smart contract first" );
 
   t.edenproxyrwd.act< edenproxy::actions::init >( 7, 185 );
+
+  expect( t.edenproxyrwd.trace< edenproxy::actions::setrate >( 0 ),
+          "APR must be higher than 0" );
+
   t.edenproxyrwd.act< edenproxy::actions::setrate >( 185 );
 
   // (READ-TABLES) Check value is updated in the table
@@ -138,12 +139,14 @@ TEST_CASE( "Set Distribution Hour" ) {
 
   expect( t.alice.trace< edenproxy::actions::setdisthour >( 7 ),
           "Missing required authority" );
-  expect( t.edenproxyrwd.trace< edenproxy::actions::setdisthour >( 24 ),
-          "Wrong hour time, it expects a 24 hours format" );
   expect( t.edenproxyrwd.trace< edenproxy::actions::setdisthour >( 7 ),
           "You must initialize the smart contract first" );
 
   t.edenproxyrwd.act< edenproxy::actions::init >( 7, 185 );
+
+  expect( t.edenproxyrwd.trace< edenproxy::actions::setdisthour >( 24 ),
+          "Wrong hour time, it expects a 24 hours format" );
+
   t.edenproxyrwd.act< edenproxy::actions::setdisthour >( 8 );
 
   // (READ-TABLES) Check value is updated in the table

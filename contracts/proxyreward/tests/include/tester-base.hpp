@@ -37,13 +37,6 @@ struct tester {
     }
   }
 
-  void create_producers() {
-    // for ( auto account : { "bp1"_n, "bp2"_n, "bp3"_n, "bp4"_n, "bp5"_n } ) {
-    //   chain.create_account( account );
-    //   myvoteeosdao.act< dao::actions::addproducer >( account );
-    // }
-  }
-
   auto get_votes() const {
       // std::map< eosio::name, uint16_t > result;
       // edenproxy::votes_table _votes{ "smartproxy"_n, "smartproxy"_n.value };
