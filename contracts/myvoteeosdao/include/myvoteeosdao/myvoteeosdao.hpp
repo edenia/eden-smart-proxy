@@ -12,11 +12,11 @@
  */
 #include <eosio/asset.hpp>
 #include <eosio/eosio.hpp>
-#include <eosio/permission.hpp>
+// #include <eosio/permission.hpp>
 
 using namespace std;
 using namespace eosio;
-using eosio::public_key;
+// using eosio::public_key;
 
 constexpr name system_account{ "eosio"_n };
 
@@ -24,22 +24,22 @@ constexpr name system_account{ "eosio"_n };
 * EOSIO producer_info table
 */
 struct producer_info {
-  name              owner;
-  double            total_votes = 0;
-  eosio::public_key producer_key; /// a packed public key object
-  bool              is_active = true;
-  std::string       url;
-  uint32_t          unpaid_blocks = 0;
-  time_point        last_claim_time;
-  uint16_t          location = 0;
+  name        owner;
+  double      total_votes = 0;
+  std::string producer_key; /// a packed public key object
+  bool        is_active = true;
+  std::string url;
+  uint32_t    unpaid_blocks = 0;
+  time_point  last_claim_time;
+  uint16_t    location = 0;
 
   uint64_t primary_key() const { return owner.value; }
   double   by_votes() const { return is_active ? -total_votes : total_votes; }
   bool     active() const { return is_active; }
-  void     deactivate() {
-        producer_key = public_key();
-        is_active = false;
-  }
+  // void     deactivate() {
+  //   producer_key = public_key();
+  //   is_active = false;
+  // }
 
   // explicit serialization macro is not necessary, used here only to improve compilation time
   EOSLIB_SERIALIZE(

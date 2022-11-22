@@ -2,7 +2,9 @@
 #include <eosio/tester.hpp>
 #include <myvoteeosdao/myvoteeosdao.hpp>
 
+#include <admin.hpp>
 #include <smartproxy.hpp>
+#include <voters.hpp>
 
 // Catch2 unit testing framework. https://github.com/catchorg/Catch2
 #define CATCH_CONFIG_MAIN

@@ -1,5 +1,11 @@
 # Build smartproxy.wasm contract
-add_executable(smartproxy src/smartproxy.cpp)
+add_executable(smartproxy 
+    src/actions/admin.cpp
+    src/actions/vote.cpp
+    src/smartproxy.cpp
+    src/admin.cpp
+    src/voters.cpp
+)
 target_include_directories(smartproxy PUBLIC include ../eden/src ../eden/include ../myvoteeosdao/include)
 target_link_libraries(smartproxy eosio-contract-simple-malloc)
 set_target_properties(smartproxy PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
