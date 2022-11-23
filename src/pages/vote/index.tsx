@@ -6,7 +6,7 @@ import { Fab, Button, Spinner } from '@edenia/ui-kit'
 import { NextSeo } from 'next-seo'
 import Image from 'next/image'
 
-import { routeUtils, smartProxyUtil, bpsUtil } from 'utils'
+import { routeUtils, smartProxyUtil, bpsUtil, generateApiUrls } from 'utils'
 import { useSharedState } from 'context/state.context'
 import i18nUtils from 'utils/i18n'
 import { bpsInfo } from 'config/constants'
@@ -106,11 +106,14 @@ const Vote: NextPage = () => {
       const validBps = allBps?.rows?.filter(
         bp => !invalidBps.includes(bp?.producer)
       )
-      const bpjsonsInfo = await bpsUtil.getBpJons(
-        validBps.reduce((reduceList, element) => {
-          return [...reduceList, element.producer]
-        }, [])
-      )
+      const bpsValid = validBps.reduce((reduceList, element) => {
+        return [...reduceList, element.producer]
+      }, [])
+      const bpjsonsInfo = await bpsUtil.getBpJons(bpsValid)
+      const eosrateApiUrl = generateApiUrls.getEosRateAPIUrlClient({
+        bps: JSON.stringify(bpsValid)
+      })
+      const eosrateBpsStats = (await (await fetch(eosrateApiUrl)).json()) || []
       const validBpsAllData = validBps.map(async bp => {
         const hasVoted = votes?.rows[0]?.producers?.includes(bp?.producer)
         const { rows = [] } = await smartProxyUtil.getStats(bp?.producer, 1)
@@ -129,7 +132,8 @@ const Vote: NextPage = () => {
           bpJsonData: bpJsonData?.bp_json || bpJsonData,
           totalVotes: bpJsonData?.total_votes,
           rank: bpJsonData?.rank,
-          selected: true
+          selected: true,
+          eosrateStats: eosrateBpsStats.find(stat => stat?.bp === bp?.producer)
         }
       })
 
