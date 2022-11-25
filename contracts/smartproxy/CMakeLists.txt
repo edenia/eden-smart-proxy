@@ -5,6 +5,7 @@ add_executable(smartproxy
     src/smartproxy.cpp
     src/admin.cpp
     src/voters.cpp
+    src/communities.cpp
 )
 target_include_directories(smartproxy PUBLIC include ../eden/src ../eden/include ../myvoteeosdao/include)
 target_link_libraries(smartproxy eosio-contract-simple-malloc)
@@ -12,10 +13,10 @@ set_target_properties(smartproxy PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_B
 
 # Build smartproxy-debug.wasm
 # This is like smartproxy.wasm, but includes debugging information.
-add_executable(smartproxy-debug src/smartproxy.cpp)
-target_include_directories(smartproxy-debug PRIVATE include ../eden/src ../eden/include ../myvoteeosdao/include)
-target_link_libraries(smartproxy-debug eosio-contract-simple-malloc-debug)
-set_target_properties(smartproxy-debug PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+# add_executable(smartproxy-debug src/smartproxy.cpp)
+# target_include_directories(smartproxy-debug PRIVATE include ../eden/src ../eden/include ../myvoteeosdao/include)
+# target_link_libraries(smartproxy-debug eosio-contract-simple-malloc-debug)
+# set_target_properties(smartproxy-debug PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 
 # Generate smartproxy.abi
 # This is a 2-step process:

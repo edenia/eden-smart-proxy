@@ -2,26 +2,27 @@
 #include <smartproxy.hpp>
 
 namespace edenproxy {
-  void admin::on_banbp( eosio::name bp ) {
-    auto blacklisted_itr = _blacklisted.find( bp.value );
+  void admin::on_ban( eosio::name account ) {
+    auto blacklisted_itr = _blacklisted.find( account.value );
 
     eosio::check( blacklisted_itr == _blacklisted.end(),
-                  "BP is already blacklisted" );
+                  "Account is already blacklisted" );
 
-    _blacklisted.emplace( contract, [&]( auto &row ) { row.bp = bp; } );
+    _blacklisted.emplace( contract,
+                          [&]( auto &row ) { row.account() = account; } );
   }
 
-  void admin::on_unbanbp( eosio::name bp ) {
-    auto blacklisted_itr = _blacklisted.find( bp.value );
+  void admin::on_unban( eosio::name account ) {
+    auto blacklisted_itr = _blacklisted.find( account.value );
 
     eosio::check( blacklisted_itr != _blacklisted.end(),
-                  "BP is not blacklisted" );
+                  "Account is not blacklisted" );
 
     _blacklisted.erase( blacklisted_itr );
   }
 
-  bool admin::is_blacklisted( eosio::name bp ) {
-    auto blacklisted_itr = _blacklisted.find( bp.value );
+  bool admin::is_blacklisted( eosio::name account ) {
+    auto blacklisted_itr = _blacklisted.find( account.value );
 
     return blacklisted_itr != _blacklisted.end();
   }

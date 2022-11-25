@@ -55,14 +55,14 @@ TEST_CASE( "Vote for blacklisted bp" ) {
   t.eden.act< eden::actions::setglobstats >(
       std::vector< uint16_t >{ 62, 15, 4, 1 } );
 
-  t.smartproxy.act< edenproxy::actions::banbp >( "bp2"_n );
+  t.smartproxy.act< edenproxy::actions::ban >( "bp2"_n );
 
   expect( t.alice.trace< edenproxy::actions::vote >(
               "alice"_n,
               std::vector{ "bp1"_n, "bp2"_n, "bp3"_n } ),
           "The BP bp2 is blacklisted" );
 
-  t.smartproxy.act< edenproxy::actions::banbp >( "bp1"_n );
+  t.smartproxy.act< edenproxy::actions::ban >( "bp1"_n );
 
   expect( t.alice.trace< edenproxy::actions::vote >(
               "alice"_n,
@@ -70,7 +70,7 @@ TEST_CASE( "Vote for blacklisted bp" ) {
           "The BP bp1 is blacklisted" );
 
   t.alice.act< edenproxy::actions::vote >( "alice"_n, std::vector{ "bp3"_n } );
-  t.smartproxy.act< edenproxy::actions::unbanbp >( "bp1"_n );
+  t.smartproxy.act< edenproxy::actions::unban >( "bp1"_n );
   t.alice.act< edenproxy::actions::vote >( "alice"_n,
                                            std::vector{ "bp1"_n, "bp3"_n } );
 }
