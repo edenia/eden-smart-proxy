@@ -10,6 +10,6 @@ EOSIO_ACTION_DISPATCHER( edenproxy::actions )
 
 EOSIO_ABIGEN( actions( edenproxy::actions ),
               table( "community"_n, edenproxy::community_variant ),
-              table( "votes"_n, edenproxy::votes ),
-              table( "stats"_n, edenproxy::stats ),
+              table( "voter"_n, edenproxy::voter_variant ),
+              table( "score"_n, edenproxy::score_variant ),
               table( "blacklisted"_n, edenproxy::blacklisted ) )

@@ -179,10 +179,10 @@ TEST_CASE( "Refresh votes weight" ) {
   // Become head chief
   t.pip.act< eden::actions::setmembrank >( "pip"_n, 3, "hc"_n );
 
-  expect( t.smartproxy.trace< edenproxy::actions::refreshvotes >( 10, true ),
+  expect( t.smartproxy.trace< edenproxy::actions::refreshvotes >( 10 ),
           "Nothing to do" );
 
-  t.smartproxy.act< edenproxy::actions::refreshvotes >( 10, false );
+  t.smartproxy.act< edenproxy::actions::refreshvotes >( 10 );
 
   std::map< eosio::name, uint16_t > expected_after_inactivation{
       { "bp1"_n, 20 },
@@ -193,7 +193,7 @@ TEST_CASE( "Refresh votes weight" ) {
 
   t.chain.start_block();
   t.bob.act< eden::actions::setmembrank >( "bob"_n, 0, "hc"_n );
-  t.smartproxy.act< edenproxy::actions::refreshvotes >( 10, true );
+  t.smartproxy.act< edenproxy::actions::refreshvotes >( 10 );
 
   std::map< eosio::name, uint16_t > expected_after_change{ { "bp1"_n, 17 },
                                                            { "bp2"_n, 17 },

@@ -37,6 +37,12 @@ namespace edenproxy {
     admin{ get_self() }.on_unban( account );
   }
 
+  void edenproxy::migrate() {
+    require_auth( get_self() );
+
+    // call on_migrate action
+  }
+
   void edenproxy::clearall() {
     require_auth( get_self() );
 

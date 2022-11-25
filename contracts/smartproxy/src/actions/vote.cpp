@@ -1,3 +1,4 @@
+#include <admin.hpp>
 #include <smartproxy.hpp>
 #include <voters.hpp>
 
@@ -18,14 +19,31 @@ namespace edenproxy {
   }
 
   void edenproxy::proxyvote() {
-    require_auth( get_self() );
+    admin  admin{ get_self() };
+    voters voters{ get_self(), get_self().value };
 
-    voters{ get_self(), get_self().value }.on_proxyvote();
+    eosio::check( admin.can_proxyvote(),
+                  "The smart contract is not ready for voting yet" );
+
+    voters.on_proxyvote();
+    admin.set_standby();
   }
 
-  void edenproxy::refreshvotes( uint32_t max_steps, bool flag ) {
-    require_auth( get_self() );
+  void edenproxy::refreshvotes( uint32_t max_steps ) {
+    admin  admin{ get_self() };
+    voters voters{ get_self(), get_self().value };
 
-    voters{ get_self(), get_self().value }.on_refreshvotes( max_steps, flag );
+    eosio::check(
+        admin.can_refreshvotes(),
+        "The smart contract must be on standby to start updating the votes" );
+
+    admin.set_updatevotes();
+    uint32_t remaining_steps = voters.on_refreshvotes( max_steps );
+
+    if ( remaining_steps != 0 ) {
+      eosio::check( remaining_steps != max_steps, "Nothing to do" );
+
+      admin.set_readytovote();
+    }
   }
 } // namespace edenproxy

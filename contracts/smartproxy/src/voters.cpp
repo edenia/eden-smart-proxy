@@ -48,22 +48,22 @@ namespace edenproxy {
   }
 
   void voters::on_rmvote( eosio::name voter ) {
-    auto votes_itr = _votes.find( voter.value );
+    auto votes_itr = voter_tb.find( voter.value );
 
-    eosio::check( votes_itr != _votes.end(), "Vote does not exist" );
+    eosio::check( votes_itr != voter_tb.end(), "Vote does not exist" );
 
-    on_remove_vote( votes_itr->producers, votes_itr->weight );
+    on_remove_vote( votes_itr->producers(), votes_itr->weight() );
 
-    _votes.erase( votes_itr );
+    voter_tb.erase( votes_itr );
   }
 
   void voters::on_proxyvote() {
     std::vector< std::pair< eosio::name, uint16_t > > bps;
 
-    for ( auto itr = _stats.begin(); itr != _stats.end(); itr++ ) {
-      if ( is_active_bp( itr->bp ) &&
-           !admin{ contract }.is_blacklisted( itr->bp ) ) {
-        bps.push_back( std::pair{ itr->bp, itr->weight } );
+    for ( auto itr = score_tb.begin(); itr != score_tb.end(); itr++ ) {
+      if ( is_active_bp( itr->bp() ) &&
+           !admin{ contract }.is_blacklisted( itr->bp() ) ) {
+        bps.push_back( std::pair{ itr->bp(), itr->weight() } );
       }
     }
 
@@ -92,8 +92,14 @@ namespace edenproxy {
         .send();
   }
 
-  void voters::on_refreshvotes( uint32_t max_steps, bool flag ) {
-    require_auth( contract );
+  uint32_t voters::on_refreshvotes( uint32_t max_steps ) {
+    bool  flag;
+    admin admin{ contract };
+    auto *state = admin.get_update_state();
+    // TODO: full refactor since byflag is not going to be used anymore
+
+    eosio::name cc = state->current_community;
+    eosio::name lv = state->last_voter;
 
     eden::members members{ EDEN_ACCOUNT };
 
@@ -105,7 +111,7 @@ namespace edenproxy {
         votes_secidx.lower_bound( static_cast< uint64_t >( flag ) );
     auto end = votes_secidx.upper_bound( static_cast< uint64_t >( flag ) );
 
-    check( votes_itr != end, "Nothing to do" );
+    eosio::check( votes_itr != end, "Nothing to do" );
 
     for ( ; votes_itr != end && max_steps > 0; --max_steps ) {
       const auto &member = members.get_member( votes_itr->account );
@@ -131,6 +137,8 @@ namespace edenproxy {
 
       votes_itr = votes_secidx.lower_bound( static_cast< uint64_t >( flag ) );
     }
+
+    return max_steps;
   }
 
   void voters::on_vote( uint16_t                          vote_weight,
@@ -142,22 +150,21 @@ namespace edenproxy {
     std::vector< eosio::name > new_producers = producers;
     std::vector< eosio::name > old_producers;
 
-    votes_table _votes{ contract, contract.value };
-    auto        votes_itr = _votes.find( voter.value );
+    auto votes_itr = voter_tb.find( voter.value );
 
-    if ( votes_itr == _votes.end() ) {
-      _votes.emplace( contract, [&]( auto &row ) {
-        row.account = voter;
-        row.producers = producers;
-        row.weight = vote_weight;
+    if ( votes_itr == voter_tb.end() ) {
+      voter_tb.emplace( contract, [&]( auto &row ) {
+        row.account() = voter;
+        row.producers() = producers;
+        row.weight() = vote_weight;
       } );
     } else {
-      old_producers = votes_itr->producers;
-      old_vote_weight = votes_itr->weight;
+      old_producers = votes_itr->producers();
+      old_vote_weight = votes_itr->weight();
 
-      _votes.modify( votes_itr, eosio::same_payer, [&]( auto &row ) {
-        row.producers = producers;
-        row.weight = vote_weight;
+      voter_tb.modify( votes_itr, eosio::same_payer, [&]( auto &row ) {
+        row.producers() = producers;
+        row.weight() = vote_weight;
       } );
     }
 
@@ -175,44 +182,44 @@ namespace edenproxy {
 
     // remove bp weight
     for ( eosio::name bp : old_producers ) {
-      auto stats_itr = _stats.find( bp.value );
+      auto stats_itr = score_tb.find( bp.value );
 
-      if ( stats_itr->weight - old_vote_weight <= 0 ) {
-        _stats.erase( stats_itr );
+      if ( stats_itr->weight() - old_vote_weight <= 0 ) {
+        score_tb.erase( stats_itr );
       } else {
-        _stats.modify( stats_itr, eosio::same_payer, [&]( auto &row ) {
-          row.weight -= old_vote_weight;
+        score_tb.modify( stats_itr, eosio::same_payer, [&]( auto &row ) {
+          row.weight() -= old_vote_weight;
         } );
       }
     }
 
     // add new bp weight
     for ( eosio::name bp : new_producers ) {
-      auto stats_itr = _stats.find( bp.value );
+      auto stats_itr = score_tb.find( bp.value );
 
-      if ( stats_itr == _stats.end() ) {
-        _stats.emplace( contract, [&]( auto &row ) {
+      if ( stats_itr == score_tb.end() ) {
+        score_tb.emplace( contract, [&]( auto &row ) {
           // the voter could have increased his rank
-          row.bp = bp;
-          row.weight = vote_weight;
+          row.bp() = bp;
+          row.weight() = vote_weight;
         } );
       } else {
-        _stats.modify( stats_itr, eosio::same_payer, [&]( auto &row ) {
-          row.weight += vote_weight;
+        score_tb.modify( stats_itr, eosio::same_payer, [&]( auto &row ) {
+          row.weight() += vote_weight;
         } );
       }
     }
 
     // update bp weight
     for ( eosio::name bp : current_producers ) {
-      auto stats_itr = _stats.find( bp.value );
+      auto stats_itr = score_tb.find( bp.value );
 
-      if ( stats_itr->weight + ( vote_weight - old_vote_weight ) <= 0 ) {
-        _stats.erase( stats_itr );
+      if ( stats_itr->weight() + ( vote_weight - old_vote_weight ) <= 0 ) {
+        score_tb.erase( stats_itr );
       } else {
-        _stats.modify( stats_itr, eosio::same_payer, [&]( auto &row ) {
+        score_tb.modify( stats_itr, eosio::same_payer, [&]( auto &row ) {
           // the voter could have increased his rank
-          row.weight += vote_weight - old_vote_weight;
+          row.weight() += vote_weight - old_vote_weight;
         } );
       }
     }
@@ -221,13 +228,13 @@ namespace edenproxy {
   void voters::on_remove_vote( std::vector< eosio::name > producers,
                                uint16_t                   weight ) {
     for ( eosio::name bp : producers ) {
-      auto stats_itr = _stats.find( bp.value );
+      auto score_itr = score_tb.find( bp.value );
 
-      if ( stats_itr->weight - weight <= 0 ) {
-        _stats.erase( stats_itr );
+      if ( score_itr->weight() - weight <= 0 ) {
+        score_tb.erase( score_itr );
       } else {
-        _stats.modify( stats_itr, eosio::same_payer, [&]( auto &row ) {
-          row.weight -= weight;
+        score_tb.modify( score_itr, eosio::same_payer, [&]( auto &row ) {
+          row.weight() -= weight;
         } );
       }
     }

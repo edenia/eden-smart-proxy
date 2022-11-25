@@ -17,19 +17,19 @@ namespace edenproxy {
   EOSIO_REFLECT( state_standby )
 
   struct state_ban_community {
-    uint8_t total_communities;
+    eosio::name current_community;
+    eosio::name last_voter;
   };
-  EOSIO_REFLECT( state_ban_community, total_communities );
+  EOSIO_REFLECT( state_ban_community, current_community, last_voter )
 
   struct state_update_votes {
-    uint8_t total_communities;
+    eosio::name current_community;
+    eosio::name last_voter;
   };
-  EOSIO_REFLECT( state_update_votes, total_communities );
+  EOSIO_REFLECT( state_update_votes, current_community, last_voter )
 
-  struct state_ready_to_vote {
-    uint8_t total_communities;
-  };
-  EOSIO_REFLECT( state_ready_to_vote, total_communities );
+  struct state_ready_to_vote {};
+  EOSIO_REFLECT( state_ready_to_vote )
 
   using state_variant = std::variant< state_standby,
                                       state_ban_community,
@@ -73,5 +73,12 @@ namespace edenproxy {
     void on_ban( eosio::name account );
     void on_unban( eosio::name account );
     bool is_blacklisted( eosio::name account );
+
+    bool                can_proxyvote();
+    bool                can_refreshvotes();
+    void                set_standby();
+    void                set_updatevotes();
+    void                set_readytovote();
+    state_update_votes *get_update_state();
   };
 } // namespace edenproxy

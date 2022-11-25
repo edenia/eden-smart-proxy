@@ -21,11 +21,12 @@ namespace edenproxy {
     void rmvote( eosio::name voter );
 
     void proxyvote();
-    void refreshvotes( uint32_t max_steps, bool flag );
+    void refreshvotes( uint32_t max_steps );
     void addcommunity( eosio::name community, std::string &description );
     void rmcommunity( eosio::name community );
     void ban( eosio::name account );
     void unban( eosio::name account );
+    void migrate();
     void clearall();
   };
 
@@ -34,11 +35,12 @@ namespace edenproxy {
                  action( vote, voter, producers ),
                  action( rmvote, voter ),
                  action( proxyvote ),
-                 action( refreshvotes, max_steps, flag ),
+                 action( refreshvotes, max_steps ),
                  action( addcommunity, community, description ),
                  action( rmcommunity, community ),
-                 action( ban, bp ),
-                 action( unban, bp ),
+                 action( ban, account ),
+                 action( unban, account ),
+                 action( migrate ),
                  action( clearall ) )
 
 } // namespace edenproxy

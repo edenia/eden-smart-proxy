@@ -88,9 +88,9 @@ namespace edenproxy {
   private:
     eosio::name      contract;
     uint64_t         scope;
-    votes_table      _votes;
+    votes_table      _votes; // DEPRECATED
     voter_table_type voter_tb;
-    stats_table      _stats;
+    stats_table      _stats; // DEPRECATED
     score_table_type score_tb;
 
   public:
@@ -104,7 +104,7 @@ namespace edenproxy {
                           const std::vector< eosio::name > &producers );
     void     on_rmvote( eosio::name voter );
     void     on_proxyvote();
-    void     on_refreshvotes( uint32_t max_steps, bool flag );
+    uint32_t on_refreshvotes( uint32_t max_steps );
     void     on_vote( uint16_t                          member_rank,
                       eosio::name                       voter,
                       const std::vector< eosio::name > &producers );
