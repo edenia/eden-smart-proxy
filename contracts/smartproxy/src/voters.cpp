@@ -1,6 +1,7 @@
 #include <numeric>
 
 #include <admin.hpp>
+#include <communities.hpp>
 #include <constants.hpp>
 #include <smartproxy.hpp>
 #include <voters.hpp>
@@ -93,32 +94,20 @@ namespace edenproxy {
   }
 
   uint32_t voters::on_refreshvotes( uint32_t max_steps ) {
-    bool  flag;
-    admin admin{ contract };
-    auto *state = admin.get_update_state();
-    // TODO: full refactor since byflag is not going to be used anymore
-
-    eosio::name cc = state->current_community;
-    eosio::name lv = state->last_voter;
-
-    eden::members members{ EDEN_ACCOUNT };
-
+    admin                   admin{ contract };
+    auto                   *state = admin.get_update_state();
+    eden::members           members{ EDEN_ACCOUNT };
     std::vector< uint16_t > ranks = members.stats().ranks;
     uint16_t is_election_completed = ranks.size() >= 3 && ranks.back() == 1;
 
-    auto votes_secidx = _votes.get_index< "byflag"_n >();
-    auto votes_itr =
-        votes_secidx.lower_bound( static_cast< uint64_t >( flag ) );
-    auto end = votes_secidx.upper_bound( static_cast< uint64_t >( flag ) );
+    auto voter_itr = ++voter_tb.find( state->last_voter.value );
 
-    eosio::check( votes_itr != end, "Nothing to do" );
-
-    for ( ; votes_itr != end && max_steps > 0; --max_steps ) {
-      const auto &member = members.get_member( votes_itr->account );
+    for ( ; voter_itr != voter_tb.end() && max_steps > 0; --max_steps ) {
+      const auto &member = members.get_member( voter_itr->account() );
 
       if ( member.status() == eden::member_status::pending_membership ) {
-        on_remove_vote( votes_itr->producers, votes_itr->weight );
-        votes_itr = votes_secidx.erase( votes_itr );
+        on_remove_vote( voter_itr->producers(), voter_itr->weight() );
+        voter_itr = voter_tb.erase( voter_itr );
       } else {
         uint8_t member_rank = member.election_rank();
         bool is_hd = member_rank == ranks.size() - 1 && is_election_completed;
@@ -126,16 +115,23 @@ namespace edenproxy {
         uint16_t vote_weight =
             calculate_vote_weight( member_rank - rank_factor, ranks );
 
-        if ( votes_itr->weight != vote_weight ) {
-          on_vote( vote_weight, votes_itr->account, votes_itr->producers );
+        if ( voter_itr->weight() != vote_weight ) {
+          on_vote( vote_weight, voter_itr->account(), voter_itr->producers() );
         }
 
-        votes_secidx.modify( votes_itr, eosio::same_payer, [&]( auto &row ) {
-          row.flag = static_cast< uint64_t >( !flag );
-        } );
+        ++voter_itr;
       }
+    }
 
-      votes_itr = votes_secidx.lower_bound( static_cast< uint64_t >( flag ) );
+    // TODO: pass to next community until there is not community left
+    if ( voter_itr == voter_tb.end() ) {
+      communities communities{ contract };
+      eosio::name next_community =
+          communities.get_next_community( state->current_community );
+
+      if ( next_community != eosio::name{} ) {
+        admin.set_next_community( next_community );
+      }
     }
 
     return max_steps;
@@ -253,6 +249,46 @@ namespace edenproxy {
         std::accumulate( stat_ranks.begin() + rank, stat_ranks.end(), 0 );
 
     return total_participating_members / member_ranks;
+  }
+
+  uint32_t voters::remove_community_votes( uint32_t max_steps ) {
+    // This function is focus on get_self scope ONLY, DO NOT use it for any other scope
+    for ( auto itr = voter_tb.begin(); itr != voter_tb.end() && max_steps > 0;
+          --max_steps ) {
+      for ( auto bp : itr->producers() ) {
+        auto bp_itr = score_tb.find( bp.value );
+
+        if ( bp_itr->weight() - itr->weight() > 1 ) {
+          score_tb.erase( bp_itr );
+        } else {
+          score_tb.modify( bp_itr, eosio::same_payer, [&]( auto &row ) {
+            row.weight() -= itr->weight();
+          } );
+        }
+      }
+
+      itr = voter_tb.erase( itr );
+    }
+
+    return max_steps;
+  }
+
+  uint32_t voters::remove_community( uint32_t max_steps ) {
+    for ( auto itr = voter_tb.begin(); itr != voter_tb.end() && max_steps > 0;
+          --max_steps ) {
+      itr = voter_tb.erase( itr );
+    }
+
+    if ( max_steps == 0 ) {
+      return max_steps;
+    }
+
+    for ( auto itr = score_tb.begin(); itr != score_tb.end() && max_steps > 0;
+          --max_steps ) {
+      itr = score_tb.erase( itr );
+    }
+
+    return max_steps;
   }
 
   // void clear_all();

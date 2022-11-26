@@ -3,19 +3,18 @@
 #include <voters.hpp>
 
 namespace edenproxy {
-  // TODO: add community to this action parameter
   void edenproxy::vote( eosio::name                       voter,
+                        eosio::name                       community,
                         const std::vector< eosio::name > &producers ) {
     require_auth( voter );
 
-    voters{ get_self(), get_self().value }.member_vote( voter, producers );
+    voters{ get_self(), community.value }.member_vote( voter, producers );
   }
 
-  // TODO: add community to this action parameter
-  void edenproxy::rmvote( eosio::name voter ) {
+  void edenproxy::rmvote( eosio::name voter, eosio::name community ) {
     require_auth( voter );
 
-    voters{ get_self(), get_self().value }.on_rmvote( voter );
+    voters{ get_self(), community.value }.on_rmvote( voter );
   }
 
   void edenproxy::proxyvote() {
@@ -31,7 +30,8 @@ namespace edenproxy {
 
   void edenproxy::refreshvotes( uint32_t max_steps ) {
     admin  admin{ get_self() };
-    voters voters{ get_self(), get_self().value };
+    auto  *state = admin.get_update_state();
+    voters voters{ get_self(), state->current_community.value };
 
     eosio::check(
         admin.can_refreshvotes(),

@@ -40,5 +40,6 @@ namespace edenproxy {
 
     void on_addcommunity( eosio::name community, std::string &description );
     void on_rmcommunity( eosio::name community );
+    eosio::name get_next_community( eosio::name current_community );
   };
 } // namespace edenproxy

@@ -18,9 +18,8 @@ namespace edenproxy {
 
   struct state_ban_community {
     eosio::name current_community;
-    eosio::name last_voter;
   };
-  EOSIO_REFLECT( state_ban_community, current_community, last_voter )
+  EOSIO_REFLECT( state_ban_community, current_community )
 
   struct state_update_votes {
     eosio::name current_community;
@@ -42,20 +41,20 @@ namespace edenproxy {
 
     uint64_t primary_key() const { return account.value; }
   };
-  EOSIO_REFLECT( blacklisted_account, account );
+  EOSIO_REFLECT( blacklisted_account, account )
 
   struct blacklisted_bp : blacklisted_account {};
-  EOSIO_REFLECT( blacklisted_bp, base blacklisted_account );
+  EOSIO_REFLECT( blacklisted_bp, base blacklisted_account )
 
   using blacklisted_variant =
       std::variant< blacklisted_account, blacklisted_bp >;
 
   struct blacklisted {
     blacklisted_variant value;
-    FORWARD_MEMBERS( value, account );
-    FORWARD_FUNCTIONS( value, primary_key );
+    FORWARD_MEMBERS( value, account )
+    FORWARD_FUNCTIONS( value, primary_key )
   };
-  EOSIO_REFLECT( blacklisted, value );
+  EOSIO_REFLECT( blacklisted, value )
 
   using blacklisted_table = eosio::multi_index< "blacklisted"_n, blacklisted >;
 
@@ -77,8 +76,11 @@ namespace edenproxy {
     bool                can_proxyvote();
     bool                can_refreshvotes();
     void                set_standby();
+    void                set_bancommunity( eosio::name community );
     void                set_updatevotes();
     void                set_readytovote();
+    void                set_next_community( eosio::name next_community );
+    bool                validate_community_ban( eosio::name community );
     state_update_votes *get_update_state();
   };
 } // namespace edenproxy

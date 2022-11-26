@@ -17,13 +17,15 @@ namespace edenproxy {
                eosio::datastream< const char * > ds )
         : contract( receiver, code, ds ) {}
 
-    void vote( eosio::name voter, const std::vector< eosio::name > &producers );
-    void rmvote( eosio::name voter );
+    void vote( eosio::name                       voter,
+               eosio::name                       community,
+               const std::vector< eosio::name > &producers );
+    void rmvote( eosio::name voter, eosio::name community );
 
     void proxyvote();
     void refreshvotes( uint32_t max_steps );
     void addcommunity( eosio::name community, std::string &description );
-    void rmcommunity( eosio::name community );
+    void rmcommunity( eosio::name community, uint32_t max_steps );
     void ban( eosio::name account );
     void unban( eosio::name account );
     void migrate();
@@ -32,12 +34,12 @@ namespace edenproxy {
 
   EOSIO_ACTIONS( edenproxy,
                  "smartproxy"_n,
-                 action( vote, voter, producers ),
-                 action( rmvote, voter ),
+                 action( vote, voter, community, producers ),
+                 action( rmvote, voter, community ),
                  action( proxyvote ),
                  action( refreshvotes, max_steps ),
                  action( addcommunity, community, description ),
-                 action( rmcommunity, community ),
+                 action( rmcommunity, community, max_steps ),
                  action( ban, account ),
                  action( unban, account ),
                  action( migrate ),

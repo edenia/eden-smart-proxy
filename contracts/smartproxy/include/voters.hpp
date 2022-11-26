@@ -112,5 +112,7 @@ namespace edenproxy {
                              uint16_t                   weight );
     uint16_t calculate_vote_weight( uint16_t                 rank,
                                     std::vector< uint16_t > &stat_ranks );
+    uint32_t remove_community_votes( uint32_t max_steps );
+    uint32_t remove_community( uint32_t max_steps );
   };
 } // namespace edenproxy
