@@ -25,8 +25,8 @@ namespace edenproxy {
     void proxyvote();
     void refreshvotes( uint32_t max_steps );
     void addcommunity( eosio::name community, std::string &description );
-    void rmcommunity( eosio::name community, uint32_t max_steps );
-    void ban( eosio::name account );
+    void rmcommunity( uint32_t max_steps, eosio::name community );
+    void ban( uint32_t max_steps, eosio::name account );
     void unban( eosio::name account );
     void migrate();
     void clearall();

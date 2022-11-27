@@ -14,33 +14,35 @@ namespace edenproxy {
     communities{ get_self() }.on_addcommunity( community, description );
   }
 
-  void edenproxy::rmcommunity( eosio::name community, uint32_t max_steps ) {
+  void edenproxy::rmcommunity( uint32_t max_steps, eosio::name community ) {
     require_auth( get_self() );
 
-    admin admin{ get_self() };
-    // TODO: validate community exist
-    admin.set_bancommunity( community );
-
-    eosio::check( admin.validate_community_ban( community ),
-                  "Currently banning another community" );
-
-    voters      voters_self{ get_self(), get_self().value };
-    voters      voters_community{ get_self(), community.value };
     communities communities{ get_self() };
-    // TODO: remove vote weight for all the votes that belongs to this community
 
-    // admin.remove_community();
-    max_steps = voters_self.remove_community_votes( max_steps );
-    max_steps = voters_community.remove_community( max_steps );
-    // TODO: send max_steps to handle a safe remove
-    communities.on_rmcommunity( community );
+    if ( communities.exist( community ) ) {
+      admin  admin{ get_self() };
+      voters voters_self{ get_self(), get_self().value };
+      voters voters_community{ get_self(), community.value };
 
-    if ( max_steps > 0 ) {
-      admin.set_standby();
+      admin.set_bancommunity( community );
+
+      eosio::check( admin.validate_community_ban( community ),
+                    "Currently banning another community" );
+
+      // TODO: wrongly scoped, it required to be a mixed scope table, get_self for score and community.value for voters
+      max_steps = voters_self.remove_community_votes( max_steps );
+      max_steps = voters_community.remove_community( max_steps );
+      communities.on_rmcommunity( community );
+
+      if ( max_steps > 0 ) {
+        admin.set_standby();
+      }
+    } else {
+      eosio::check( false, "Nothing to do" );
     }
   }
 
-  void edenproxy::ban( eosio::name account ) {
+  void edenproxy::ban( uint32_t max_steps, eosio::name account ) {
     require_auth( get_self() );
 
     // TODO: remove vote weight for all the votes that belongs to this community
@@ -49,7 +51,27 @@ namespace edenproxy {
     // eosio::check( is_blockproducer( bp ),
     //               "Only Block Producers can be banned" );
 
-    admin{ get_self() }.on_ban( account );
+    communities communities{ get_self() };
+
+    // if ( communities.exist( community ) ) {
+    //   admin  admin{ get_self() };
+    //   voters voters_self{ get_self(), get_self().value };
+    //   voters voters_community{ get_self(), community.value };
+
+    //   admin.set_bancommunity( community );
+
+    //   eosio::check( admin.validate_community_ban( community ),
+    //                 "Currently banning another community" );
+
+    //   max_steps = voters_self.remove_community_votes( max_steps );
+    //   admin{ get_self() }.on_ban( account );
+
+    //   if ( max_steps > 0 ) {
+    //     admin.set_standby();
+    //   }
+    // } else {
+    //   eosio::check( false, "Nothing to do" );
+    // }
   }
 
   void edenproxy::unban( eosio::name account ) {

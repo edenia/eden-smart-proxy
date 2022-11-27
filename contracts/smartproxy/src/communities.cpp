@@ -27,4 +27,10 @@ namespace edenproxy {
 
     return itr != community_tb.end() ? itr->account() : eosio::name{};
   }
+
+  bool communities::exist( eosio::name community ) {
+    auto itr = community_tb.find( community.value );
+
+    return itr != community_tb.end();
+  }
 } // namespace edenproxy

@@ -29,20 +29,18 @@ namespace edenproxy {
   }
 
   void edenproxy::refreshvotes( uint32_t max_steps ) {
-    admin  admin{ get_self() };
-    auto  *state = admin.get_update_state();
-    voters voters{ get_self(), state->current_community.value };
+    admin admin{ get_self() };
 
     eosio::check(
         admin.can_refreshvotes(),
         "The smart contract must be on standby to start updating the votes" );
 
+    auto  *state = admin.get_update_state();
+    voters voters{ get_self(), state->current_community.value };
     admin.set_updatevotes();
     uint32_t remaining_steps = voters.on_refreshvotes( max_steps );
 
     if ( remaining_steps != 0 ) {
-      eosio::check( remaining_steps != max_steps, "Nothing to do" );
-
       admin.set_readytovote();
     }
   }

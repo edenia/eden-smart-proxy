@@ -123,7 +123,7 @@ namespace edenproxy {
       }
     }
 
-    // TODO: pass to next community until there is not community left
+    // TODO: pass to the next community automatically until there is no community left
     if ( voter_itr == voter_tb.end() ) {
       communities communities{ contract };
       eosio::name next_community =
@@ -140,7 +140,6 @@ namespace edenproxy {
   void voters::on_vote( uint16_t                          vote_weight,
                         eosio::name                       voter,
                         const std::vector< eosio::name > &producers ) {
-    eden::members              members{ EDEN_ACCOUNT };
     uint16_t                   old_vote_weight = 0;
     std::vector< eosio::name > current_producers;
     std::vector< eosio::name > new_producers = producers;
