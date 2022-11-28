@@ -15,7 +15,7 @@ export const getBpJons = async (owners: Array<string>): Promise<Array<any>> => {
       })
     ).json()
 
-    return Object?.values(producersInfo[0])?.slice(0, -1)
+    return producersInfo?.producers
   } catch (error) {
     return []
   }
