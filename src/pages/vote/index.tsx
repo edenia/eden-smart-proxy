@@ -133,7 +133,9 @@ const Vote: NextPage = () => {
           totalVotes: bpJsonData?.total_votes,
           rank: bpJsonData?.rank,
           selected: true,
-          eosrateStats: eosrateBpsStats.find(stat => stat?.bp === bp?.producer)
+          eosrateStats: eosrateBpsStats
+            ? eosrateBpsStats.find(stat => stat?.bp === bp?.producer)
+            : undefined
         }
       })
 
