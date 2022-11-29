@@ -61,6 +61,7 @@ const Body: React.FC<voteBodyProps> = ({ setBps, bps }) => {
           <BlockProducerItem
             onClick={() => handleSelected(bp?.producer)}
             isSelected={bp?.selected}
+            eosrateValue={bp?.eosrateStats?.average.toFixed(1)}
             positionText={
               bp?.totalVotes
                 ? `${formatters.formatWithThousandSeparator(
