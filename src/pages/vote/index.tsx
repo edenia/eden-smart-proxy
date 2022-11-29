@@ -118,7 +118,7 @@ const Vote: NextPage = () => {
         const hasVoted = votes?.rows[0]?.producers?.includes(bp?.producer)
         const { rows = [] } = await smartProxyUtil.getStats(bp?.producer, 1)
         const bpJsonData =
-          bpjsonsInfo.length > 0
+          bpjsonsInfo.length === validBps.length
             ? bpjsonsInfo?.find(bpj => bpj?.owner === bp?.producer)
             : bpsInfo?.bpJson?.find(
                 bpj => bpj.producer_account_name === bp?.producer
