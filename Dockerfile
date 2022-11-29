@@ -15,6 +15,9 @@ ARG next_public_aa_api_host
 ARG next_public_genesiseden_contract
 ARG next_public_edensmartproxy_contract
 ARG next_public_myvoteeosdao_contract
+ARG eosrate_get_stats_url
+ARG eosrate_get_stats_user
+ARG eosrate_get_stats_password
 
 ENV NEXT_PUBLIC_UAL_APP_NAME $next_public_ual_app_name
 ENV NEXT_PUBLIC_UAL_API_PROTOCOL $next_public_ual_api_protocol
@@ -26,6 +29,9 @@ ENV NEXT_PUBLIC_GENESISEDEN_CONTRACT $next_public_genesiseden_contract
 ENV NEXT_PUBLIC_EDENSMARTPROXY_CONTRACT $next_public_edensmartproxy_contract
 ENV NEXT_PUBLIC_MYVOTEEOSDAO_CONTRACT $next_public_myvoteeosdao_contract
 ENV NEXT_PUBLIC_PRODUCERS_INFO_API_URL $next_public_producers_info_api_url
+ENV EOSRATE_GET_STATS_URL $eosrate_get_stats_url
+ENV EOSRATE_GET_STATS_USER $eosrate_get_stats_user
+ENV EOSRATE_GET_STATS_PASSWORD $eosrate_get_stats_password
 
 WORKDIR /app
 
