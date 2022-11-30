@@ -110,10 +110,10 @@ const Vote: NextPage = () => {
         return [...reduceList, element.producer]
       }, [])
       const bpjsonsInfo = await bpsUtil.getBpJons(bpsValid)
-      const eosrateApiUrl = generateApiUrls.getEosRateAPIUrlClient({
-        bps: JSON.stringify(bpsValid)
-      })
-      const eosrateBpsStats = (await (await fetch(eosrateApiUrl)).json()) || []
+      // const eosrateApiUrl = generateApiUrls.getEosRateAPIUrlClient({
+      //   bps: JSON.stringify(bpsValid)
+      // })
+      // const eosrateBpsStats = (await (await fetch(eosrateApiUrl)).json()) || []
       const validBpsAllData = validBps.map(async bp => {
         const hasVoted = votes?.rows[0]?.producers?.includes(bp?.producer)
         const { rows = [] } = await smartProxyUtil.getStats(bp?.producer, 1)
@@ -132,10 +132,10 @@ const Vote: NextPage = () => {
           bpJsonData: bpJsonData?.bp_json || bpJsonData,
           totalVotes: bpJsonData?.total_votes,
           rank: bpJsonData?.rank,
-          selected: true,
-          eosrateStats: eosrateBpsStats
-            ? eosrateBpsStats.find(stat => stat?.bp === bp?.producer)
-            : undefined
+          selected: true
+          // eosrateStats: eosrateBpsStats
+          //   ? eosrateBpsStats.find(stat => stat?.bp === bp?.producer)
+          //   : undefined
         }
       })
 
