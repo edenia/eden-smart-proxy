@@ -15,6 +15,7 @@ ARG next_public_aa_api_host
 ARG next_public_genesiseden_contract
 ARG next_public_edensmartproxy_contract
 ARG next_public_myvoteeosdao_contract
+ARG next_public_producers_info_api_url
 ARG eosrate_get_stats_url
 ARG eosrate_get_stats_user
 ARG eosrate_get_stats_password
