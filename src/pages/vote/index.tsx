@@ -6,7 +6,7 @@ import { Fab, Button, Spinner } from '@edenia/ui-kit'
 import { NextSeo } from 'next-seo'
 import Image from 'next/image'
 
-import { routeUtils, smartProxyUtil, bpsUtil, generateApiUrls } from 'utils'
+import { routeUtils, smartProxyUtil, bpsUtil } from 'utils'
 import { useSharedState } from 'context/state.context'
 import i18nUtils from 'utils/i18n'
 import { bpsInfo } from 'config/constants'
