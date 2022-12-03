@@ -77,9 +77,9 @@ const Body: React.FC<BodyVoters> = ({ searchValue = '' }) => {
 
   return (
     <div className={classes.container}>
-      {edenMembers?.map(delegate => (
+      {edenMembers?.map((delegate, index) => (
         <DelegateItem
-          key={delegate.name}
+          key={index}
           actionItemStyles={classes.itemActionStyle}
           text={`${t(delegate.voteState.label)} ${
             delegate.voteState.aditionalInfo || ''
