@@ -4,11 +4,10 @@ import Toolbar from '@mui/material/Toolbar'
 import { useState, useCallback, useEffect } from 'react'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
-import { BaseSnackbar } from 'components'
+import { BaseSnackbar, DelegateButton } from 'components'
 import { useTranslation } from 'next-i18next'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useRouter } from 'next/router'
-import { Button } from '@edenia/ui-kit'
 import { AlertColor } from '@mui/material'
 import clsx from 'clsx'
 
@@ -33,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
   const { t } = useTranslation()
   const classes = useStyles()
   const router = useRouter()
-  const [showDelegateButton, setShowDelegateButton] = useState<boolean>(false)
+  const [showDelegateButton, setShowDelegateButton] = useState<boolean>(true)
   const [totalVotesDelegate, setTotalVotesDelegate] = useState<number>(0)
   const { asPath } = router
   const [pathName, setPathName] = useState<any>()
@@ -42,41 +41,6 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
     severity: 'success',
     visible: false
   })
-
-  const handleDelegateVote = async () => {
-    try {
-      if (!state?.ual?.activeUser?.accountName) {
-        setMessage({
-          severity: 'warning',
-          message: t('routes.mustLogin'),
-          visible: true
-        })
-        return
-      }
-      const delegateVoteTrx = smartProxyUtil.buildDelegateTransaction(
-        state?.ual?.activeUser?.accountName
-      )
-      await state?.ual?.activeUser?.signTransaction(delegateVoteTrx, {
-        blocksBehind: 3,
-        expireSeconds: 1200,
-        broadcast: true
-      })
-      setMessage({
-        severity: 'success',
-        message: t('routes.successfulVote'),
-        visible: true
-      })
-      setTimeout(async () => {
-        await validateHasDelegateVote()
-      }, 1000)
-    } catch (error) {
-      setMessage({
-        severity: 'error',
-        message: t('routes.somethingWrong'),
-        visible: true
-      })
-    }
-  }
 
   const validateHasDelegateVote = async () => {
     const delegateState = await eosioUtil.getVotingState(
@@ -109,7 +73,7 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
 
   useEffect(() => {
     if (!state?.ual?.activeUser?.accountName) {
-      setShowDelegateButton(false)
+      setShowDelegateButton(true)
       return
     }
 
@@ -135,12 +99,10 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
               </div>
               <div>
                 {showDelegateButton && (
-                  <Button
+                  <DelegateButton
                     icon='/icons/like-white-icon.png'
-                    label={t('buttonLabel')}
-                    variant='primary'
-                    externalStyles={classes.btnDelegate}
-                    onClick={() => handleDelegateVote()}
+                    setMessage={setMessage}
+                    buttonStyles={classes.btnDelegate}
                   />
                 )}
                 <Typography

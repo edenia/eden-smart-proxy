@@ -11,7 +11,8 @@ const initialValue = {
   elemRef: null,
   ual: null,
   isLogout: false,
-  imgCached: []
+  imgCached: [],
+  handleDelegateButton: false
 }
 
 const SharedStateContext = createContext<{
@@ -35,6 +36,13 @@ const sharedStateReducer = (state, action): stateType => {
       return {
         ...state,
         user: action.payload
+      }
+    }
+
+    case 'setDelegateButton': {
+      return {
+        ...state,
+        handleDelegateButton: action.payload
       }
     }
 
@@ -116,6 +124,10 @@ export const useSharedState = (): any => {
   const login = (type: string) => {
     stateTemp.ual.login(type)
   }
+  const loginDelegateVote = (type: string) => {
+    stateTemp.ual.login(type)
+    dispatchTemp({ type: 'setDelegateButton', payload: true })
+  }
   const logout = () => {
     localStorage.setItem('loginUser', 'false')
     dispatchTemp({ type: 'logout' })
@@ -144,6 +156,7 @@ export const useSharedState = (): any => {
       setState,
       setImg,
       login,
+      loginDelegateVote,
       logout,
       handleOpenMenu,
       handleCloseMenu
