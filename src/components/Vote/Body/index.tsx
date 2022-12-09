@@ -5,6 +5,7 @@ import { useTranslation } from 'next-i18next'
 import { useState } from 'react'
 
 import { socialMediaInfo } from 'config/constants'
+import { formatters } from 'utils'
 
 import useStyles from './styles'
 
@@ -60,8 +61,19 @@ const Body: React.FC<voteBodyProps> = ({ setBps, bps }) => {
           <BlockProducerItem
             onClick={() => handleSelected(bp?.producer)}
             isSelected={bp?.selected}
+            eosrateValue={bp?.eosrateStats?.average.toFixed(1)}
+            positionText={
+              bp?.totalVotes
+                ? `${formatters.formatWithThousandSeparator(
+                    bp?.totalVotes,
+                    3
+                  )} votes`
+                : undefined
+            }
             avatarIcon={bp?.voted && '/icons/good-icon.png'}
             name={bp?.producer}
+            nameFontWeight={600}
+            rankValue={bp?.rank}
             image={
               bp?.bpJsonData?.org?.branding?.logo_256 || '/logos/no-logo.svg'
             }

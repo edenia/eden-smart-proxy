@@ -35,6 +35,9 @@ build-docker: ./Dockerfile
 		--build-arg next_public_edensmartproxy_contract="$(NEXT_PUBLIC_EDENSMARTPROXY_CONTRACT)" \
 		--build-arg next_public_myvoteeosdao_contract="$(NEXT_PUBLIC_MYVOTEEOSDAO_CONTRACT)" \
 		--build-arg next_public_producers_info_api_url="$(NEXT_PUBLIC_PRODUCERS_INFO_API_URL)" \
+		--build-arg eosrate_get_stats_url="$(EOSRATE_GET_STATS_URL)" \
+		--build-arg eosrate_get_stats_user="$(EOSRATE_GET_STATS_USER)" \
+		--build-arg eosrate_get_stats_password="$(EOSRATE_GET_STATS_PASSWORD)" \
 		.
 
 pull-image: ##@devops Pull the latest image from registry for caching

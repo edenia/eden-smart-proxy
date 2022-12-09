@@ -172,6 +172,8 @@ namespace edenproxy {
   }
 
   void smartproxy_contract::clearall() {
+    require_auth( get_self() );
+
     votes_table _votes{ get_self(), get_self().value };
 
     for ( auto itr = _votes.begin(); itr != _votes.end(); ) {

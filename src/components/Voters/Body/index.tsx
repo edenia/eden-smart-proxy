@@ -7,7 +7,7 @@ import Image from 'next/image'
 import ImgLoading from '../../ImageLoad'
 import { GET_MEMBERS_DATA } from '../../../gql/voters.gql'
 import { BodyVoters, IMembersData } from '../../../@types/member'
-import { genesisEdenUtil, eosioUtil } from 'utils'
+import { genesisEdenUtil } from 'utils'
 
 import useStyles from './styles'
 
@@ -77,9 +77,9 @@ const Body: React.FC<BodyVoters> = ({ searchValue = '' }) => {
 
   return (
     <div className={classes.container}>
-      {edenMembers?.map(delegate => (
+      {edenMembers?.map((delegate, index) => (
         <DelegateItem
-          key={delegate.name}
+          key={index}
           actionItemStyles={classes.itemActionStyle}
           text={`${t(delegate.voteState.label)} ${
             delegate.voteState.aditionalInfo || ''
@@ -93,9 +93,9 @@ const Body: React.FC<BodyVoters> = ({ searchValue = '' }) => {
           }
           bgColor='#fff'
           target='_blank'
-          link={`https://bloks.io/account/edensmartprx?loadContract=true&tab=Tables&table=votes&account=edensmartprx&scope=edensmartprx&limit=1&lower_bound=${delegate[1]?.account}&upper_bound=${delegate[1]?.account}`}
+          link={`https://bloks.io/account/edensmartprx?loadContract=true&tab=Tables&table=votes&account=edensmartprx&scope=edensmartprx&limit=1&lower_bound=${delegate?.account}&upper_bound=${delegate?.account}`}
           linkIcon={
-            delegate?.vote?.state === eosioUtil.VoteState.ForProxy &&
+            delegate?.voteState?.label === 'voters.voteFor' &&
             '/icons/ref-icon.png'
           }
           avatarIcon={delegate?.rank?.badge}
