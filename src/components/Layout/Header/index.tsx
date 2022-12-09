@@ -11,7 +11,7 @@ import { useRouter } from 'next/router'
 import { AlertColor } from '@mui/material'
 import clsx from 'clsx'
 
-import { smartProxyUtil, eosioUtil } from 'utils'
+import { eosioUtil } from 'utils'
 import { useSharedState } from 'context/state.context'
 import LanguageSelector from 'components/LanguageSelector'
 
