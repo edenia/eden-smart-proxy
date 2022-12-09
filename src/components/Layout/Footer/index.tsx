@@ -36,13 +36,25 @@ const FooterComp: React.FC<FooterCompType> = ({ showWhite }) => {
               {t('footer.communityOwnedPublic')}&ensp;
               <Link
                 target='_blank'
+                href='https://eosnodeone.io/index-en.html'
+                rel='noreferrer'
+                color={theme.palette.grey[600]}
+                className={classes.linkStyle}
+              >
+                NodeOne
+              </Link>{' '}
+              &ensp;
+              {t('footer.and')}
+              &ensp;
+              <Link
+                target='_blank'
                 href='https://edenia.com'
                 rel='noreferrer'
                 color={theme.palette.grey[600]}
                 className={classes.linkStyle}
               >
-                {`${t('footer.developedEdenia')}`}
-              </Link>{' '}
+                Edenia
+              </Link>
               &ensp;
             </Typography>
             <div>

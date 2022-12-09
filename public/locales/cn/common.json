@@ -116,7 +116,7 @@
     "description": "Eden Smart Proxy是一个 EOS BP 投票代理，通过利用 Eden 的分形民主式治理，最大限度地提高了 EOS 持有者的发言权。只有公布了自己身份的 Eden 成员才有资格对投票给 BP 的代理人有发言权。"
   },
   "footer": {
-    "communityOwnedPublic": "由社区共同拥有的东西",
-    "developedEdenia": "由 Edenia 开发"
+    "communityOwnedPublic": "由以下人员开发的社区拥有的公共物品",
+    "and": "和"
   }
 }
