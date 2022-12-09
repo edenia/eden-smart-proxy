@@ -116,7 +116,7 @@
     "description": "Eden Smart Proxy is a EOS BP voting proxy that maximizes voice of individual EOS holders by leveraging peer-vetted accountability of Eden members."
   },
   "footer": {
-    "communityOwnedPublic": "A Community Owned Public Good",
-    "developedEdenia": "Developed by Edenia"
+    "communityOwnedPublic": "A Community Owned Public Good Developed by",
+    "and": "and"
   }
 }

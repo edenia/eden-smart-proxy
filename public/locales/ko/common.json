@@ -116,7 +116,7 @@
     "description": "에덴 스마트 프록시는 에덴의 상호간 신원인증 및 프랙탈 민주주의 프로세스를 통해 EOS BP 거버넌스의 신뢰성을 높이는 프록시입니다. 신원이 공개된 에덴 선거 참여자만이 BP 투표에 발언권을 가집니다."
   },
   "footer": {
-    "communityOwnedPublic": "커뮤니티가 소유하는 공공재",
-    "developedEdenia": "Developed by Edenia"
+    "communityOwnedPublic": "에 의해 개발된 커뮤니티 소유의 공공재",
+    "and": "그리고"
   }
 }

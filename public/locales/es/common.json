@@ -116,7 +116,7 @@
     "description": "EdenBPsProxy es un proxy de votación de EOS BP que maximiza la voz de los titulares individuales de EOS al aprovechar su voz con el proceso de democracia fractal de Eden. Solo los miembros de Edens que revelaron su identidad serán elegibles para opinar sobre el proxy que votos BPs."
   },
   "footer": {
-    "communityOwnedPublic": "Un bien publico comunitario",
-    "developedEdenia": "Desarrollo por Edenia"
+    "communityOwnedPublic": "Un bien publico comunitario desarrollado por",
+    "and": "y"
   }
 }
