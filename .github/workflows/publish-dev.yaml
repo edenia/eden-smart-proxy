@@ -39,7 +39,7 @@ jobs:
           NEXT_PUBLIC_GENESISEDEN_CONTRACT: genesis.eden
           NEXT_PUBLIC_EDENSMARTPROXY_CONTRACT: edensmartprx
           NEXT_PUBLIC_MYVOTEEOSDAO_CONTRACT: myvoteeosdao
-          NEXT_PUBLIC_EDEN_API_HOST: https://eden-api.edenia.cloud/v1/graphql
+          NEXT_PUBLIC_EDEN_API_HOST: https://eden-api.edenia-dev.cloud/v1/graphql
           NEXT_PUBLIC_PRODUCERS_INFO_API_URL: https://graphql-jungle.antelope.tools/api/rest/get-producers-info
           EOSRATE_GET_STATS_URL: ${{ secrets.DEV_EOSRATE_GET_STATS_URL }}
           EOSRATE_GET_STATS_USER: ${{ secrets.DEV_EOSRATE_GET_STATS_USER }}
