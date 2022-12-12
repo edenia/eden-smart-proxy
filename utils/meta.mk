@@ -9,7 +9,7 @@ MAKE_ENV += DOCKER_REGISTRY VERSION
 
 SHELL_EXPORT := $(foreach v,$(MAKE_ENV),$(v)='$($(v))')
 K8S_BUILD_DIR ?= ./build_k8s
-K8S_FILES := $(shell find ./k8s -name '*.yml' | sed 's:./k8s/::g')
+K8S_FILES := $(shell find ./k8s-$(ENVIRONMENT) -name '*.yml' | sed 's:./k8s-$(ENVIRONMENT)/::g')
 
 ifneq ("$(wildcard .env)", "")
 	export $(shell sed 's/=.*//' .env)
