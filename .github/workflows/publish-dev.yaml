@@ -1,14 +1,15 @@
-name: Publish release to production environment
+name: Publish release to development environment
 
 on:
+  workflow_dispatch:
   push:
-    tags:
-      - v*
+    branches:
+      - dev
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-    environment: production
+    environment: development
 
     steps:
       - name: Checkout Repo
@@ -28,20 +29,20 @@ jobs:
             push-image
         env:
           LATEST_TAG: latest
-          IMAGE_NAME: eden-proxy-webapp
+          IMAGE_NAME: eden-proxy-webapp-dev
           NEXT_PUBLIC_UAL_APP_NAME: 'edensmartprx'
           NEXT_PUBLIC_UAL_API_PROTOCOL: 'https'
-          NEXT_PUBLIC_UAL_API_HOST: ${{ secrets.NEXT_PUBLIC_UAL_API_HOST }}
+          NEXT_PUBLIC_UAL_API_HOST: ${{ secrets.DEV_NEXT_PUBLIC_UAL_API_HOST }}
           NEXT_PUBLIC_UAL_API_PORT: '443'
-          NEXT_PUBLIC_UAL_CHAIN_ID: ${{ secrets.NEXT_PUBLIC_UAL_CHAIN_ID }}
-          NEXT_PUBLIC_AA_API_HOST: ${{ secrets.NEXT_PUBLIC_AA_API_HOST }}
+          NEXT_PUBLIC_UAL_CHAIN_ID: ${{ secrets.DEV_NEXT_PUBLIC_UAL_CHAIN_ID }}
+          NEXT_PUBLIC_AA_API_HOST: ${{ secrets.DEV_NEXT_PUBLIC_AA_API_HOST }}
           NEXT_PUBLIC_GENESISEDEN_CONTRACT: genesis.eden
           NEXT_PUBLIC_EDENSMARTPROXY_CONTRACT: edensmartprx
           NEXT_PUBLIC_MYVOTEEOSDAO_CONTRACT: myvoteeosdao
-          NEXT_PUBLIC_PRODUCERS_INFO_API_URL: https://graphql-eos.antelope.tools/api/rest/get-producers-info
-          EOSRATE_GET_STATS_URL: ${{ secrets.EOSRATE_GET_STATS_URL }}
-          EOSRATE_GET_STATS_USER: ${{ secrets.EOSRATE_GET_STATS_USER }}
-          EOSRATE_GET_STATS_PASSWORD: ${{ secrets.EOSRATE_GET_STATS_PASSWORD }}
+          NEXT_PUBLIC_PRODUCERS_INFO_API_URL: https://graphql-jungle.antelope.tools/api/rest/get-producers-info
+          EOSRATE_GET_STATS_URL: ${{ secrets.DEV_EOSRATE_GET_STATS_URL }}
+          EOSRATE_GET_STATS_USER: ${{ secrets.DEV_EOSRATE_GET_STATS_USER }}
+          EOSRATE_GET_STATS_PASSWORD: ${{ secrets.DEV_EOSRATE_GET_STATS_PASSWORD }}
 
       - name: Build voter image and push
         run: |
@@ -49,7 +50,7 @@ jobs:
             build-docker-voter \
             push-image-voter
         env:
-          IMAGE_NAME_VOTER: proxy-voter
+          IMAGE_NAME_VOTER: proxy-voter-dev
 
       - name: Build kubernetes files
         id: build_kubernetes_files
@@ -58,28 +59,21 @@ jobs:
             build-kubernetes
         env:
           LATEST_TAG: latest
-          IMAGE_NAME: eden-proxy-webapp
-          IMAGE_NAME_VOTER: proxy-voter
-          ENVIRONMENT: pdn
-          EOS_API_ENDPOINT: 'https://api.eosn.io'
-          EOS_API_CHAIN_ID: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
+          IMAGE_NAME: eden-proxy-webapp-dev
+          IMAGE_NAME_VOTER: proxy-voter-dev
+          ENVIRONMENT: dev
+          EOS_API_ENDPOINT: 'https://jungle.edenia.cloud'
+          EOS_API_CHAIN_ID: '73e4385a2708e6d7048834fbc1079f2fabb17b3c125b146af438971e90716c4d'
           EOS_VOTER_ACCOUNT: 'edensmartprx'
           EOS_VOTER_PERMISSION: 'proxyvote'
-          EOS_VOTER_PRIVATE_KEY: ${{ secrets.EOS_VOTER_PRIVATE_KEY }}
+          EOS_VOTER_PRIVATE_KEY: ${{ secrets.DEV_EOS_VOTER_PRIVATE_KEY }}
           EOS_PROXY_ACCOUNT: 'edensmartprx'
 
       - name: Setup and deploy kubernetes environment
         uses: steebchen/kubectl@v1.1.0
         env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+          KUBE_CONFIG_DATA: ${{ secrets.DEV_KUBE_CONFIG_DATA }}
           NAMESPACE: edenproxy
           K8S_BUILD_DIR: build_k8s
         with:
           args: version && make deploy-kubernetes
-
-      - name: Create Release
-        id: create_release
-        uses: marvinpinto/action-automatic-releases@latest
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          prerelease: false

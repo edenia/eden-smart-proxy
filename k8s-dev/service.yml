@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: edenproxy
+spec:
+  selector:
+    app: edenproxy
+  ports:
+  - port: 3000
+    targetPort: 3000
+    protocol: TCP

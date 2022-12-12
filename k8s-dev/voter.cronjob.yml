@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: voter-cronjob
+spec:
+    schedule: "0 0 * * *"
+    successfulJobsHistoryLimit: 1
+    failedJobsHistoryLimit: 1
+    jobTemplate:
+      spec:
+        template:
+          spec:
+            containers:
+            - name: voter
+              image: ${DOCKER_REGISTRY}/${IMAGE_NAME_VOTER}:${VERSION}
+              imagePullPolicy: IfNotPresent
+              command: [ "node" ]
+              args: [ "/app/src/index.js" ]
+              env:
+                - name: EOS_API_ENDPOINT
+                  value: "${EOS_API_ENDPOINT}"
+                - name: EOS_API_CHAIN_ID
+                  value: "${EOS_API_CHAIN_ID}"
+                - name: EOS_VOTER_ACCOUNT
+                  value: "${EOS_VOTER_ACCOUNT}"
+                - name: EOS_VOTER_PERMISSION
+                  value: "${EOS_VOTER_PERMISSION}"
+                - name: EOS_VOTER_PRIVATE_KEY
+                  value: "${EOS_VOTER_PRIVATE_KEY}"
+                - name: EOS_PROXY_ACCOUNT
+                  value: "${EOS_PROXY_ACCOUNT}"
+            restartPolicy: Never
