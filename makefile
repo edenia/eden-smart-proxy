@@ -59,7 +59,7 @@ push-image:
 	@docker push $(DOCKER_REGISTRY)/$(IMAGE_NAME):$(LATEST_TAG)
 
 build-kubernetes: ##@devops Generate proper k8s files based on the templates
-build-kubernetes: ./k8s
+build-kubernetes: ./k8s-$(ENVIRONMENT)
 	@echo "Build kubernetes files..."
 	@rm -Rf $(K8S_BUILD_DIR) && mkdir -p $(K8S_BUILD_DIR)
 	@for file in $(K8S_FILES); do \
