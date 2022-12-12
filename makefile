@@ -34,6 +34,7 @@ build-docker: ./Dockerfile
 		--build-arg next_public_genesiseden_contract="$(NEXT_PUBLIC_GENESISEDEN_CONTRACT)" \
 		--build-arg next_public_edensmartproxy_contract="$(NEXT_PUBLIC_EDENSMARTPROXY_CONTRACT)" \
 		--build-arg next_public_myvoteeosdao_contract="$(NEXT_PUBLIC_MYVOTEEOSDAO_CONTRACT)" \
+		--build-arg next_public_eden_api_host="$(NEXT_PUBLIC_EDEN_API_HOST)" \
 		--build-arg next_public_producers_info_api_url="$(NEXT_PUBLIC_PRODUCERS_INFO_API_URL)" \
 		--build-arg eosrate_get_stats_url="$(EOSRATE_GET_STATS_URL)" \
 		--build-arg eosrate_get_stats_user="$(EOSRATE_GET_STATS_USER)" \
