@@ -39,6 +39,8 @@ jobs:
           NEXT_PUBLIC_EDENSMARTPROXY_CONTRACT: edensmartprx
           NEXT_PUBLIC_MYVOTEEOSDAO_CONTRACT: myvoteeosdao
           NEXT_PUBLIC_EDEN_API_HOST: https://eden-api.edenia.cloud/v1/graphql
+          NEXT_PUBLIC_EDEN_MEMBER_URL: https://genesis.eden.eoscommunity.org/members/
+          NEXT_PUBLIC_EDEN_BLOCK_EXPLORER_URL: https://bloks.io
           NEXT_PUBLIC_PRODUCERS_INFO_API_URL: https://graphql-eos.antelope.tools/api/rest/get-producers-info
           EOSRATE_GET_STATS_URL: ${{ secrets.EOSRATE_GET_STATS_URL }}
           EOSRATE_GET_STATS_USER: ${{ secrets.EOSRATE_GET_STATS_USER }}
