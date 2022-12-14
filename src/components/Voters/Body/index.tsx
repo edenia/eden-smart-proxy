@@ -100,6 +100,7 @@ const Body: React.FC<BodyVoters> = ({ searchValue = '' }) => {
           }
           avatarIcon={delegate?.rank?.badge}
           headItem={<Image src={delegate.voteState?.img} />}
+          /*add variable*/
           profileLink={`${process.env.NEXT_PUBLIC_EDEN_MEMBER_URL}${delegate?.account}`}
           targetProfile='_blank'
           positionText={`${delegate?.rank?.label} - ${t(
