@@ -93,14 +93,15 @@ const Body: React.FC<BodyVoters> = ({ searchValue = '' }) => {
           }
           bgColor='#fff'
           target='_blank'
-          link={`https://bloks.io/account/edensmartprx?loadContract=true&tab=Tables&table=votes&account=edensmartprx&scope=edensmartprx&limit=1&lower_bound=${delegate?.account}&upper_bound=${delegate?.account}`}
+          link={`${process.env.NEXT_PUBLIC_EDEN_BLOCK_EXPLORER_URL}/account/edensmartprx?loadContract=true&tab=Tables&table=votes&account=edensmartprx&scope=edensmartprx&limit=1&lower_bound=${delegate?.account}&upper_bound=${delegate?.account}`}
           linkIcon={
             delegate?.voteState?.label === 'voters.voteFor' &&
             '/icons/ref-icon.png'
           }
           avatarIcon={delegate?.rank?.badge}
           headItem={<Image src={delegate.voteState?.img} />}
-          profileLink={`https://genesis.eden.eoscommunity.org/members/${delegate?.account}`}
+          /*add variable*/
+          profileLink={`${process.env.NEXT_PUBLIC_EDEN_MEMBER_URL}${delegate?.account}`}
           targetProfile='_blank'
           positionText={`${delegate?.rank?.label} - ${t(
             'voters.voteWeight'

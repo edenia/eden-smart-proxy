@@ -34,6 +34,9 @@ build-docker: ./Dockerfile
 		--build-arg next_public_genesiseden_contract="$(NEXT_PUBLIC_GENESISEDEN_CONTRACT)" \
 		--build-arg next_public_edensmartproxy_contract="$(NEXT_PUBLIC_EDENSMARTPROXY_CONTRACT)" \
 		--build-arg next_public_myvoteeosdao_contract="$(NEXT_PUBLIC_MYVOTEEOSDAO_CONTRACT)" \
+		--build-arg next_public_eden_api_host="$(NEXT_PUBLIC_EDEN_API_HOST)" \
+		--build-arg next_public_eden_member_url="$(NEXT_PUBLIC_EDEN_MEMBER_URL)" \
+		--build-arg next_public_eden_block_explorer_url="$(NEXT_PUBLIC_EDEN_BLOCK_EXPLORER_URL)" \
 		--build-arg next_public_producers_info_api_url="$(NEXT_PUBLIC_PRODUCERS_INFO_API_URL)" \
 		--build-arg eosrate_get_stats_url="$(EOSRATE_GET_STATS_URL)" \
 		--build-arg eosrate_get_stats_user="$(EOSRATE_GET_STATS_USER)" \
@@ -59,12 +62,12 @@ push-image:
 	@docker push $(DOCKER_REGISTRY)/$(IMAGE_NAME):$(LATEST_TAG)
 
 build-kubernetes: ##@devops Generate proper k8s files based on the templates
-build-kubernetes: ./k8s
+build-kubernetes: ./k8s-$(ENVIRONMENT)
 	@echo "Build kubernetes files..."
 	@rm -Rf $(K8S_BUILD_DIR) && mkdir -p $(K8S_BUILD_DIR)
 	@for file in $(K8S_FILES); do \
 		mkdir -p `dirname "$(K8S_BUILD_DIR)/$$file"`; \
-		$(SHELL_EXPORT) envsubst <./k8s/$$file >$(K8S_BUILD_DIR)/$$file; \
+		$(SHELL_EXPORT) envsubst <./k8s-$(ENVIRONMENT)/$$file >$(K8S_BUILD_DIR)/$$file; \
 	done
 
 deploy-kubernetes: ##@devops Publish the build k8s files

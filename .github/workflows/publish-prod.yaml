@@ -28,6 +28,7 @@ jobs:
             push-image
         env:
           LATEST_TAG: latest
+          IMAGE_NAME: eden-proxy-webapp
           NEXT_PUBLIC_UAL_APP_NAME: 'edensmartprx'
           NEXT_PUBLIC_UAL_API_PROTOCOL: 'https'
           NEXT_PUBLIC_UAL_API_HOST: ${{ secrets.NEXT_PUBLIC_UAL_API_HOST }}
@@ -37,6 +38,9 @@ jobs:
           NEXT_PUBLIC_GENESISEDEN_CONTRACT: genesis.eden
           NEXT_PUBLIC_EDENSMARTPROXY_CONTRACT: edensmartprx
           NEXT_PUBLIC_MYVOTEEOSDAO_CONTRACT: myvoteeosdao
+          NEXT_PUBLIC_EDEN_API_HOST: https://eden-api.edenia.cloud/v1/graphql
+          NEXT_PUBLIC_EDEN_MEMBER_URL: https://genesis.eden.eoscommunity.org/members/
+          NEXT_PUBLIC_EDEN_BLOCK_EXPLORER_URL: https://bloks.io
           NEXT_PUBLIC_PRODUCERS_INFO_API_URL: https://graphql-eos.antelope.tools/api/rest/get-producers-info
           EOSRATE_GET_STATS_URL: ${{ secrets.EOSRATE_GET_STATS_URL }}
           EOSRATE_GET_STATS_USER: ${{ secrets.EOSRATE_GET_STATS_USER }}
@@ -47,6 +51,8 @@ jobs:
           make \
             build-docker-voter \
             push-image-voter
+        env:
+          IMAGE_NAME_VOTER: proxy-voter
 
       - name: Build kubernetes files
         id: build_kubernetes_files
@@ -55,6 +61,9 @@ jobs:
             build-kubernetes
         env:
           LATEST_TAG: latest
+          IMAGE_NAME: eden-proxy-webapp
+          IMAGE_NAME_VOTER: proxy-voter
+          ENVIRONMENT: pdn
           EOS_API_ENDPOINT: 'https://api.eosn.io'
           EOS_API_CHAIN_ID: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
           EOS_VOTER_ACCOUNT: 'edensmartprx'

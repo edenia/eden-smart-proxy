@@ -5,8 +5,8 @@ import { Button } from '@edenia/ui-kit'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
 
+import { BaseSnackbar, DelegateButton } from 'components'
 import { useSharedState } from 'context/state.context'
-import { BaseSnackbar } from 'components'
 import AuthButton from '../../AuthUAL'
 
 import useStyles from './styles'
@@ -80,6 +80,7 @@ const Body: React.FC = () => {
             variant='primary'
           />
         )}
+        <DelegateButton setMessage={setMessage} />
       </div>
       <BaseSnackbar
         snackbarProps={{
