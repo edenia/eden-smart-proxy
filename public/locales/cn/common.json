@@ -9,7 +9,7 @@
   "totalProxiedVotes": "代理投票总数",
   "loadMore": "加载更多",
   "searchName": "按名称搜索",
-  "buttonLabel": "代表投票",
+  "buttonLabel": "委托票权",
   "routes": {
     "/": "主页",
     "voters": "投票成员",
@@ -112,7 +112,7 @@
       "first": "做出明智选择",
       "second": "选择 Eden 智能代理"
     },
-    "signInLabel": "签字并投票",
+    "signInLabel": "给节点打分",
     "description": "Eden Smart Proxy是一个 EOS BP 投票代理，通过利用 Eden 的分形民主式治理，最大限度地提高了 EOS 持有者的发言权。只有公布了自己身份的 Eden 成员才有资格对投票给 BP 的代理人有发言权。"
   },
   "footer": {
