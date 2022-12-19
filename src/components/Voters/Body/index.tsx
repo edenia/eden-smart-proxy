@@ -106,11 +106,14 @@ const Body: React.FC<BodyVoters> = ({ searchValue = '' }) => {
               <Image src={telegramLogo} height={14} width={14} />
               <a
                 className={classes.aStyle}
-                href={`https://www.t.me/${delegate?.profile?.social?.telegram}`}
+                href={`https://www.t.me/${delegate?.profile?.social?.telegram?.replace(
+                  '@',
+                  ''
+                )}`}
                 rel='noreferrer'
                 target='_blank'
               >
-                {delegate?.profile?.social?.telegram}
+                {delegate?.profile?.social?.telegram?.replace('@', '')}
               </a>
             </div>
           }
