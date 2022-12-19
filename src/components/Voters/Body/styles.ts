@@ -29,6 +29,14 @@ const Styles = makeStyles(theme => ({
   },
   itemActionStyle: {
     width: '110px'
+  },
+  selectableItemsBox: { display: 'flex', alignItems: 'center' },
+  aStyle: {
+    fontSize: 14,
+    color: 'rgba(0, 0, 0, 0.6)',
+    fontWeight: 300,
+    textDecoration: 'none',
+    paddingLeft: theme.spacing(1)
   }
 }))
 

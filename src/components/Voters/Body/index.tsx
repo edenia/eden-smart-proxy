@@ -8,6 +8,7 @@ import ImgLoading from '../../ImageLoad'
 import { GET_MEMBERS_DATA } from '../../../gql/voters.gql'
 import { BodyVoters, IMembersData } from '../../../@types/member'
 import { genesisEdenUtil } from 'utils'
+import telegramLogo from '/public/icons/telegram-grey-icon.png'
 
 import useStyles from './styles'
 
@@ -100,7 +101,19 @@ const Body: React.FC<BodyVoters> = ({ searchValue = '' }) => {
           }
           avatarIcon={delegate?.rank?.badge}
           headItem={<Image src={delegate.voteState?.img} />}
-          /*add variable*/
+          selectableItems={
+            <div className={classes.selectableItemsBox}>
+              <Image src={telegramLogo} height={14} width={14} />
+              <a
+                className={classes.aStyle}
+                href={`https://www.t.me/${delegate?.profile?.social?.telegram}`}
+                rel='noreferrer'
+                target='_blank'
+              >
+                {delegate?.profile?.social?.telegram}
+              </a>
+            </div>
+          }
           profileLink={`${process.env.NEXT_PUBLIC_EDEN_MEMBER_URL}${delegate?.account}`}
           targetProfile='_blank'
           positionText={`${delegate?.rank?.label} - ${t(
