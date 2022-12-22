@@ -1,6 +1,7 @@
 import { DefaultSeoProps } from 'next-seo'
 const title = 'Eden Smart Proxy'
-const description = 'Eden Smart Proxy.'
+const description =
+  'The Eden Smart Proxy is an EOS BP Voting Proxy that aims to maximize the voice of individual EOS holders, leverage peer-vetted accountability, reward whitelisted BPs, and provide low-risk APR for all token stakers.'
 const url = 'https://proxy.eden.eoscommunity.org'
 
 const SEO: DefaultSeoProps = {
