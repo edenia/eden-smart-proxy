@@ -17,7 +17,7 @@ const SEO: DefaultSeoProps = {
     site_name: 'Eden Smart Proxy',
     images: [
       {
-        url: `${url}/images/preview-image.png`,
+        url: `${url}/images/preview-image.jpg`,
         alt: title
       }
     ]
