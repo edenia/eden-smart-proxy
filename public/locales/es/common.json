@@ -108,12 +108,14 @@
     "homeMetaTitle": "Inicio",
     "noEdenMember": "Debe ser miembro de Eden para registrarse",
     "voteBPs": "Vota por BPs",
+    "viewDeck": "Ver el Deck",
+    "whitepaper": "Documento técnico",
     "title": {
-      "first": "Elige sabiamente",
+      "first": "Delegue para la rendición de cuentas",
       "second": "Elija Eden Smart Proxy"
     },
     "signInLabel": "Inicie sesión y vote",
-    "description": "EdenBPsProxy es un proxy de votación de EOS BP que maximiza la voz de los titulares individuales de EOS al aprovechar su voz con el proceso de democracia fractal de Eden. Solo los miembros de Edens que revelaron su identidad serán elegibles para opinar sobre el proxy que votos BPs."
+    "description": "El Eden Smart Proxy es un EOS BP Voting Proxy que tiene como objetivo maximizar la voz de los titulares individuales de EOS, aprovechar la responsabilidad examinada por pares, recompensar a los BP incluidos en la lista blanca y proporcionar APR de bajo riesgo para todos los tokens."
   },
   "footer": {
     "communityOwnedPublic": "Un bien publico comunitario desarrollado por",

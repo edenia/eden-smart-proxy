@@ -54,6 +54,12 @@ const footerItems = [
         ref: 'https://github.com/edenia/Eden',
         target: '_blank',
         text: 'EdenOS Github Repo'
+      },
+      {
+        underline: 'none',
+        ref: 'https://medium.com/@EdenSmartProxy/espx-a-win-win-for-eos-331a76de3b72',
+        target: '_blank',
+        text: 'Blog'
       }
     ]
   }
