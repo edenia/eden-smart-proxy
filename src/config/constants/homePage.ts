@@ -6,10 +6,10 @@ const decks = {
 }
 
 const announcing = {
-  ko: 'docs/announcing/Announcing Eden Smart Proxy Korean.pdf',
-  en: 'docs/announcing/Announcing Eden Smart Proxy English.pdf',
-  es: 'docs/announcing/Announcing Eden Smart Proxy Spanish.pdf',
-  cn: 'docs/announcing/Announcing Eden Smart Proxy Chinese.pdf'
+  ko: 'docs/announcing/에덴 스마트 프록시 라이트페이퍼(초벌번역).pdf',
+  en: 'docs/announcing/Announcing Eden Smart Proxy.pdf',
+  es: 'docs/announcing/Anuncio Eden Smart Proxy.pdf',
+  cn: 'docs/announcing/宣布 Eden 智能代理.pdf'
 }
 
 export default { decks, announcing }

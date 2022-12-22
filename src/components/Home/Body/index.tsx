@@ -47,10 +47,13 @@ const Body: React.FC = () => {
     return homePageConstants.announcing[router.locale || 'en']
   }
 
-  const downloadFile = async ({ getPDF, fileName }) => {
-    const aComponent = document.createElement('a')
-    aComponent.setAttribute('download', fileName)
+  const downloadFile = async (getPDF: any, fileName?: string) => {
     const href = getPDF
+    const aComponent = document.createElement('a')
+    aComponent.setAttribute(
+      'download',
+      fileName ? fileName : href.split('/')[2]
+    )
     aComponent.href = href
     aComponent.setAttribute('target', '_blank')
     aComponent.click()
@@ -88,22 +91,12 @@ const Body: React.FC = () => {
         className={clsx(classes.buttonContainer, classes.spaceTopComponents)}
       >
         <Button
-          onClick={() =>
-            downloadFile({
-              getPDF: getDeck(),
-              fileName: 'Eden Smart-Proxy Deck.pdf'
-            })
-          }
+          onClick={() => downloadFile(getDeck(), 'Eden Smart-Proxy Deck.pdf')}
           label={t('home.viewDeck')}
           variant='secondary'
         />
         <Button
-          onClick={() =>
-            downloadFile({
-              getPDF: getAnnouncing(),
-              fileName: 'Announcing Eden Smart-Proxy.pdf'
-            })
-          }
+          onClick={() => downloadFile(getAnnouncing())}
           label={t('home.whitepaper')}
           variant='secondary'
         />
