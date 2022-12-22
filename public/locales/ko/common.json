@@ -107,6 +107,9 @@
   "home": {
     "homeMetaTitle": "메인",
     "noEdenMember": "에덴 회원만 로그인 가능합니다.",
+    "voteBPs": "投票给 BP",
+    "viewDeck": "소개 PDF",
+    "whitepaper": "라이트페이퍼 보기",
     "title": {
       "first": "스마트하게 선택하세요.",
       "second": "에덴 스마트 프록시를 선택하세요."
