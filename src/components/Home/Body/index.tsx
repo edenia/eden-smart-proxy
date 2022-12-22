@@ -7,6 +7,7 @@ import clsx from 'clsx'
 
 import { BaseSnackbar, DelegateButton } from 'components'
 import { useSharedState } from 'context/state.context'
+import { homePageConstants } from 'config/constants'
 import AuthButton from '../../AuthUAL'
 
 import useStyles from './styles'
@@ -38,6 +39,27 @@ const Body: React.FC = () => {
     [message]
   )
 
+  const getDeck = () => {
+    return homePageConstants.decks[router.locale || 'en']
+  }
+
+  const getAnnouncing = () => {
+    return homePageConstants.announcing[router.locale || 'en']
+  }
+
+  const downloadFile = async (getPDF: any, fileName?: string) => {
+    const href = getPDF
+    const aComponent = document.createElement('a')
+    aComponent.setAttribute(
+      'download',
+      fileName ? fileName : href.split('/')[2]
+    )
+    aComponent.href = href
+    aComponent.setAttribute('target', '_blank')
+    aComponent.click()
+    URL.revokeObjectURL(href)
+  }
+
   useEffect(() => {
     if (!state?.validUser) return
 
@@ -68,6 +90,18 @@ const Body: React.FC = () => {
       <div
         className={clsx(classes.buttonContainer, classes.spaceTopComponents)}
       >
+        <Button
+          onClick={() => downloadFile(getDeck(), 'Eden Smart-Proxy Deck.pdf')}
+          label={t('home.viewDeck')}
+          variant='secondary'
+        />
+        <Button
+          onClick={() => downloadFile(getAnnouncing())}
+          label={t('home.whitepaper')}
+          variant='secondary'
+        />
+      </div>
+      <div className={clsx(classes.buttonContainer)}>
         {!state?.ual?.activeUser?.accountName || !state?.validUser ? (
           <AuthButton
             setMessage={setMessage}

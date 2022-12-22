@@ -108,12 +108,14 @@
     "homeMetaTitle": "主页",
     "noEdenMember": "您必须是 Eden 会员才能登录",
     "voteBPs": "投票给 BP",
+    "viewDeck": "下载介绍PDF",
+    "whitepaper": "白皮书",
     "title": {
-      "first": "做出明智选择",
-      "second": "选择 Eden 智能代理"
+      "first": "选择透明性",
+      "second": "选择Eden智能代理"
     },
     "signInLabel": "给节点打分",
-    "description": "Eden Smart Proxy是一个 EOS BP 投票代理，通过利用 Eden 的分形民主式治理，最大限度地提高了 EOS 持有者的发言权。只有公布了自己身份的 Eden 成员才有资格对投票给 BP 的代理人有发言权。"
+    "description": "Eden Smart Proxy 是一个 EOS BP 投票代理，旨在最大化个人 EOS 持有者的声音，利用同行审查的责任，奖励白名单 BP，并为所有代币质押者提供低风险的 APR。"
   },
   "footer": {
     "communityOwnedPublic": "由以下人员开发的社区拥有的公共物品",
