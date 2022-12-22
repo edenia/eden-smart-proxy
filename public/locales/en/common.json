@@ -111,11 +111,11 @@
     "viewDeck": "View the Deck",
     "whitepaper": "Whitepaper",
     "title": {
-      "first": "Choose Wisely",
+      "first": "Delegate for Accountability",
       "second": "Choose Eden Smart Proxy"
     },
     "signInLabel": "Sign in and rank BPs",
-    "description": "Eden Smart Proxy is a EOS BP voting proxy that maximizes voice of individual EOS holders by leveraging peer-vetted accountability of Eden members."
+    "description": "ESPx aims to maximize the voice of individual EOS holders, leverage peer-vetted accountability, reward whitelisted BPs, and provide low-risk APR for all token stakers."
   },
   "footer": {
     "communityOwnedPublic": "A Community Owned Public Good Developed by",
