@@ -6,10 +6,10 @@ const decks = {
 }
 
 const announcing = {
-  ko: 'docs/announcing/에덴 스마트 프록시 라이트페이퍼(초벌번역).pdf',
-  en: 'docs/announcing/Announcing Eden Smart Proxy.pdf',
-  es: 'docs/announcing/Anuncio Eden Smart Proxy.pdf',
-  cn: 'docs/announcing/宣布 Eden 智能代理.pdf'
+  ko: 'https://docs.google.com/document/d/1iQIpJyCWi-B98Iv_ip2G6DIQQgbD_SGs68jQOjvXnuE/edit',
+  en: 'https://docs.google.com/document/d/1cWqtsJPtR6JGOMswdsJvfpJbXs2B1p5Pto4bbbp-et8/edit',
+  es: 'https://docs.google.com/document/d/1hNA6buQr_i_rWY5SPyroWkckZYbYCiPcRnSL-eD2cto/edit',
+  cn: 'https://docs.google.com/document/d/1Sx3_KRC5pC_6sGUYMoWCuw6Z-K0Awlxc2TfO5VublHU/edit'
 }
 
 export default { decks, announcing }
