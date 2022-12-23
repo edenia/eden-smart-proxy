@@ -12,13 +12,18 @@ const Styles = makeStyles(theme => ({
     width: '100%',
     margin: '0 auto',
     [theme.breakpoints.up('sm')]: {
-      width: 600
+      width: '90%'
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '75%'
     }
   },
   gridRow: {
     display: 'flex',
-    flexFlow: 'row wrap',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    [theme.breakpoints.down('md')]: {
+      flexFlow: 'row wrap'
+    }
   },
   gridItem: {
     flexBasis: '100%',
