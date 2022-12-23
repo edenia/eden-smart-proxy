@@ -15,7 +15,7 @@ const Styles = makeStyles(theme => ({
       width: '90%'
     },
     [theme.breakpoints.up('md')]: {
-      width: '75%'
+      width: '95%'
     }
   },
   gridRow: {
