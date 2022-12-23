@@ -17,7 +17,7 @@ const Bottom: React.FC = () => {
             <Tweet tweetId='1606301335141220352' />
           </div>
           <div className={classes.gridItem} id='cardBox1'>
-            <Tweet tweetId='1578776363435032577' />
+            <Tweet tweetId='1606324710446243846' />
           </div>
         </div>
       </div>
