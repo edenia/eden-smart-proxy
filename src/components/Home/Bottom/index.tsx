@@ -10,7 +10,7 @@ const Bottom: React.FC = () => {
     <div className={classes.containerBottom}>
       <div className={clsx(classes.wrapperGrid, classes.twitter)}>
         <div className={classes.gridRow}>
-        <div className={classes.gridItem}>
+          <div className={classes.gridItem}>
             <Tweet tweetId='1606091927300046850' />
           </div>
           <div className={classes.gridItem}>
