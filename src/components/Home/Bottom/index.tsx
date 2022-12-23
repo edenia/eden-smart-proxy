@@ -11,13 +11,13 @@ const Bottom: React.FC = () => {
       <div className={clsx(classes.wrapperGrid, classes.twitter)}>
         <div className={classes.gridRow}>
           <div className={classes.gridItem}>
-            <Tweet tweetId='1606091927300046850' />
+            <Tweet tweetId='1606318293270372352' />
           </div>
           <div className={classes.gridItem}>
-            <Tweet tweetId='1578776363435032577' />
+            <Tweet tweetId='1606301335141220352' />
           </div>
           <div className={classes.gridItem} id='cardBox1'>
-            <Tweet tweetId='1516036449698664452' />
+            <Tweet tweetId='1578776363435032577' />
           </div>
         </div>
       </div>
