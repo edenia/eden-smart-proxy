@@ -96,7 +96,7 @@ const Body: React.FC = () => {
           variant='secondary'
         />
         <Button
-          onClick={() => downloadFile(getAnnouncing())}
+          onClick={() => window.open(getAnnouncing(), '_ blank')}
           label={t('home.whitepaper')}
           variant='secondary'
         />
