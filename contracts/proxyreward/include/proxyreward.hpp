@@ -1,5 +1,6 @@
 #include <eosio/asset.hpp>
 #include <eosio/eosio.hpp>
+#include <eosio/time.hpp>
 #include <utils.hpp>
 
 namespace edenproxy {
@@ -55,18 +56,38 @@ namespace edenproxy {
   }
   // END - eosio
 
-  struct state_v0 {
-    eosio::time_point_sec next_reward;
+  struct next_distribution {
+    eosio::time_point_sec distribution_time;
+    eosio::asset          total_staked;
   };
-  EOSIO_REFLECT( state_v0, next_reward )
-  using state_variant = std::variant< state_v0 >;
-  using state_singleton = eosio::singleton< "state"_n, state_variant >;
+  EOSIO_REFLECT( next_distribution, distribution_time )
+
+  struct prepare_distribution : next_distribution {
+    eosio::name next_account;
+  };
+  EOSIO_REFLECT( prepare_distribution,
+                 base next_distribution,
+                 distribution_time,
+                 total_staked,
+                 next_account )
+
+  struct current_distribution : next_distribution {
+    eosio::name next_account;
+  };
+  EOSIO_REFLECT( current_distribution,
+                 base next_distribution,
+                 distribution_time,
+                 total_staked )
+
+  using distribution_variant = std::
+      variant< next_distribution, prepare_distribution, current_distribution >;
+  using distribution_singleton =
+      eosio::singleton< "distribution"_n, distribution_variant >;
 
   struct settings_v0 {
-    uint8_t  distribution_hour;
-    uint16_t apr;
+    uint8_t distribution_hour;
   };
-  EOSIO_REFLECT( settings_v0, distribution_hour, apr )
+  EOSIO_REFLECT( settings_v0, distribution_hour )
   using settings_variant = std::variant< settings_v0 >;
   using settings_singleton = eosio::singleton< "settings"_n, settings_variant >;
 
@@ -112,19 +133,26 @@ namespace edenproxy {
           const_mem_fun< voter, uint64_t, &voter::by_last_update > > >
       voter_table;
 
-  struct proxyreward_contract : public eosio::contract {
+  class proxyreward_contract : public eosio::contract {
+  private:
+    distribution_singleton distribution_sing;
+
   public:
     using eosio::contract::contract;
 
-    void init( uint8_t distribution_hour, uint16_t apr );
+    proxyreward_contract( eosio::name                       receiver,
+                          eosio::name                       code,
+                          eosio::datastream< const char * > ds )
+        : contract( receiver, code, ds ),
+          distribution_sing( receiver, code.value ) {}
+
+    void init();
     void signup( eosio::name owner, eosio::name recipient );
     void remove( eosio::name owner );
     void changercpt( eosio::name owner, eosio::name recipient );
     void claim( eosio::name owner );
     void update( eosio::name owner );
     void updateall( uint32_t max_steps );
-    void setrate( uint16_t apr );
-    void setdisthour( uint8_t distribution_hour );
     void receipt( uint32_t              elapsed_sec,
                   eosio::time_point_sec last_claim_time,
                   eosio::name           owner,
@@ -146,15 +174,13 @@ namespace edenproxy {
 
   EOSIO_ACTIONS( proxyreward_contract,
                  "edenproxyrwd"_n,
-                 action( init, distribution_hour, apr ),
+                 action( init ),
                  action( signup, owner, recipient ),
                  action( remove, owner ),
                  action( changercpt, owner, recipient ),
                  action( claim, owner ),
                  action( update, owner ),
                  action( updateall, max_steps ),
-                 action( setrate, apr ),
-                 action( setdisthour, distribution_hour ),
                  action( clearall ) )
 
 } // namespace edenproxy

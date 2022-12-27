@@ -8,23 +8,24 @@
 #include <proxyreward.hpp>
 
 namespace edenproxy {
-  void proxyreward_contract::init( uint8_t distribution_hour, uint16_t apr ) {
+  void proxyreward_contract::init() {
     require_auth( get_self() );
 
-    eosio::check( distribution_hour <= 23,
-                  "Wrong hour time, it expects a 24 hours format" );
-    eosio::check( apr > 0, "APR must be higher than 0" );
+    // eosio::check( distribution_hour <= 23,
+    //               "Wrong hour time, it expects a 24 hours format" );
 
-    settings_singleton settings_sing( get_self(), get_self().value );
+    // settings_singleton settings_sing( get_self(), get_self().value );
 
-    eosio::check( !settings_sing.exists(), "Contract is already initialized" );
+    // eosio::check( !settings_sing.exists(), "Contract is already initialized" );
 
-    settings_sing.get_or_create(
-        get_self(),
-        settings_v0{ .distribution_hour = distribution_hour, .apr = apr } );
+    // settings_sing.get_or_create(
+    //     get_self(),
+    //     settings_v0{ .distribution_hour = distribution_hour } );
 
-    state_singleton state_sing( get_self(), get_self().value );
-    state_sing.get_or_create( get_self() );
+    // distribution_sing.get_or_create(
+    //     get_self(),
+    //     next_distribution{ .distribution_time = eosio::current_time_point() +
+    //                                             eosio::days( 1 ) } );
   }
 
   void proxyreward_contract::signup( eosio::name owner,
@@ -117,35 +118,6 @@ namespace edenproxy {
     eosio::check( max_steps != copy_max_steps, "Nothing to do" );
   }
 
-  void proxyreward_contract::setrate( uint16_t apr ) {
-    require_auth( get_self() );
-
-    settings_singleton settings_sing( get_self(), get_self().value );
-
-    eosio::check( settings_sing.exists(),
-                  "You must initialize the smart contract first" );
-    eosio::check( apr > 0, "APR must be higher than 0" );
-
-    auto settings = std::get< settings_v0 >( settings_sing.get() );
-    settings.apr = apr;
-    settings_sing.set( settings, get_self() );
-  }
-
-  void proxyreward_contract::setdisthour( uint8_t distribution_hour ) {
-    require_auth( get_self() );
-
-    settings_singleton settings_sing( get_self(), get_self().value );
-
-    eosio::check( settings_sing.exists(),
-                  "You must initialize the smart contract first" );
-    eosio::check( distribution_hour <= 23,
-                  "Wrong hour time, it expects a 24 hours format" );
-
-    auto settings = std::get< settings_v0 >( settings_sing.get() );
-    settings.distribution_hour = distribution_hour;
-    settings_sing.set( settings, get_self() );
-  }
-
   void proxyreward_contract::receipt( uint32_t              elapsed_sec,
                                       eosio::time_point_sec last_claim_time,
                                       eosio::name           owner,
@@ -159,8 +131,8 @@ namespace edenproxy {
     settings_singleton settings_sing( get_self(), get_self().value );
     settings_sing.remove();
 
-    state_singleton state_sing( get_self(), get_self().value );
-    state_sing.remove();
+    // state_singleton state_sing( get_self(), get_self().value );
+    // state_sing.remove();
 
     voter_table _voters( get_self(), get_self().value );
     auto        voters_iter = _voters.begin();
@@ -184,13 +156,15 @@ namespace edenproxy {
 
       settings_singleton settings_sing( get_self(), get_self().value );
       auto     settings = std::get< settings_v0 >( settings_sing.get() );
-      auto     total_staked = get_staked_amount( owner );
-      uint64_t reward = total_staked * settings.apr / 10000 / 365;
-      auto     elapse = eosio::current_time_point().sec_since_epoch() -
+      auto     staked_by_account = get_staked_amount( owner );
+      uint64_t reward = staked_by_account / 10000 / 365;
+      //uint64_t reward = (staked_by_account / total amount staked) * Daily inflation directed to proxy from network.
+
+      auto elapse = eosio::current_time_point().sec_since_epoch() -
                     itr->last_update_time.sec_since_epoch();
 
       _voter.modify( voter_itr, eosio::same_payer, [&]( auto &row ) {
-        row.staked() = total_staked;
+        row.staked() = staked_by_account;
         row.unclaimed() += reward;
         row.last_update_time() = eosio::current_time_point();
       } );
@@ -265,6 +239,6 @@ namespace edenproxy {
 EOSIO_ACTION_DISPATCHER( edenproxy::actions )
 
 EOSIO_ABIGEN( actions( edenproxy::actions ),
-              table( "state"_n, edenproxy::state_variant ),
+              table( "distribution"_n, edenproxy::distribution_variant ),
               table( "settings"_n, edenproxy::settings_variant ),
               table( "voter"_n, edenproxy::voter_variant ) )

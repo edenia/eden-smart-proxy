@@ -6,17 +6,15 @@
 TEST_CASE( "Init Smart Contract" ) {
   tester t;
 
-  expect( t.alice.trace< edenproxy::actions::init >( 1, 185 ),
+  expect( t.alice.trace< edenproxy::actions::init >( 1 ),
           "Missing required authority" );
-  expect( t.edenproxyrwd.trace< edenproxy::actions::init >( 24, 185 ),
+  expect( t.edenproxyrwd.trace< edenproxy::actions::init >( 24 ),
           "Wrong hour time, it expects a 24 hours format" );
-  expect( t.edenproxyrwd.trace< edenproxy::actions::init >( 7, 0 ),
-          "APR must be higher than 0" );
 
-  t.edenproxyrwd.act< edenproxy::actions::init >( 7, 185 );
+  t.edenproxyrwd.act< edenproxy::actions::init >( 7 );
   t.chain.start_block();
 
-  expect( t.edenproxyrwd.trace< edenproxy::actions::init >( 7, 185 ),
+  expect( t.edenproxyrwd.trace< edenproxy::actions::init >( 7 ),
           "Contract is already initialized" );
 
   // (READ-TABLES) Check values are correct in the table
@@ -114,40 +112,4 @@ TEST_CASE( "Update All Accounts" ) {
 
   // Check max_steps approach works
   // Check voters get updated with their corresponding values
-}
-
-TEST_CASE( "Set Rate" ) {
-  tester t;
-
-  expect( t.alice.trace< edenproxy::actions::setrate >( 185 ),
-          "Missing required authority" );
-  expect( t.edenproxyrwd.trace< edenproxy::actions::setrate >( 185 ),
-          "You must initialize the smart contract first" );
-
-  t.edenproxyrwd.act< edenproxy::actions::init >( 7, 185 );
-
-  expect( t.edenproxyrwd.trace< edenproxy::actions::setrate >( 0 ),
-          "APR must be higher than 0" );
-
-  t.edenproxyrwd.act< edenproxy::actions::setrate >( 185 );
-
-  // (READ-TABLES) Check value is updated in the table
-}
-
-TEST_CASE( "Set Distribution Hour" ) {
-  tester t;
-
-  expect( t.alice.trace< edenproxy::actions::setdisthour >( 7 ),
-          "Missing required authority" );
-  expect( t.edenproxyrwd.trace< edenproxy::actions::setdisthour >( 7 ),
-          "You must initialize the smart contract first" );
-
-  t.edenproxyrwd.act< edenproxy::actions::init >( 7, 185 );
-
-  expect( t.edenproxyrwd.trace< edenproxy::actions::setdisthour >( 24 ),
-          "Wrong hour time, it expects a 24 hours format" );
-
-  t.edenproxyrwd.act< edenproxy::actions::setdisthour >( 8 );
-
-  // (READ-TABLES) Check value is updated in the table
 }
