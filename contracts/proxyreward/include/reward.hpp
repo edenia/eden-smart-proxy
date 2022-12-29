@@ -22,21 +22,22 @@ namespace edenproxy {
     void changercpt( eosio::name owner, eosio::name recipient );
     void updateall( uint32_t max_steps );
     void claim( eosio::name owner );
-    void receipt( uint32_t              elapsed_sec,
-                  eosio::time_point_sec last_claim_time,
-                  eosio::name           owner,
+    void receipt( eosio::name           owner,
                   eosio::asset          reward,
                   eosio::asset          staked,
-                  eosio::asset          unclaimed );
+                  eosio::asset          unclaimed,
+                  eosio::time_point_sec last_claim_time );
   };
 
-  EOSIO_ACTIONS( reward,
-                 "edenproxyrwd"_n,
-                 action( init ),
-                 action( signup, owner, recipient ),
-                 action( remove, owner ),
-                 action( changercpt, owner, recipient ),
-                 action( claim, owner ),
-                 action( updateall, max_steps ) )
+  EOSIO_ACTIONS(
+      reward,
+      "edenproxyrwd"_n,
+      action( init ),
+      action( signup, owner, recipient ),
+      action( remove, owner ),
+      action( changercpt, owner, recipient ),
+      action( claim, owner ),
+      action( updateall, max_steps ),
+      action( receipt, owner, reward, staked, unclaimed, last_claim_time ) )
 
 } // namespace edenproxy

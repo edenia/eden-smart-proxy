@@ -59,14 +59,19 @@ namespace edenproxy {
         .send();
   }
 
-  void
-  voters::update_data( eosio::name account, uint64_t staked, uint64_t reward ) {
+  void voters::set_staked( eosio::name account, uint64_t staked ) {
     auto itr = voter_tb.find( account.value );
 
     voter_tb.modify( itr, eosio::same_payer, [&]( auto &row ) {
       row.staked() = staked;
+    } );
+  }
+
+  void voters::add_reward( eosio::name account, uint64_t reward ) {
+    auto itr = voter_tb.find( account.value );
+
+    voter_tb.modify( itr, eosio::same_payer, [&]( auto &row ) {
       row.unclaimed() += reward;
-      row.last_update_time() = eosio::current_time_point();
     } );
   }
 

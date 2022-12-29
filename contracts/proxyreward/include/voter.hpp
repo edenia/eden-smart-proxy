@@ -52,13 +52,9 @@ namespace edenproxy {
     uint64_t              staked;
     uint64_t              claimed;
     uint64_t              unclaimed;
-    eosio::time_point_sec last_update_time;
     eosio::time_point_sec last_claim_time;
 
     uint64_t primary_key() const { return owner.value; }
-    uint64_t by_last_update() const {
-      return last_update_time.sec_since_epoch();
-    }
   };
   EOSIO_REFLECT( voter_v0, owner, recipient, unclaimed, last_claim_time )
 
@@ -75,7 +71,6 @@ namespace edenproxy {
                      staked,
                      claimed,
                      unclaimed,
-                     last_update_time,
                      last_claim_time )
     FORWARD_FUNCTIONS( value, primary_key, by_last_update )
   };
@@ -106,7 +101,8 @@ namespace edenproxy {
     void on_changercpt( eosio::name owner, eosio::name recipient );
     void on_claim( eosio::name owner );
 
-    void update_data( eosio::name account, uint64_t staked, uint64_t reward );
+    void set_staked( eosio::name account, uint64_t staked );
+    void add_reward( eosio::name account, uint64_t reward );
     void update_voter_state( eosio::name owner, bool active );
     void send_rewards( eosio::name owner );
   };

@@ -23,13 +23,12 @@ namespace edenproxy {
                  total_staked,
                  next_account )
 
-  struct current_distribution : next_distribution {
-    eosio::name next_account;
-  };
+  struct current_distribution : next_distribution {};
   EOSIO_REFLECT( current_distribution,
                  base next_distribution,
                  distribution_time,
-                 total_staked )
+                 total_staked,
+                 next_account )
 
   using distribution_variant = std::
       variant< next_distribution, prepare_distribution, current_distribution >;
@@ -53,9 +52,10 @@ namespace edenproxy {
         : contract( contract ), distribution_sing( contract, contract.value ) {}
 
     void     on_init();
-    uint32_t on_updateall( uint32_t max_steps );
+    uint32_t distribute_daily( uint32_t max_steps );
 
-    bool update_voter( eosio::name owner );
+    bool setup_distribution();
+    bool update_voters( uint32_t &max_steps );
   };
 
 } // namespace edenproxy

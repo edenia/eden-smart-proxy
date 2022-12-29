@@ -2,51 +2,6 @@
 #include <voter.hpp>
 
 namespace edenproxy {
-  bool distributions::update_voter( eosio::name owner ) {
-    voters voters( contract );
-    auto  &voter_table = voters.get_table();
-    auto   voter_itr = voter_table.find( owner.value );
-
-    bool is_active = is_vote_delegated( owner );
-
-    if ( auto *itr = std::get_if< voter_v1 >( &voter_itr->value ) ) {
-      if ( !is_active ) {
-        voters.update_voter_state( owner, false );
-        return false;
-      }
-
-      // settings_singleton settings_sing( contract, contract.value );
-      // auto     settings = std::get< settings_v0 >( settings_sing.get() );
-      auto     staked_by_account = get_staked_amount( owner );
-      uint64_t reward = staked_by_account / 10000 / 365;
-      //uint64_t reward = (staked_by_account / total amount staked) * Daily inflation directed to proxy from network.
-
-      auto elapse = eosio::current_time_point().sec_since_epoch() -
-                    itr->last_update_time.sec_since_epoch();
-
-      voters.update_data( voter_itr->owner(), staked_by_account, reward );
-
-      eosio::action( eosio::permission_level{ contract, "active"_n },
-                     contract,
-                     "receipt"_n,
-                     std::make_tuple( elapse,
-                                      itr->last_claim_time,
-                                      itr->owner,
-                                      reward,
-                                      itr->staked,
-                                      itr->unclaimed ) )
-          .send();
-
-      return true;
-    } else {
-      if ( is_active ) {
-        voters.update_voter_state( owner, false );
-      }
-
-      return false;
-    }
-  }
-
   void distributions::on_init() {
     eosio::check( !distribution_sing.exists(),
                   "Contract is already initialized" );
@@ -57,20 +12,92 @@ namespace edenproxy {
                                                 eosio::days( 1 ) } );
   }
 
-  uint32_t distributions::on_updateall( uint32_t max_steps ) {
-    auto ctp = eosio::current_time_point();
+  bool distributions::setup_distribution() {
+    auto dist_sing = distribution_sing.get();
+
+    if ( auto *dist = get_if< next_distribution >( &dist_sing ) ) {
+      if ( dist->distribution_time() <= eosio::current_time_point() ) {
+        distribution_sing.set( prepare_distribution{ { *dist } }, contract );
+
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  void distributions::update_voters( uint32_t             &max_steps,
+                                     prepare_distribution &prep_dist ) {
 
     voters voters( contract );
     auto  &voter_table = voters.get_table();
+    auto   voter_itr = prep_dist->next_account() != eosio::name{}
+                           ? voter_table.find( prep_dist->next_account().value )
+                           : voter_table.begin();
+    for ( ; voter_itr != voter_table.end(); ++voter_itr, --max_steps ) {
+      // TODO: check voter is active, if not, activate them
+      if ( is_vote_delegated( voter_itr->owner() ) ) {
+        int64_t staked_by_account =
+            voters.get_staked_amount( voter_itr->owner() );
+        voters.set_staked( voter_itr->owner(), staked_by_account, reward );
+      } else {
+        voters.update_voter_state( voter_itr->owner(), false );
+      }
+    }
 
-    auto voter_index = voter_table.get_index< eosio::name( "bylastupdate" ) >();
-    auto end_itr = voter_index.upper_bound( ctp.sec_since_epoch() );
+    if ( voter_itr != voter_table.end() ) {
+      prep_dist.next_account = voter_itr->owner();
+      distribution_sing.set( prep_dist, contract );
+    }
 
-    for ( auto voter_itr = voter_index.lower_bound( 0 );
-          max_steps > 0 && voter_itr != end_itr;
-          voter_itr = voter_index.lower_bound( 0 ) ) {
-      if ( update_voter( voter_itr->owner() ) ) {
-        --max_steps;
+    // inactive a voter if they stopped staking or delegating the vote to the edensmartprx
+  }
+
+  uint32_t distributions::distribute_daily( uint32_t max_steps ) {
+    if ( max_steps && setup_distribution() ) {
+      --max_steps;
+    }
+
+    if ( auto *dist = get_if< prepare_distribution >( &dist_sing ) ) {
+      update_voters( max_steps );
+
+      if ( max_steps > 0 || dist->next_account() == eosio::name{} ) {
+        distribution_sing.set( current_distribution{ { *dist } }, contract );
+      }
+    }
+
+    if ( max_steps <= 0 ) {
+      return max_steps;
+    }
+
+    if ( auto *dist = get_if< current_distribution >( &dist_sing ) ) {
+      // next_account
+      auto   ctp = eosio::current_time_point();
+      voters voters( contract );
+      auto  &voter_table = voters.get_table();
+      auto   voter_itr = voter_table.find( dist->next_account().value );
+
+      for ( ; voter_itr != end_itr && max_steps > 0;
+            ++voter_itr, --max_steps ) {
+        // TODO: update next line to a function in the voter file
+        if ( auto *itr = std::get_if< voter_v1 >( &voter_itr->value ) ) {
+          auto     staked_by_account = voters.get_staked_amount( owner );
+          uint64_t reward = staked_by_account / 10000 / 365;
+          voters.add_reward( voter_itr->account(), reward );
+          //uint64_t reward = (staked_by_account / total amount staked) * Daily inflation directed to proxy from network.
+
+          eosio::action( eosio::permission_level{ contract, "active"_n },
+                         contract,
+                         "receipt"_n,
+                         std::make_tuple( itr->owner,
+                                          reward,
+                                          itr->staked,
+                                          itr->unclaimed,
+                                          itr->last_claim_time, ) )
+              .send();
+
+          return true;
+        }
       }
     }
 

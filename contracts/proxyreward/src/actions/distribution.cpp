@@ -12,16 +12,15 @@ namespace edenproxy {
   void reward::updateall( uint32_t max_steps ) {
     distributions distributions( get_self() );
 
-    eosio::check( distributions.on_updateall( max_steps ) != max_steps,
+    eosio::check( distributions.distribute_daily( max_steps ) != max_steps,
                   "Nothing to do" );
   }
 
-  void reward::receipt( uint32_t              elapsed_sec,
-                        eosio::time_point_sec last_claim_time,
-                        eosio::name           owner,
+  void reward::receipt( eosio::name           owner,
                         eosio::asset          reward,
                         eosio::asset          staked,
-                        eosio::asset          unclaimed ) {
+                        eosio::asset          unclaimed,
+                        eosio::time_point_sec last_claim_time ) {
     require_auth( get_self() );
   }
 } // namespace edenproxy
