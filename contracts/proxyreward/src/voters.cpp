@@ -1,4 +1,4 @@
-#include <voter.hpp>
+#include <voters.hpp>
 
 namespace edenproxy {
   int64_t get_staked_amount( eosio::name account ) {

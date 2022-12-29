@@ -1,4 +1,4 @@
-#include <distribution.hpp>
+#include <distributions.hpp>
 #include <reward.hpp>
 
 namespace edenproxy {

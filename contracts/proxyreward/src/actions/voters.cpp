@@ -1,5 +1,5 @@
 #include <reward.hpp>
-#include <voter.hpp>
+#include <voters.hpp>
 
 namespace edenproxy {
   void reward::signup( eosio::name owner, eosio::name recipient ) {

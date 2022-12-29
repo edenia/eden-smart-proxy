@@ -1,6 +1,6 @@
-#include <distribution.hpp>
+#include <distributions.hpp>
 #include <reward.hpp>
-#include <voter.hpp>
+#include <voters.hpp>
 
 EOSIO_ACTION_DISPATCHER( edenproxy::actions )
 

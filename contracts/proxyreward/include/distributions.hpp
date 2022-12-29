@@ -5,9 +5,18 @@
 #include <eosio/singleton.hpp>
 #include <eosio/time.hpp>
 
+#include <constants.hpp>
 #include <utils.hpp>
 
 namespace edenproxy {
+  struct account_v0 {
+    eosio::asset balance;
+  };
+  EOSIO_REFLECT( account_v0, balance )
+
+  using account_variant = std::variant< account_v0 >;
+  using account_singleton = eosio::singleton< "account"_n, account_variant >;
+
   struct next_distribution {
     eosio::time_point_sec distribution_time;
     eosio::asset          total_staked;
@@ -23,11 +32,14 @@ namespace edenproxy {
                  total_staked,
                  next_account )
 
-  struct current_distribution : next_distribution {};
+  struct current_distribution : next_distribution {
+    eosio::asset total_distributed;
+  };
   EOSIO_REFLECT( current_distribution,
                  base next_distribution,
                  distribution_time,
                  total_staked,
+                 total_distributed,
                  next_account )
 
   using distribution_variant = std::
@@ -46,10 +58,12 @@ namespace edenproxy {
   private:
     eosio::name            contract;
     distribution_singleton distribution_sing;
+    account_singleton      account_sing;
 
   public:
     distributions( eosio::name contract )
-        : contract( contract ), distribution_sing( contract, contract.value ) {}
+        : contract( contract ), distribution_sing( contract, contract.value ),
+          account_sing( contract, contract.value ) {}
 
     void     on_init();
     uint32_t distribute_daily( uint32_t max_steps );
