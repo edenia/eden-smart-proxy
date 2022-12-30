@@ -30,7 +30,7 @@ namespace edenproxy {
 
         auto new_dist = prepare_distribution{ { *dist } };
         new_dist.next_account = voter_table.begin();
-        new_dist.total_distribution = accounts.get_balance( "abc"_n );
+        new_dist.total_distribution = accounts.get_balance();
         distribution_sing.set( new_dist, contract );
 
         return true;
@@ -87,17 +87,15 @@ namespace edenproxy {
     }
 
     if ( auto *dist = get_if< current_distribution >( &dist_sing ) ) {
-      accounts accounts( contract );
-      voters   voters( contract );
-      auto    &voter_table = voters.get_table();
-      auto     voter_itr = voter_table.find( dist->next_account().value );
-      auto     total_distributed = eosio::asset( 0, SUPPORTED_TOKEN_SYMBOL );
+      voters voters( contract );
+      auto  &voter_table = voters.get_table();
+      auto   voter_itr = voter_table.find( dist->next_account().value );
+      auto   total_distributed = eosio::asset( 0, SUPPORTED_TOKEN_SYMBOL );
 
       for ( ; voter_itr != end_itr && max_steps > 0;
             ++voter_itr, --max_steps ) {
         if ( auto *itr = std::get_if< voter_v1 >( &voter_itr->value ) ) {
-          auto staked_by_account = voters.get_staked_amount( owner );
-          // reward = (staked_by_account / total amount staked) * Daily inflation directed to proxy from network.
+          auto         staked_by_account = voters.get_staked_amount( owner );
           eosio::asset reward =
               eosio::asset( staked_by_account * dist->total_distribution,
                             SUPPORTED_TOKEN_SYMBOL );
@@ -117,17 +115,16 @@ namespace edenproxy {
         }
       }
 
-      // TODO: validate the following validation
-      if ( voter_itr != voter_table.end() ) {
-        prep_dist.next_account() = ++voter_itr;
-      } else {
+      if ( voter_itr == voter_table.end() ) {
         distribution_sing.set(
             next_distribution{ .distribution_time =
                                    dist->distribution_time + eosio::days( 1 ) },
             contract );
-      }
 
-      accounts.sub_balance( self_account, reward );
+        accounts{ contract }.sub_balance( reward );
+      } else if ( voter_itr->account() != dist->next_account() ) {
+        prep_dist.next_account() = ++voter_itr;
+      }
     }
 
     return max_steps;
