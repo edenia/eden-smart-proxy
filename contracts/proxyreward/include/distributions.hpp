@@ -20,6 +20,7 @@ namespace edenproxy {
   struct next_distribution {
     eosio::time_point_sec distribution_time;
     eosio::asset          total_staked;
+    eosio::asset          total_distribution;
   };
   EOSIO_REFLECT( next_distribution, distribution_time )
 
@@ -30,6 +31,7 @@ namespace edenproxy {
                  base next_distribution,
                  distribution_time,
                  total_staked,
+                 total_distribution,
                  next_account )
 
   struct current_distribution : next_distribution {
@@ -39,6 +41,7 @@ namespace edenproxy {
                  base next_distribution,
                  distribution_time,
                  total_staked,
+                 total_distribution,
                  total_distributed,
                  next_account )
 

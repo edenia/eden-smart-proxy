@@ -26,7 +26,12 @@ namespace edenproxy {
                   eosio::asset          reward,
                   eosio::asset          staked,
                   eosio::asset          unclaimed,
-                  eosio::time_point_sec last_claim_time );
+                  eosio::time_point_sec distribution_time );
+
+    void notify_transfer( eosio::name         from,
+                          eosio::name         to,
+                          const eosio::asset &quantity,
+                          std::string         memo );
   };
 
   EOSIO_ACTIONS(
@@ -38,6 +43,7 @@ namespace edenproxy {
       action( changercpt, owner, recipient ),
       action( claim, owner ),
       action( updateall, max_steps ),
-      action( receipt, owner, reward, staked, unclaimed, last_claim_time ) )
+      action( receipt, owner, reward, staked, unclaimed, distribution_time ),
+      notify( default_funding_contract, transfer ) )
 
 } // namespace edenproxy

@@ -1,3 +1,4 @@
+#include <accounts.hpp>
 #include <distributions.hpp>
 #include <reward.hpp>
 
@@ -7,6 +8,9 @@ namespace edenproxy {
 
     distributions distributions( get_self() );
     distributions.on_init();
+
+    accounts accounts( get_self() );
+    accounts.on_init();
   }
 
   void reward::updateall( uint32_t max_steps ) {
@@ -20,7 +24,7 @@ namespace edenproxy {
                         eosio::asset          reward,
                         eosio::asset          staked,
                         eosio::asset          unclaimed,
-                        eosio::time_point_sec last_claim_time ) {
+                        eosio::time_point_sec distribution_time ) {
     require_auth( get_self() );
   }
 } // namespace edenproxy

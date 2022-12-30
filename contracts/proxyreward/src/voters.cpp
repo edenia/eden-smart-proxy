@@ -11,14 +11,13 @@ namespace edenproxy {
 
   eosio::name get_voter_proxy( eosio::name account ) {
     eosio_voters_table _voters( "eosio"_n, "eosio"_n.value );
-
-    auto voters_itr = _voters.find( account.value );
+    auto               voters_itr = _voters.find( account.value );
 
     return voters_itr != _voters.end() ? voters_itr->proxy : eosio::name{};
   }
 
   bool is_vote_delegated( eosio::name owner ) {
-    return PROXY_CONTRACT.value == get_voter_proxy( owner ).value;
+    return PROXY_CONTRACT == get_voter_proxy( owner );
   }
 
   void voters::update_voter_state( eosio::name owner, bool active ) {

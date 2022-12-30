@@ -26,8 +26,11 @@ namespace edenproxy {
     accounts( eosio::name contract )
         : contract( contract ), account_sing( contract, contract.value ) {}
 
-    void add_balance( eosio::name account, eosio::asset amount );
-    void sub_balance( eosio::name account, eosio::asset amount );
+    uint64_t on_init();
+    uint64_t get_balance( eosio::name account );
+    bool     has_funds( eosio::name account );
+    void     add_balance( eosio::name account, eosio::asset amount );
+    void     sub_balance( eosio::name account, eosio::asset amount );
   };
 
 } // namespace edenproxy
