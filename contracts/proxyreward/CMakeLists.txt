@@ -2,8 +2,10 @@
 add_executable(reward
     src/actions/voter.cpp
     src/actions/distribution.cpp
+    src/actions/accounts.cpp
     src/voter.cpp
     src/distribution.cpp
+    src/accounts.cpp
     src/reward.cpp
 )
 target_include_directories(reward PUBLIC include ../eden/src ../eden/include ../myvoteeosdao/include)

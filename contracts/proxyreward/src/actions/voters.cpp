@@ -5,25 +5,19 @@ namespace edenproxy {
   void reward::signup( eosio::name owner, eosio::name recipient ) {
     require_auth( owner );
 
-    voters voters( get_self() );
-    voters.on_signup( owner, recipient );
+    voters{ get_self() }.on_signup( owner, recipient );
   }
 
   void reward::remove( eosio::name owner ) {
     require_auth( owner );
 
-    voters voters( get_self() );
-    voters.on_remove( owner );
+    voters{ get_self() }.on_remove( owner, recipient );
   }
 
   void reward::changercpt( eosio::name owner, eosio::name recipient ) {
     require_auth( owner );
 
-    eosio::check( eosio::is_account( recipient ),
-                  "Recipient is not an account" );
-
-    voters voters( get_self() );
-    voters.on_changercpt( owner, recipient );
+    voters{ get_self() }.on_changercpt( owner, recipient );
   }
 
   void reward::claim( eosio::name owner ) {

@@ -46,6 +46,7 @@ namespace edenproxy {
       row.last_claim_time() = eosio::current_time_point();
     } );
 
+    // TODO: update permission to make the transfer on behalf of edenprxfunds
     // send tokens
     eosio::action( eosio::permission_level{ contract, "active"_n },
                    SUPPORTED_TOKEN_CONTRACT,
@@ -102,6 +103,9 @@ namespace edenproxy {
   }
 
   void voters::on_changercpt( eosio::name owner, eosio::name new_recipient ) {
+    eosio::check( eosio::is_account( new_recipient ),
+                  "Recipient is not an account" );
+
     auto voter_itr = voter_tb.find( owner.value );
 
     eosio::check( voter_itr != voter_tb.end(), "Voter does not exist" );

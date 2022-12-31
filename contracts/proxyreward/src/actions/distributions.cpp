@@ -6,11 +6,8 @@ namespace edenproxy {
   void reward::init() {
     require_auth( get_self() );
 
-    distributions distributions( get_self() );
-    distributions.on_init();
-
-    accounts accounts( get_self() );
-    accounts.on_init();
+    distributions{ get_self() }.on_init();
+    accounts{ get_self() }.on_init();
   }
 
   void reward::updateall( uint32_t max_steps ) {

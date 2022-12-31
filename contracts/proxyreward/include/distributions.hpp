@@ -72,7 +72,7 @@ namespace edenproxy {
     uint32_t distribute_daily( uint32_t max_steps );
 
     bool setup_distribution();
-    bool update_voters( uint32_t &max_steps );
+    void update_voters( uint32_t &max_steps, prepare_distribution &prep_dist );
   };
 
 } // namespace edenproxy
