@@ -58,6 +58,13 @@ const Body: React.FC<BodyVoters> = ({ searchValue = '' }) => {
     [rankSize]
   )
 
+  const formatTelegramUserId = telegram => {
+    return telegram?.replace(
+      telegram?.includes('https://t.me/') ? 'https://t.me/' : '@',
+      ''
+    )
+  }
+
   useEffect(() => {
     getMembers({
       variables: {
@@ -106,14 +113,13 @@ const Body: React.FC<BodyVoters> = ({ searchValue = '' }) => {
               <Image src={telegramLogo} height={14} width={14} />
               <a
                 className={classes.aStyle}
-                href={`https://www.t.me/${delegate?.profile?.social?.telegram?.replace(
-                  '@',
-                  ''
+                href={`https://www.t.me/${formatTelegramUserId(
+                  delegate?.profile?.social?.telegram
                 )}`}
                 rel='noreferrer'
                 target='_blank'
               >
-                {delegate?.profile?.social?.telegram?.replace('@', '')}
+                {formatTelegramUserId(delegate?.profile?.social?.telegram)}
               </a>
             </div>
           }
