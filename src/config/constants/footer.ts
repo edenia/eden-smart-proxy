@@ -11,7 +11,7 @@ const socialMediaItems = [
   },
   {
     name: 'Telegram',
-    ref: 'https://t.me/edensmartproxy',
+    ref: 'https://t.me/edensmartproxy_public',
     image: '/icons/telegram-icon.png'
   }
 ]
