@@ -10,6 +10,7 @@
   "loadMore": "더 보기",
   "searchName": "이름으로 찾기",
   "buttonLabel": "투표 위임",
+  "buttonLabelDelegate": "투표",
   "routes": {
     "/": "메인",
     "voters": "투표자 조회",

@@ -94,6 +94,11 @@ const Styles = makeStyles(theme => ({
   },
   cursor: {
     cursor: 'pointer'
+  },
+  showMobile: {
+    [theme.breakpoints.up('sm')]: {
+      display: 'none'
+    }
   }
 }))
 

@@ -35,7 +35,10 @@ const Styles = makeStyles(theme => ({
     overflow: 'hidden'
   },
   paddingPage: {
-    paddingTop: theme.spacing(6)
+    paddingTop: theme.spacing(11),
+    [theme.breakpoints.up('md')]: {
+      paddingTop: theme.spacing(6)
+    }
   },
   showOnMobile: {
     display: 'initial',

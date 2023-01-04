@@ -3,6 +3,7 @@ import { makeStyles } from '@mui/styles'
 const Styles = makeStyles(theme => ({
   paddingIcon: {
     paddingRight: theme.spacing(2),
+    paddingLeft: theme.spacing(1),
     display: 'flex'
   },
   flexBox: {
@@ -11,10 +12,7 @@ const Styles = makeStyles(theme => ({
   },
   languageLabel: {
     color: theme.palette.common.black,
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block'
-    }
+    display: 'block'
   }
 }))
 

@@ -23,6 +23,7 @@ import { useSharedState } from 'context/state.context'
 import { atomicAssetsUtil, smartProxyUtil } from 'utils'
 import logoImage from '/public/logos/eden-proxy-logo.png'
 import AuthButton from 'components/AuthUAL'
+import LanguageSelector from 'components/LanguageSelector'
 import { BaseSnackbar } from 'components'
 
 import Styles from './styles'
@@ -168,6 +169,9 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
                 <p />
               </div>
             </Link>
+            <div className={classes.showMobile}>
+              <LanguageSelector />
+            </div>
           </div>
         </div>
         <div className={classes.footerBox}>
