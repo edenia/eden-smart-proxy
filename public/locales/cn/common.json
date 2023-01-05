@@ -10,6 +10,7 @@
   "loadMore": "加载更多",
   "searchName": "按名称搜索",
   "buttonLabel": "委托票权",
+  "buttonLabelDelegate": "委托",
   "routes": {
     "/": "主页",
     "voters": "投票成员",

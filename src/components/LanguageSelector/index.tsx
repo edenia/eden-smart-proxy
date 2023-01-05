@@ -52,6 +52,7 @@ const LanguageSelector: React.FC = () => {
   }
 
   const prevOpen = useRef(open)
+
   useEffect(() => {
     if (prevOpen.current === true && open === false) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

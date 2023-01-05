@@ -7,8 +7,10 @@ const Styles = makeStyles(theme => ({
     backgroundColor: `${theme.palette.common.white} !important`,
     borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
     paddingLeft: 0,
+    height: 90,
     [theme.breakpoints.up('md')]: {
-      paddingLeft: 260
+      paddingLeft: 260,
+      height: 'auto'
     }
   },
   menuContainer: {
@@ -64,6 +66,7 @@ const Styles = makeStyles(theme => ({
   },
   drawerPaper: {
     width: '100%',
+    height: '100%',
     [theme.breakpoints.up('md')]: {
       padding: theme.spacing(1, 5)
     }
@@ -78,12 +81,16 @@ const Styles = makeStyles(theme => ({
   },
   drawerShowMobile: {
     display: 'none',
-    [theme.breakpoints.down('md')]: { display: 'contents' }
+    [theme.breakpoints.down('md')]: { display: 'contents !important' }
+  },
+  drawerShowTablet: {
+    display: 'contents',
+    [theme.breakpoints.down('sm')]: { display: 'none !important' }
   },
   drawerShowDesktop: {
     display: 'contents',
     border: '2px solid black',
-    [theme.breakpoints.down('md')]: { display: 'none' }
+    [theme.breakpoints.down('md')]: { display: 'none !important' }
   },
   drawer: {
     '& .MuiDrawer-paper': {
@@ -134,7 +141,8 @@ const Styles = makeStyles(theme => ({
   languageBox: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingRight: theme.spacing(1)
   },
   langItemBox: {
     padding: theme.spacing(0, 0.8)
@@ -181,6 +189,10 @@ const Styles = makeStyles(theme => ({
   },
   btnDelegate: {
     padding: theme.spacing(1, 2)
+  },
+  delegateButtonBox: {
+    display: 'flex',
+    justifyContent: 'center'
   }
 }))
 

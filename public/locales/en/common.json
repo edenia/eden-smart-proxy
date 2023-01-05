@@ -10,6 +10,7 @@
   "loadMore": "Load More",
   "searchName": "Search by name",
   "buttonLabel": "Delegate Vote",
+  "buttonLabelDelegate": "Delegate",
   "routes": {
     "/": "Home",
     "voters": "Members",

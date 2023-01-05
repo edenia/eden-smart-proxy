@@ -16,11 +16,13 @@ type MessageObject = {
 type DelegateButtonProps = {
   setMessage(object: MessageObject): void
   buttonStyles?: string
+  isMobile?: boolean
   icon?: string
 }
 
 const DelegateButton: React.FC<DelegateButtonProps> = ({
   icon,
+  isMobile,
   setMessage,
   buttonStyles
 }) => {
@@ -107,8 +109,8 @@ const DelegateButton: React.FC<DelegateButtonProps> = ({
     <>
       {showDelegateButton && (
         <Button
-          icon={icon}
-          label={t('buttonLabel')}
+          icon={!isMobile ? icon : undefined}
+          label={t(!isMobile ? 'buttonLabel' : 'buttonLabelDelegate')}
           variant='primary'
           externalStyles={buttonStyles}
           onClick={() => handleDelegateVote()}
