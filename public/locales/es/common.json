@@ -10,6 +10,7 @@
   "loadMore": "Cargar más",
   "searchName": "Buscar por nombre",
   "buttonLabel": "Delegar voto",
+  "buttonLabelDelegate": "Delegar",
   "routes": {
     "/": "Hogar",
     "voters": "Miembros",

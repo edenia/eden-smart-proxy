@@ -128,8 +128,33 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
               </span>
             </div>
             <div className={classes.leftBox}>
-              <div className={classes.languageBox}>
+              <div
+                className={clsx(classes.languageBox, classes.drawerShowTablet)}
+              >
                 <LanguageSelector />
+              </div>
+              <div>
+                {showDelegateButton && (
+                  <div className={classes.delegateButtonBox}>
+                    <DelegateButton
+                      isMobile
+                      icon='/icons/like-white-icon.png'
+                      setMessage={setMessage}
+                      buttonStyles={classes.btnDelegate}
+                    />
+                  </div>
+                )}
+                <Typography
+                  color='black'
+                  variant={showDelegateButton ? 'caption' : 'subtitle2'}
+                  display='flex'
+                  justifyContent='center'
+                  textAlign='center'
+                >
+                  {t('totalProxiedVotes')}
+                  <br />
+                  {`${totalVotesDelegate} EOS`}
+                </Typography>
               </div>
             </div>
           </div>
