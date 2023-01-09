@@ -11,7 +11,7 @@ namespace edenproxy {
   void reward::remove( eosio::name owner ) {
     require_auth( owner );
 
-    voters{ get_self() }.on_remove( owner, recipient );
+    voters{ get_self() }.on_remove( owner );
   }
 
   void reward::changercpt( eosio::name owner, eosio::name recipient ) {

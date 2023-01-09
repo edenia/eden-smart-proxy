@@ -72,16 +72,10 @@ namespace edenproxy {
                      claimed,
                      unclaimed,
                      last_claim_time )
-    FORWARD_FUNCTIONS( value, primary_key, by_last_update )
+    FORWARD_FUNCTIONS( value, primary_key )
   };
   EOSIO_REFLECT( voter, value )
-  typedef eosio::multi_index<
-      "voter"_n,
-      voter,
-      eosio::indexed_by<
-          "bylastupdate"_n,
-          eosio::const_mem_fun< voter, uint64_t, &voter::by_last_update > > >
-      voter_table_type;
+  using voter_table_type = eosio::multi_index< "voter"_n, voter >;
 
   bool is_vote_delegated( eosio::name owner );
 

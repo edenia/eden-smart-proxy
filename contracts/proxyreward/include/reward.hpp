@@ -3,7 +3,7 @@
 #include <eosio/asset.hpp>
 #include <eosio/eosio.hpp>
 
-// #include <members.cpp>
+#include <constants.hpp>
 // #include <myvoteeosdao/myvoteeosdao.hpp>
 
 namespace edenproxy {

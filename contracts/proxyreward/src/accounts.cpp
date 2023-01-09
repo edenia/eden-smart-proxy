@@ -3,23 +3,39 @@
 namespace edenproxy {
   void accounts::on_init() { account_sing.get_or_create( contract ); }
 
-  uint64_t accounts::get_balance() { return account_sing.get().balance; }
+  eosio::asset accounts::get_balance() {
+    auto account = this->account();
 
-  bool accounts::has_funds() { return account_sing.get().balance > 0; }
+    return account.balance;
+  }
+
+  bool accounts::has_funds() {
+    auto account = this->account();
+
+    return account.balance.amount > 0;
+  }
 
   void accounts::add_balance( eosio::asset amount ) {
-    auto acc_sing = account_sing.get();
-    acc_sing.balance += amount;
-    account_sing.set( acc_sing, contract );
+    auto account = this->account();
+
+    account.balance += amount;
+    account_sing.set( account, contract );
   }
 
   void accounts::sub_balance( eosio::asset amount ) {
-    auto acc_sing = account_sing.get();
+    auto account = this->account();
 
-    eosio::check( acc_sing.balance - amount >= 0, "Not enough funds" );
+    eosio::check( ( account.balance - amount ).amount >= 0,
+                  "Not enough funds" );
 
-    acc_sing.balance -= amount;
-    account_sing.set( acc_sing, contract );
+    account.balance -= amount;
+    account_sing.set( account, contract );
+  }
+
+  struct account_v0 accounts::account() {
+
+    return std::visit( []( const auto &acc ) { return account_v0{ acc }; },
+                       account_sing.get_or_default() );
   }
 
 } // namespace edenproxy
