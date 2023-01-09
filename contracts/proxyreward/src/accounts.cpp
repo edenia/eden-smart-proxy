@@ -1,7 +1,13 @@
 #include <accounts.hpp>
 
 namespace edenproxy {
-  void accounts::on_init() { account_sing.get_or_create( contract ); }
+  void accounts::on_init() {
+    eosio::check( !account_sing.exists(), "Contract is already initialized" );
+
+    account_sing.get_or_create(
+        contract,
+        account_v0{ .balance = eosio::asset( 0, SUPPORTED_TOKEN_SYMBOL ) } );
+  }
 
   eosio::asset accounts::get_balance() {
     auto account = this->account();

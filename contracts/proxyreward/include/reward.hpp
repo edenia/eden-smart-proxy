@@ -3,7 +3,10 @@
 #include <eosio/asset.hpp>
 #include <eosio/eosio.hpp>
 
+#include <accounts.hpp>
 #include <constants.hpp>
+#include <distributions.hpp>
+#include <voters.hpp>
 // #include <myvoteeosdao/myvoteeosdao.hpp>
 
 namespace edenproxy {
@@ -18,9 +21,9 @@ namespace edenproxy {
 
     void init();
     void signup( eosio::name owner, eosio::name recipient );
-    void remove( eosio::name owner );
+    void rmvoter( eosio::name owner );
     void changercpt( eosio::name owner, eosio::name recipient );
-    void updateall( uint32_t max_steps );
+    void distribute( uint32_t max_steps );
     void claim( eosio::name owner );
     void receipt( eosio::name           owner,
                   eosio::asset          reward,
@@ -39,10 +42,10 @@ namespace edenproxy {
       "edenproxyrwd"_n,
       action( init ),
       action( signup, owner, recipient ),
-      action( remove, owner ),
+      action( rmvoter, owner ),
       action( changercpt, owner, recipient ),
       action( claim, owner ),
-      action( updateall, max_steps ),
+      action( distribute, max_steps ),
       action( receipt, owner, reward, staked, unclaimed, distribution_time ),
       notify( default_funding_contract, transfer ) )
 

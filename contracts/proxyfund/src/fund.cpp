@@ -10,8 +10,7 @@ namespace eden {
       return;
     }
 
-    check( token_contract == get_first_receiver(), "Invalid contract" );
-    check( default_transferer == from, "Invalid token symbol" );
+    check( token_contract == get_first_receiver(), "Invalid token contract" );
     check( default_token_symbol == quantity.symbol, "Invalid token symbol" );
 
     eosio::require_recipient( proxy_contract );

@@ -8,7 +8,7 @@ namespace edenproxy {
     voters{ get_self() }.on_signup( owner, recipient );
   }
 
-  void reward::remove( eosio::name owner ) {
+  void reward::rmvoter( eosio::name owner ) {
     require_auth( owner );
 
     voters{ get_self() }.on_remove( owner );

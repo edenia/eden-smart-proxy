@@ -17,6 +17,9 @@ namespace edenproxy {
   }
 
   bool is_vote_delegated( eosio::name owner ) {
+#ifdef ENABLE_TESTING_BYPASS
+    return true;
+#endif
     return PROXY_CONTRACT == get_voter_proxy( owner );
   }
 
@@ -46,16 +49,15 @@ namespace edenproxy {
       row.last_claim_time() = eosio::current_time_point();
     } );
 
-    // TODO: update permission to make the transfer on behalf of edenprxfunds
-    // send tokens
-    eosio::action( eosio::permission_level{ contract, "active"_n },
-                   SUPPORTED_TOKEN_CONTRACT,
-                   eosio::name( "transfer" ),
-                   std::make_tuple( contract,
-                                    voter_itr->recipient(),
-                                    payout,
-                                    "Reward for delegating your vote to: " +
-                                        PROXY_CONTRACT.to_string() ) )
+    eosio::action(
+        eosio::permission_level{ default_funding_contract, "reward"_n },
+        SUPPORTED_TOKEN_CONTRACT,
+        eosio::name( "transfer" ),
+        std::make_tuple( default_funding_contract,
+                         voter_itr->recipient(),
+                         payout,
+                         "Reward for delegating your vote to: " +
+                             PROXY_CONTRACT.to_string() ) )
         .send();
   }
 

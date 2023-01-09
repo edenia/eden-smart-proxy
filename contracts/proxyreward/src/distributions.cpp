@@ -4,36 +4,29 @@
 
 namespace edenproxy {
   void distributions::on_init() {
-    eosio::check( !distribution_sing.exists() /*&& !account_sing.exists()*/,
+    eosio::check( !distribution_sing.exists(),
                   "Contract is already initialized" );
 
     distribution_sing.get_or_create(
         contract,
         next_distribution{ .distribution_time = eosio::current_time_point() +
                                                 eosio::days( 1 ) } );
-
-    // TODO: figure out how to initialize the account singleton
-    // account_sing.get_or_create(
-    //     contract,
-    //     account_v0{ .balance = eosio::asset( 0, SUPPORTED_TOKEN_SYMBOL ) } );
   }
 
   bool distributions::setup_distribution() {
     auto dist_sing = distribution_sing.get();
 
     eosio::check( accounts{ contract }.has_funds(),
-                  "Not enough funds to cover user rewards" );
+                  "Not enough funds to cover the rewards" );
 
-    if ( auto *dist = get_if< next_distribution >( &dist_sing ) ) {
+    if ( auto *dist = std::get_if< next_distribution >( &dist_sing ) ) {
+      // TODO: validate if there is accounts to distribute
       if ( dist->distribution_time.sec_since_epoch() <=
            eosio::current_time_point().sec_since_epoch() ) {
-        accounts accounts( contract );
-        voters   voters( contract );
-        auto    &voter_table = voters.get_table();
-
-        auto new_dist = prepare_distribution{ { *dist } };
+        auto &voter_table = voters( contract ).get_table();
+        auto  new_dist = prepare_distribution{ { *dist } };
         new_dist.next_account = voter_table.begin()->owner();
-        new_dist.total_distribution = accounts.get_balance();
+        new_dist.total_distribution = accounts( contract ).get_balance();
         distribution_sing.set( new_dist, contract );
 
         return true;
@@ -66,11 +59,8 @@ namespace edenproxy {
       }
     }
 
-    if ( voter_itr->owner() != prep_dist.next_account ) {
-      prep_dist.next_account =
-          voter_itr != voter_table.end() ? voter_itr->owner() : eosio::name{};
-    }
-
+    prep_dist.next_account =
+        voter_itr != voter_table.end() ? voter_itr->owner() : eosio::name( -1 );
     prep_dist.total_staked.amount += total_staked;
     distribution_sing.set( prep_dist, contract );
   }
@@ -85,16 +75,15 @@ namespace edenproxy {
     if ( auto *dist = get_if< prepare_distribution >( &distribution ) ) {
       update_voters( max_steps, *dist );
 
-      if ( dist->next_account == eosio::name{} ) {
+      if ( dist->next_account == eosio::name( -1 ) ) {
         distribution_sing.set( current_distribution{ { *dist } }, contract );
-      } else {
-        return max_steps;
       }
     }
 
-    auto distribution2 = distribution_sing.get();
+    distribution = distribution_sing.get();
 
-    if ( auto *dist = get_if< current_distribution >( &distribution2 ) ) {
+    if ( auto *dist = get_if< current_distribution >( &distribution ) ) {
+      // TODO: move this block of code to a new function
       voters voters( contract );
       auto  &voter_table = voters.get_table();
       auto   voter_itr = voter_table.find( dist->next_account.value );
@@ -103,6 +92,7 @@ namespace edenproxy {
 
       for ( ; voter_itr != end_itr && max_steps > 0;
             ++voter_itr, --max_steps ) {
+        // TODO: look for a solution to avoid to valide if the use is active
         if ( auto *itr = std::get_if< voter_v1 >( &voter_itr->value ) ) {
           auto staked_by_account = get_staked_amount( voter_itr->owner() );
           eosio::asset reward = staked_by_account * dist->total_distribution;
@@ -122,18 +112,24 @@ namespace edenproxy {
         }
       }
 
-      if ( voter_itr == voter_table.end() ) {
+      if ( voter_itr != voter_table.end() ) {
+        dist->next_account = voter_itr->owner();
+      } else {
+        accounts{ contract }.sub_balance( total_distributed );
         distribution_sing.set(
             next_distribution{ .distribution_time =
                                    dist->distribution_time + eosio::days( 1 ) },
             contract );
-
-        accounts{ contract }.sub_balance( total_distributed );
-      } else if ( voter_itr->owner() != dist->next_account ) {
-        dist->next_account = voter_itr->owner();
       }
     }
 
     return max_steps;
+  }
+
+  struct next_distribution distributions::distribution() {
+
+    return std::visit(
+        []( const auto &dist ) { return next_distribution{ dist }; },
+        distribution_sing.get_or_default() );
   }
 } // namespace edenproxy

@@ -73,6 +73,8 @@ namespace edenproxy {
 
     bool setup_distribution();
     void update_voters( uint32_t &max_steps, prepare_distribution &prep_dist );
+
+    next_distribution distribution();
   };
 
 } // namespace edenproxy
