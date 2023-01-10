@@ -10,13 +10,15 @@ namespace eden {
       return;
     }
 
-    check( token_contract == get_first_receiver(), "Invalid token contract" );
-    check( default_token_symbol == quantity.symbol, "Invalid token symbol" );
+    eosio::check( token_contract == get_first_receiver(),
+                  "Invalid token contract" );
+    eosio::check( default_token_symbol == quantity.symbol,
+                  "Invalid token symbol" );
 
     eosio::require_recipient( proxy_contract );
   }
 } // namespace eden
 
-EOSIO_ACTION_DISPATCHER( edenproxy::actions )
+EOSIO_ACTION_DISPATCHER( eden::actions )
 
-EOSIO_ABIGEN( actions( edenproxy::actions ) )
+EOSIO_ABIGEN( actions( eden::actions ) )
