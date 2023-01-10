@@ -59,7 +59,14 @@ namespace edenproxy {
   EOSIO_REFLECT( voter_v0, owner, recipient, unclaimed, last_claim_time )
 
   struct voter_v1 : voter_v0 {};
-  EOSIO_REFLECT( voter_v1, base voter_v0, staked, claimed, last_claim_time )
+  EOSIO_REFLECT( voter_v1,
+                 base voter_v0,
+                 owner,
+                 recipient,
+                 staked,
+                 claimed,
+                 unclaimed,
+                 last_claim_time )
 
   using voter_variant = std::variant< voter_v0, voter_v1 >;
 
@@ -98,6 +105,6 @@ namespace edenproxy {
     void set_staked( eosio::name account, uint64_t staked );
     void add_reward( eosio::name account, uint64_t reward );
     void update_voter_state( eosio::name owner, bool active );
-    void send_rewards( eosio::name owner );
+    void send_rewards( eosio::name owner, bool check );
   };
 } // namespace edenproxy

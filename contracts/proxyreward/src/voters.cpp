@@ -31,17 +31,26 @@ namespace edenproxy {
     auto voter_itr = voter_tb.find( owner.value );
 
     voter_tb.modify( voter_itr, eosio::same_payer, [&]( auto &row ) {
+      eosio::print( "UPDATE_VOTER_STATE: ", std::to_string( active ), "\n" );
       row.value = std::visit(
-          [&]( auto &v ) { return active ? voter_v1{ v } : voter_v0{ v }; },
+          [&]( auto &v ) {
+            eosio::print( "UPDATE_VOTER_STATE2: ",
+                          voter_v1{ v }.owner.to_string(),
+                          " ",
+                          std::to_string( active ),
+                          "\n" );
+            return active ? voter_v1{ v } : voter_v0{ v };
+          },
           row.value );
     } );
   }
 
-  void voters::send_rewards( eosio::name owner ) {
+  // TODO: add attribute to validate the rewards with an eosio::check
+  void voters::send_rewards( eosio::name owner, bool check = true ) {
     auto voter_itr = voter_tb.find( owner.value );
 
-    if ( voter_itr->unclaimed() <= 0 ) {
-      return;
+    if ( check ) {
+      eosio::check( voter_itr->unclaimed() > 0, "No funds to claim" );
     }
 
     auto payout =
@@ -53,16 +62,19 @@ namespace edenproxy {
       row.last_claim_time() = eosio::current_time_point();
     } );
 
+// Bypass eosio::action for testing because of the reward permission that makes it fail
+#ifndef ENABLE_TESTING_BYPASS
     eosio::action(
         eosio::permission_level{ default_funding_contract, "reward"_n },
         SUPPORTED_TOKEN_CONTRACT,
-        eosio::name( "transfer" ),
-        std::make_tuple( default_funding_contract,
-                         voter_itr->recipient(),
-                         payout,
-                         "Reward for delegating your vote to: " +
-                             PROXY_CONTRACT.to_string() ) )
+        "transfer"_n,
+        std::tuple( default_funding_contract,
+                    voter_itr->recipient(),
+                    payout,
+                    "Reward for delegating your vote to: " +
+                        PROXY_CONTRACT.to_string() ) )
         .send();
+#endif
   }
 
   void voters::set_staked( eosio::name account, uint64_t staked ) {
@@ -103,7 +115,7 @@ namespace edenproxy {
 
     // TODO: get next line working
     // update_voter( owner );
-    send_rewards( owner );
+    send_rewards( owner, false );
 
     voter_tb.erase( voter_itr );
   }
@@ -125,7 +137,6 @@ namespace edenproxy {
     auto voter_itr = voter_tb.find( owner.value );
 
     eosio::check( voter_itr != voter_tb.end(), "Voter does not exist" );
-    eosio::check( voter_itr->unclaimed() > 0, "No funds to claim" );
 
     send_rewards( owner );
   }

@@ -135,7 +135,7 @@ TEST_CASE( "Distribute" ) {
   t.edenproxyrwd.act< edenproxy::actions::init >();
   t.alice.act< token::actions::transfer >( "alice"_n,
                                            "edenprxfunds"_n,
-                                           s2a( "500.0000 EOS" ),
+                                           s2a( "512.0000 EOS" ),
                                            "donation" );
 
   t.full_signup();
@@ -152,7 +152,26 @@ TEST_CASE( "Distribute" ) {
           "Nothing to do" );
 
   std::map< eosio::name, std::vector< uint64_t > > expected{
-      { "alice"_n, { 0, 0, 0 } } };
+      { "ahab"_n, { 500000, 0, 853333 } },
+      { "alice"_n, { 500000, 0, 853333 } },
+      { "bertie"_n, { 500000, 0, 853333 } },
+      { "bob"_n, { 500000, 0, 853333 } },
+      { "egeon"_n, { 500000, 0, 853333 } },
+      { "pip"_n, { 500000, 0, 853333 } } };
+
+  CHECK( t.get_voters() == expected );
+
+  expect( t.alice.trace< edenproxy::actions::claim >( "bob"_n ),
+          "Missing required authority" );
+  t.chain.start_block();
+
+  t.alice.act< edenproxy::actions::claim >( "alice"_n );
+  t.chain.start_block();
+
+  expect( t.alice.trace< edenproxy::actions::claim >( "alice"_n ),
+          "No funds to claim" );
+
+  expected["alice"_n] = { 500000, 853333, 0 };
 
   CHECK( t.get_voters() == expected );
 
@@ -160,12 +179,12 @@ TEST_CASE( "Distribute" ) {
   // 1. account stop delegating their vote
   // 2. check user structure has changed
   // 3. account start delegating their vote again
-  // 4. check staked is the right amount
-  // 5. check unclaimed is the right amount
-  // 6. check last_update_time is the right amount
+  // - 4. check staked is the right amount
+  // - 5. check unclaimed is the right amount
+  // - 6. check last_update_time is the right date
   // 7. voter is with inactive structure, then the function get him active back again with the right structure and values
-  // 8. check reward value is right according to the formula
-  // 9. check reward can only happen in the right time
+  // - 8. check reward value is right according to the formula
+  // - 9. check reward can only happen in the right time
 }
 
 // TEST_CASE( "Claim" ) {
