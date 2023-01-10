@@ -130,14 +130,31 @@ TEST_CASE( "Distribute" ) {
 
   t.fund_accounts();
 
+  t.skip_to( "2023-01-01T07:00:00.000" );
+
   t.edenproxyrwd.act< edenproxy::actions::init >();
   t.alice.act< token::actions::transfer >( "alice"_n,
                                            "edenprxfunds"_n,
                                            s2a( "500.0000 EOS" ),
                                            "donation" );
-  t.full_signup();
 
-  // TODO: update bios contract to store the amount staked by every user
+  t.full_signup();
+  t.skip_to( "2023-01-02T06:59:50.500" );
+
+  expect( t.alice.trace< edenproxy::actions::distribute >( 100 ),
+          "Nothing to do" );
+
+  t.skip_to( "2023-01-02T07:00:00.000" );
+  t.alice.act< edenproxy::actions::distribute >( 100 );
+  t.chain.start_block();
+
+  expect( t.alice.trace< edenproxy::actions::distribute >( 100 ),
+          "Nothing to do" );
+
+  std::map< eosio::name, std::vector< uint64_t > > expected{
+      { "alice"_n, { 0, 0, 0 } } };
+
+  CHECK( t.get_voters() == expected );
 
   // Validate voter data is updated as expected
   // 1. account stop delegating their vote

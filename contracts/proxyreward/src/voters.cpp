@@ -2,6 +2,10 @@
 
 namespace edenproxy {
   int64_t get_staked_amount( eosio::name account ) {
+#ifdef ENABLE_TESTING_BYPASS
+    return 500000;
+#endif
+
     eosio_voters_table _voters( "eosio"_n, "eosio"_n.value );
 
     auto voters_itr = _voters.find( account.value );

@@ -11,6 +11,7 @@ namespace edenproxy {
   }
 
   void reward::distribute( uint32_t max_steps ) {
+    eosio::print( "TESTING\n" );
     distributions distributions( get_self() );
 
     eosio::check( distributions.distribute_daily( max_steps ) != max_steps,

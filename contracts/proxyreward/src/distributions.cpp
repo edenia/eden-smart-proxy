@@ -23,9 +23,9 @@ namespace edenproxy {
       // TODO: validate if there is accounts to distribute
       if ( dist->distribution_time.sec_since_epoch() <=
            eosio::current_time_point().sec_since_epoch() ) {
-        auto &voter_table = voters( contract ).get_table();
-        auto  new_dist = prepare_distribution{ { *dist } };
-        new_dist.next_account = voter_table.begin()->owner();
+        voters voters( contract );
+        auto   new_dist = prepare_distribution{ { *dist } };
+        new_dist.next_account = voters.get_table().begin()->owner();
         new_dist.total_distribution = accounts( contract ).get_balance();
         distribution_sing.set( new_dist, contract );
 
