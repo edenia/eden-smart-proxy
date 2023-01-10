@@ -1,6 +1,6 @@
 #include <fund.hpp>
 
-namespace eden {
+namespace fund {
   void funds::notify_transfer( eosio::name         from,
                                eosio::name         to,
                                const eosio::asset &quantity,
@@ -15,10 +15,10 @@ namespace eden {
     eosio::check( default_token_symbol == quantity.symbol,
                   "Invalid token symbol" );
 
-    eosio::require_recipient( proxy_contract );
+    eosio::require_recipient( reward_contract );
   }
-} // namespace eden
+} // namespace fund
 
-EOSIO_ACTION_DISPATCHER( eden::actions )
+EOSIO_ACTION_DISPATCHER( fund::actions )
 
-EOSIO_ABIGEN( actions( eden::actions ) )
+EOSIO_ABIGEN( actions( fund::actions ) )

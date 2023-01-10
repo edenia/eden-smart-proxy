@@ -5,7 +5,7 @@
 
 #include <constants.hpp>
 
-namespace eden {
+namespace fund {
   class funds : public eosio::contract {
   public:
     using eosio::contract::contract;
@@ -23,4 +23,4 @@ namespace eden {
 
   EOSIO_ACTIONS( funds, "edenprxfunds"_n, notify( token_contract, transfer ) )
 
-} // namespace eden
+} // namespace fund

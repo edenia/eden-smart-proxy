@@ -15,6 +15,8 @@ endif()
 find_package(clsdk REQUIRED)
 
 add_subdirectory(smartproxy)
+add_subdirectory(proxyfund)
 add_subdirectory(proxyreward)
 add_subdirectory(myvoteeosdao)
 add_subdirectory(eden)
+add_subdirectory(token)

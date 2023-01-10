@@ -103,6 +103,54 @@ TEST_CASE( "Change the Recipient" ) {
   CHECK( t.get_recipients() == expected );
 }
 
+TEST_CASE( "Receive the inflation amount" ) {
+  // TODO: validate what would happend if the smart contract receives a transfer before the init action is called
+  tester t;
+
+  t.fund_accounts();
+
+  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.alice.act< token::actions::transfer >( "alice"_n,
+                                           "edenprxfunds"_n,
+                                           s2a( "500.0000 EOS" ),
+                                           "donation" );
+
+  CHECK( t.get_account().balance == s2a( "500.0000 EOS" ) );
+
+  t.alice.act< token::actions::transfer >( "alice"_n,
+                                           "edenprxfunds"_n,
+                                           s2a( "12.0000 EOS" ),
+                                           "donation" );
+
+  CHECK( t.get_account().balance == s2a( "512.0000 EOS" ) );
+}
+
+TEST_CASE( "Distribute" ) {
+  tester t;
+
+  t.fund_accounts();
+
+  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.alice.act< token::actions::transfer >( "alice"_n,
+                                           "edenprxfunds"_n,
+                                           s2a( "500.0000 EOS" ),
+                                           "donation" );
+  t.full_signup();
+
+  // TODO: update bios contract to store the amount staked by every user
+
+  // Validate voter data is updated as expected
+  // 1. account stop delegating their vote
+  // 2. check user structure has changed
+  // 3. account start delegating their vote again
+  // 4. check staked is the right amount
+  // 5. check unclaimed is the right amount
+  // 6. check last_update_time is the right amount
+  // 7. voter is with inactive structure, then the function get him active back again with the right structure and values
+  // 8. check reward value is right according to the formula
+  // 9. check reward can only happen in the right time
+}
+
 // TEST_CASE( "Claim" ) {
 //   tester t;
 
@@ -118,23 +166,6 @@ TEST_CASE( "Change the Recipient" ) {
 //   //           "No funds to claim" );
 
 //   // Check funds get send to the destinary correctly (eosio.token)
-// }
-
-// TEST_CASE( "Update Account" ) {
-//   tester t;
-
-//   // Voter does not exist
-
-//   // Validate voter data is udpated as expected
-//   // 1. account stop delegating their vote
-//   // 2. check user structure has changed
-//   // 3. account start delegating their vote again
-//   // 4. check staked is the right amount
-//   // 5. check unclaimed is the right amount
-//   // 6. check last_update_time is the right amount
-//   // 7. voter is with inactive structure, then the function get him active back again with the right structure and values
-//   // 8. check reward value is right according to the formula
-//   // 9. check reward can only happen in the right time
 // }
 
 // TEST_CASE( "Update All Accounts" ) {

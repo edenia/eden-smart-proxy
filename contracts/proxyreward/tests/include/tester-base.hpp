@@ -1,6 +1,8 @@
 #include <eden/eden.hpp>
 #include <eosio/tester.hpp>
+
 #include <myvoteeosdao/myvoteeosdao.hpp>
+#include <token/token.hpp>
 
 #include <accounts.hpp>
 #include <distributions.hpp>
@@ -15,12 +17,40 @@ using namespace eosio;
 using user_context = test_chain::user_context;
 
 void proxyreward_setup( test_chain &t ) {
+  t.create_code_account( "edenproxyrwd"_n );
   t.set_code( "edenproxyrwd"_n, "proxyreward.wasm" );
+}
+
+void proxyfunds_setup( test_chain &t ) {
+  t.create_code_account( "edenprxfunds"_n );
+  t.set_code( "edenprxfunds"_n, "fund.wasm" );
+}
+
+void token_setup( test_chain &t ) {
+  t.create_code_account( "eosio.token"_n );
+  t.set_code( "eosio.token"_n, "token.wasm" );
+
+  t.as( "eosio.token"_n )
+      .act< token::actions::create >( "eosio.token"_n,
+                                      s2a( "9000000000000.0000 EOS" ) );
+  t.as( "eosio.token"_n )
+      .act< token::actions::issue >( "eosio.token"_n,
+                                     s2a( "9000000000000.0000 EOS" ),
+                                     "" );
+  t.as( "eosio.token"_n )
+      .act< token::actions::create >( "eosio.token"_n,
+                                      s2a( "9000000000000.0000 OTHER" ) );
+  t.as( "eosio.token"_n )
+      .act< token::actions::issue >( "eosio.token"_n,
+                                     s2a( "9000000000000.0000 OTHER" ),
+                                     "" );
 }
 
 struct tester {
   test_chain   chain;
+  user_context token = chain.as( "eosio.token"_n );
   user_context eden = chain.as( "genesis.eden"_n );
+  user_context edenprxfunds = chain.as( "edenprxfunds"_n );
   user_context edenproxyrwd = chain.as( "edenproxyrwd"_n );
 
   user_context alice = chain.as( "alice"_n );
@@ -34,8 +64,11 @@ struct tester {
 
   tester() {
     chain.create_code_account( "genesis.eden"_n );
-    chain.create_code_account( "edenproxyrwd"_n );
+
+    token_setup( chain );
+    proxyfunds_setup( chain );
     proxyreward_setup( chain );
+
     for ( auto account : { "alice"_n,
                            "bob"_n,
                            "pip"_n,
@@ -62,12 +95,38 @@ struct tester {
     chain.start_block( skip );
   }
 
+  void fund_accounts() {
+    for ( auto account :
+          { "alice"_n, "bob"_n, "pip"_n, "egeon"_n, "bertie"_n, "ahab"_n } ) {
+      chain.as( "eosio.token"_n )
+          .act< token::actions::transfer >( "eosio.token"_n,
+                                            account,
+                                            s2a( "1000000000000.0000 EOS" ),
+                                            "memo" );
+
+      chain.as( "eosio.token"_n )
+          .act< token::actions::transfer >( "eosio.token"_n,
+                                            account,
+                                            s2a( "1000000000000.0000 OTHER" ),
+                                            "memo" );
+    }
+  }
+
   auto get_account() const {
     return edenproxy::accounts( "edenproxyrwd"_n ).account();
   };
 
   auto get_distribution() const {
     return edenproxy::distributions( "edenproxyrwd"_n ).distribution();
+  };
+
+  void full_signup() {
+    std::vector< eosio::name > accounts =
+        { "alice"_n, "bob"_n, "pip"_n, "egeon"_n, "bertie"_n, "ahab"_n };
+
+    for ( auto account : accounts ) {
+      chain.as( account ).act< edenproxy::actions::signup >( account, account );
+    }
   };
 
   auto get_voters() const {
