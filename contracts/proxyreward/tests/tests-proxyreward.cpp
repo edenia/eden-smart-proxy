@@ -108,7 +108,6 @@ TEST_CASE( "Change the Recipient" ) {
 }
 
 TEST_CASE( "Receive the inflation amount" ) {
-  // TODO: validate what would happend if the smart contract receives a transfer before the init action is called
   tester t;
 
   t.fund_accounts();

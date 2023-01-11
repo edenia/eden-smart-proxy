@@ -125,11 +125,6 @@ namespace edenproxy {
 
   void voters::on_resign( eosio::name owner ) {
     auto voter_itr = voter_tb.find( owner.value );
-
-    // TODO: get next line working
-    // update_voter( owner );
-    send_rewards( owner, false );
-
     voter_tb.erase( voter_itr );
   }
 
@@ -150,9 +145,6 @@ namespace edenproxy {
 
   void voters::on_claim( eosio::name owner ) {
     auto voter_itr = voter_tb.find( owner.value );
-
-    // TODO: validate there is a recipient
-    // Msig holder can force or prevent to receiver the APR to the recipient
 
     eosio::check( voter_itr != voter_tb.end(), "Voter does not exist" );
     eosio::check( voter_itr->recipient() != eosio::name{},
