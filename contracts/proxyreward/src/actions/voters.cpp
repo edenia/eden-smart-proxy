@@ -8,14 +8,19 @@ namespace edenproxy {
     voters{ get_self() }.on_signup( owner, recipient );
   }
 
-  void reward::rmvoter( eosio::name owner ) {
+  void reward::resign( eosio::name owner ) {
     require_auth( owner );
 
-    voters{ get_self() }.on_remove( owner );
+    voters voters{ get_self() };
+
+    voters.check_resign( owner );
+    voters.on_resign( owner );
   }
 
   void reward::changercpt( eosio::name owner, eosio::name recipient ) {
-    require_auth( owner );
+    if ( !eosio::has_auth( owner ) && !eosio::has_auth( get_self() ) ) {
+      eosio::check( false, "Missing required authority" );
+    }
 
     voters{ get_self() }.on_changercpt( owner, recipient );
   }

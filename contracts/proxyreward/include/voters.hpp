@@ -98,7 +98,8 @@ namespace edenproxy {
     const voter_table_type &get_table() const { return voter_tb; }
 
     void on_signup( eosio::name owner, eosio::name recipient );
-    void on_remove( eosio::name owner );
+    void check_resign( eosio::name owner );
+    void on_resign( eosio::name owner );
     void on_changercpt( eosio::name owner, eosio::name recipient );
     void on_claim( eosio::name owner );
 

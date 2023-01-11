@@ -5,6 +5,7 @@
 #include <token/token.hpp>
 
 #include <accounts.hpp>
+#include <constants.hpp>
 #include <distributions.hpp>
 #include <reward.hpp>
 #include <voters.hpp>
@@ -169,15 +170,4 @@ struct tester {
 
     return result;
   };
-
-  // auto get_stats() const {
-  //     // std::map< eosio::name, uint16_t > result;
-  //     // edenproxy::stats_table _stats{ "smartproxy"_n, "smartproxy"_n.value };
-
-  //     // for ( auto t : _stats ) {
-  //     //   auto [iter, _] = result.insert( std::pair( t.bp, t.weight ) );
-  //     // }
-
-  //     // return result;
-  // };
 };

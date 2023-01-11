@@ -1,3 +1,4 @@
+#include <distributions.hpp>
 #include <voters.hpp>
 
 namespace edenproxy {
@@ -96,7 +97,12 @@ namespace edenproxy {
     eosio::check( is_vote_delegated( owner ),
                   "Need to delegate the vote to " +
                       PROXY_CONTRACT.to_string() );
-    eosio::check( eosio::is_account( recipient ), "Account does not exist" );
+
+    if ( recipient == eosio::name{} ) {
+      recipient = default_funding_contract;
+    } else {
+      eosio::check( eosio::is_account( recipient ), "Account does not exist" );
+    }
 
     auto voter_itr = voter_tb.find( owner.value );
 
@@ -107,10 +113,18 @@ namespace edenproxy {
     } );
   }
 
-  void voters::on_remove( eosio::name owner ) {
+  void voters::check_resign( eosio::name owner ) {
     auto voter_itr = voter_tb.find( owner.value );
 
     eosio::check( voter_itr != voter_tb.end(), "Voter does not exist" );
+    eosio::check( voter_itr->unclaimed() == 0,
+                  "Need to claim the funds before to resign" );
+    eosio::check( !distributions( contract ).is_distribution_in_progress(),
+                  "Cannot resign while a distribution is in progress" );
+  }
+
+  void voters::on_resign( eosio::name owner ) {
+    auto voter_itr = voter_tb.find( owner.value );
 
     // TODO: get next line working
     // update_voter( owner );
@@ -120,8 +134,10 @@ namespace edenproxy {
   }
 
   void voters::on_changercpt( eosio::name owner, eosio::name new_recipient ) {
-    eosio::check( eosio::is_account( new_recipient ),
-                  "Recipient is not an account" );
+    if ( new_recipient != eosio::name{} ) {
+      eosio::check( eosio::is_account( new_recipient ),
+                    "Recipient is not an account" );
+    }
 
     auto voter_itr = voter_tb.find( owner.value );
 
@@ -135,7 +151,12 @@ namespace edenproxy {
   void voters::on_claim( eosio::name owner ) {
     auto voter_itr = voter_tb.find( owner.value );
 
+    // TODO: validate there is a recipient
+    // Msig holder can force or prevent to receiver the APR to the recipient
+
     eosio::check( voter_itr != voter_tb.end(), "Voter does not exist" );
+    eosio::check( voter_itr->recipient() != eosio::name{},
+                  "Claiming has been blocked for " + owner.to_string() );
 
     send_rewards( owner );
   }

@@ -75,6 +75,7 @@ namespace edenproxy {
     void update_voters( uint32_t &max_steps, prepare_distribution &prep_dist );
     void distribute_rewards( uint32_t             &max_steps,
                              current_distribution &curr_dist );
+    bool is_distribution_in_progress();
 
     next_distribution distribution();
   };

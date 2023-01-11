@@ -134,8 +134,12 @@ namespace edenproxy {
     return max_steps;
   }
 
-  struct next_distribution distributions::distribution() {
+  bool distributions::is_distribution_in_progress() {
+    return !std::holds_alternative< next_distribution >(
+        distribution_sing.get() );
+  }
 
+  struct next_distribution distributions::distribution() {
     return std::visit(
         []( const auto &dist ) { return next_distribution{ dist }; },
         distribution_sing.get_or_default() );

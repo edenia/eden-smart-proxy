@@ -27,6 +27,14 @@ TEST_CASE( "Init Smart Contract" ) {
 TEST_CASE( "Sign up and remove" ) {
   tester t;
 
+  t.fund_accounts();
+
+  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.alice.act< token::actions::transfer >( "alice"_n,
+                                           "edenprxfunds"_n,
+                                           s2a( "500.0000 EOS" ),
+                                           "donation" );
+
   // expect( t.alice.trace< edenproxy::actions::signup >( "alice"_n, "alice"_n ),
   //         "Need to delegate the vote to edensmartprx" );
   expect( t.bob.trace< edenproxy::actions::signup >( "alice"_n, "alice"_n ),
@@ -61,18 +69,17 @@ TEST_CASE( "Sign up and remove" ) {
 
   CHECK( t.get_voters() == expected );
 
-  expect( t.alice.trace< edenproxy::actions::rmvoter >( "ahab"_n ),
+  expect( t.alice.trace< edenproxy::actions::resign >( "ahab"_n ),
           "Missing required authority" );
 
-  t.alice.act< edenproxy::actions::rmvoter >( "alice"_n );
+  t.alice.act< edenproxy::actions::resign >( "alice"_n );
 
   expected.erase( "alice"_n );
 
   CHECK( t.get_voters() == expected );
 
-  expect(
-      t.fakeaccount.trace< edenproxy::actions::rmvoter >( "account.fake"_n ),
-      "Voter does not exist" );
+  expect( t.fakeaccount.trace< edenproxy::actions::resign >( "account.fake"_n ),
+          "Voter does not exist" );
 }
 #endif
 
@@ -253,4 +260,107 @@ TEST_CASE( "Slow distribution" ) {
       { "pip"_n, { 500000, 0, 853333 } } };
 
   CHECK( t.get_voters() == expected );
+}
+
+TEST_CASE( "Cannot resign with pending funds to claim" ) {
+  tester t;
+
+  t.fund_accounts();
+  t.skip_to( "2023-01-01T07:00:00.000" );
+
+  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.alice.act< token::actions::transfer >( "alice"_n,
+                                           "edenprxfunds"_n,
+                                           s2a( "512.0000 EOS" ),
+                                           "donation" );
+  t.full_signup();
+  t.skip_to( "2023-01-02T07:00:00.000" );
+  t.alice.act< edenproxy::actions::distribute >( 100 );
+  t.chain.start_block();
+
+  expect( t.alice.trace< edenproxy::actions::resign >( "alice"_n ),
+          "Need to claim the funds before to resign" );
+
+  t.alice.act< edenproxy::actions::claim >( "alice"_n );
+  t.alice.act< edenproxy::actions::resign >( "alice"_n );
+}
+
+TEST_CASE( "Cannot resign while a distributing" ) {
+  tester t;
+
+  t.fund_accounts();
+  t.skip_to( "2023-01-01T07:00:00.000" );
+
+  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.alice.act< token::actions::transfer >( "alice"_n,
+                                           "edenprxfunds"_n,
+                                           s2a( "512.0000 EOS" ),
+                                           "donation" );
+  t.full_signup();
+  t.skip_to( "2023-01-02T07:00:00.000" );
+  t.alice.act< edenproxy::actions::distribute >( 1 );
+  t.chain.start_block();
+
+  expect( t.alice.trace< edenproxy::actions::resign >( "alice"_n ),
+          "Cannot resign while a distribution is in progress" );
+
+  t.alice.act< edenproxy::actions::distribute >( 100 );
+  t.chain.start_block();
+  t.alice.act< edenproxy::actions::claim >( "alice"_n );
+  t.alice.act< edenproxy::actions::resign >( "alice"_n );
+}
+
+TEST_CASE( "Use default recipient if no one is set" ) {
+  tester t;
+
+  t.fund_accounts();
+  t.skip_to( "2023-01-01T07:00:00.000" );
+
+  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.alice.act< token::actions::transfer >( "alice"_n,
+                                           "edenprxfunds"_n,
+                                           s2a( "512.0000 EOS" ),
+                                           "donation" );
+
+  t.alice.act< edenproxy::actions::signup >( "alice"_n, ""_n );
+
+  std::map< eosio::name, eosio::name > expected{
+      { "alice"_n, edenproxy::default_funding_contract } };
+
+  CHECK( t.get_recipients() == expected );
+}
+
+TEST_CASE( "Disable claim funds for an account" ) {
+  tester t;
+
+  t.fund_accounts();
+  t.skip_to( "2023-01-01T07:00:00.000" );
+
+  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.alice.act< token::actions::transfer >( "alice"_n,
+                                           "edenprxfunds"_n,
+                                           s2a( "512.0000 EOS" ),
+                                           "donation" );
+
+  t.alice.act< edenproxy::actions::signup >( "alice"_n, "alice"_n );
+  t.skip_to( "2023-01-02T07:00:00.000" );
+
+  std::map< eosio::name, eosio::name > expected{ { "alice"_n, "alice"_n } };
+
+  CHECK( t.get_recipients() == expected );
+
+  t.alice.act< edenproxy::actions::distribute >( 100 );
+  t.chain.start_block();
+
+  expect( t.bob.trace< edenproxy::actions::changercpt >( "alice"_n, ""_n ),
+          "Missing required authority" );
+
+  t.edenproxyrwd.act< edenproxy::actions::changercpt >( "alice"_n, ""_n );
+
+  expected["alice"_n] = eosio::name{};
+
+  CHECK( t.get_recipients() == expected );
+
+  expect( t.alice.trace< edenproxy::actions::claim >( "alice"_n ),
+          "Claiming has been blocked for alice" );
 }

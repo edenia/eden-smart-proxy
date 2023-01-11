@@ -21,7 +21,7 @@ namespace edenproxy {
 
     void init();
     void signup( eosio::name owner, eosio::name recipient );
-    void rmvoter( eosio::name owner );
+    void resign( eosio::name owner );
     void changercpt( eosio::name owner, eosio::name recipient );
     void distribute( uint32_t max_steps );
     void claim( eosio::name owner );
@@ -42,7 +42,7 @@ namespace edenproxy {
       "edenproxyrwd"_n,
       action( init ),
       action( signup, owner, recipient ),
-      action( rmvoter, owner ),
+      action( resign, owner ),
       action( changercpt, owner, recipient ),
       action( claim, owner ),
       action( distribute, max_steps ),
