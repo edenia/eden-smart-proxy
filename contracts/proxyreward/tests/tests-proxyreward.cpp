@@ -27,11 +27,8 @@ TEST_CASE( "Init Smart Contract" ) {
 TEST_CASE( "Sign up and remove" ) {
   tester t;
 
-  // TODO: create voteproducer action for the bios contract to be able
-  // to test this validation
   // expect( t.alice.trace< edenproxy::actions::signup >( "alice"_n, "alice"_n ),
   //         "Need to delegate the vote to edensmartprx" );
-
   expect( t.bob.trace< edenproxy::actions::signup >( "alice"_n, "alice"_n ),
           "Missing required authority" );
   expect(
@@ -129,7 +126,6 @@ TEST_CASE( "Distribute" ) {
   tester t;
 
   t.fund_accounts();
-
   t.skip_to( "2023-01-01T07:00:00.000" );
 
   t.edenproxyrwd.act< edenproxy::actions::init >();
@@ -175,6 +171,28 @@ TEST_CASE( "Distribute" ) {
 
   CHECK( t.get_voters() == expected );
 
+  t.alice.act< token::actions::transfer >( "alice"_n,
+                                           "edenprxfunds"_n,
+                                           s2a( "600.0000 EOS" ),
+                                           "donation" );
+
+  t.skip_to( "2023-01-03T06:59:59.500" );
+
+  expect( t.alice.trace< edenproxy::actions::distribute >( 100 ),
+          "Nothing to do" );
+
+  t.chain.start_block();
+  t.alice.act< edenproxy::actions::distribute >( 100 );
+
+  expected["ahab"_n] = { 500000, 0, 1853333 };
+  expected["alice"_n] = { 500000, 853333, 1000000 };
+  expected["bertie"_n] = { 500000, 0, 1853333 };
+  expected["bob"_n] = { 500000, 0, 1853333 };
+  expected["egeon"_n] = { 500000, 0, 1853333 };
+  expected["pip"_n] = { 500000, 0, 1853333 };
+
+  CHECK( t.get_voters() == expected );
+
   // Validate voter data is updated as expected
   // 1. account stop delegating their vote
   // 2. check user structure has changed
@@ -187,26 +205,52 @@ TEST_CASE( "Distribute" ) {
   // - 9. check reward can only happen in the right time
 }
 
-// TEST_CASE( "Claim" ) {
-//   tester t;
+TEST_CASE( "Slow distribution" ) {
+  tester t;
 
-//   t.alice.trace< edenproxy::actions::signup >( "alice"_n, "alice"_n );
+  t.fund_accounts();
+  t.skip_to( "2023-01-01T07:00:00.000" );
 
-//   expect( t.bob.trace< edenproxy::actions::claim >( "alice"_n ),
-//           "Missing required authority" );
-//   expect( t.bob.trace< edenproxy::actions::claim >( "bob"_n ),
-//           "Voter does not exist" );
+  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.alice.act< token::actions::transfer >( "alice"_n,
+                                           "edenprxfunds"_n,
+                                           s2a( "512.0000 EOS" ),
+                                           "donation" );
 
-//   // CHECK: this is failing, check why
-//   //   expect( t.alice.trace< edenproxy::actions::claim >( "alice"_n ),
-//   //           "No funds to claim" );
+  t.full_signup();
+  t.skip_to( "2023-01-02T06:59:50.500" );
 
-//   // Check funds get send to the destinary correctly (eosio.token)
-// }
+  expect( t.alice.trace< edenproxy::actions::distribute >( 1 ),
+          "Nothing to do" );
 
-// TEST_CASE( "Update All Accounts" ) {
-//   tester t;
+  t.skip_to( "2023-01-02T07:00:00.000" );
 
-//   // Check max_steps approach works
-//   // Check voters get updated with their corresponding values
-// }
+  // setup distribution
+  t.alice.act< edenproxy::actions::distribute >( 1 );
+  t.chain.start_block();
+
+  // update voters
+  for ( std::size_t i = 0; i < 6; ++i ) {
+    t.alice.act< edenproxy::actions::distribute >( 1 );
+    t.chain.start_block();
+  }
+
+  // distribute rewards
+  for ( std::size_t i = 0; i < 6; ++i ) {
+    t.alice.act< edenproxy::actions::distribute >( 1 );
+    t.chain.start_block();
+  }
+
+  expect( t.alice.trace< edenproxy::actions::distribute >( 1 ),
+          "Nothing to do" );
+
+  std::map< eosio::name, std::vector< uint64_t > > expected{
+      { "ahab"_n, { 500000, 0, 853333 } },
+      { "alice"_n, { 500000, 0, 853333 } },
+      { "bertie"_n, { 500000, 0, 853333 } },
+      { "bob"_n, { 500000, 0, 853333 } },
+      { "egeon"_n, { 500000, 0, 853333 } },
+      { "pip"_n, { 500000, 0, 853333 } } };
+
+  CHECK( t.get_voters() == expected );
+}

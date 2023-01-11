@@ -104,7 +104,8 @@ namespace edenproxy {
 
     void set_staked( eosio::name account, uint64_t staked );
     void add_reward( eosio::name account, uint64_t reward );
-    void update_voter_state( eosio::name owner, bool active );
+    void activate( eosio::name owner );
+    void deactivate( eosio::name owner );
     void send_rewards( eosio::name owner, bool check );
   };
 } // namespace edenproxy

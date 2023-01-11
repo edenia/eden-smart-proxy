@@ -20,7 +20,7 @@ namespace edenproxy {
                   "Not enough funds to cover the rewards" );
 
     if ( auto *dist = std::get_if< next_distribution >( &dist_sing ) ) {
-      // TODO: validate if there is accounts to distribute
+      // TODO: validate if there are accounts to distribute
       if ( dist->distribution_time.sec_since_epoch() <=
            eosio::current_time_point().sec_since_epoch() ) {
         voters voters( contract );
@@ -38,7 +38,6 @@ namespace edenproxy {
 
   void distributions::update_voters( uint32_t             &max_steps,
                                      prepare_distribution &prep_dist ) {
-    eosio::print( "\n\nUPDATE_VOTERS\n" );
     voters   voters( contract );
     auto    &voter_table = voters.get_table();
     auto     voter_itr = voter_table.find( prep_dist.next_account.value );
@@ -46,62 +45,40 @@ namespace edenproxy {
 
     for ( ; voter_itr != voter_table.end() && max_steps > 0;
           ++voter_itr, --max_steps ) {
-      eosio::print( "OWNER: ", voter_itr->owner().to_string(), "\n" );
       // TODO: move the inactive voter to another scope to avoid
       // validating if they are active when calculating the reward
       if ( is_vote_delegated( voter_itr->owner() ) ) {
-        eosio::print( "VOTER IS ACTIVE\n" );
-        // voters.update_voter_state( voter_itr->owner(), true );
+        voters.activate( voter_itr->owner() );
         int64_t staked_by_account = get_staked_amount( voter_itr->owner() );
-        eosio::print( "STAKED_BY_ACCOUNT: ",
-                      std::to_string( staked_by_account ),
-                      "\n" );
         voters.set_staked( voter_itr->owner(), staked_by_account );
         total_staked += staked_by_account > 0
                             ? static_cast< uint64_t >( staked_by_account )
                             : 0;
       } else {
-        eosio::print( "VOTER IS INACTIVE\n" );
-        voters.update_voter_state( voter_itr->owner(), false );
+        voters.deactivate( voter_itr->owner() );
       }
-      eosio::print( "\n" );
     }
 
     prep_dist.next_account =
         voter_itr != voter_table.end() ? voter_itr->owner() : eosio::name( -1 );
     prep_dist.total_staked.amount += total_staked;
     distribution_sing.set( prep_dist, contract );
-    eosio::print( "PREP_DIST.NEXT_ACCOUNT: ",
-                  prep_dist.next_account.to_string(),
-                  "\n" );
-    eosio::print( "PREP_DIST.TOTAL_STAKED: ",
-                  prep_dist.total_staked.to_string(),
-                  "\n\n" );
   }
 
   void distributions::distribute_rewards( uint32_t             &max_steps,
                                           current_distribution &curr_dist ) {
-    eosio::print( "\n\nDISTRIBUTE_REWARDS\n" );
-    // TODO: move this block of code to a new function
     voters voters( contract );
     auto  &voter_table = voters.get_table();
     auto   voter_itr = voter_table.find( curr_dist.next_account.value );
     auto   end_itr = voter_table.end();
     auto   total_distributed = eosio::asset( 0, SUPPORTED_TOKEN_SYMBOL );
-    eosio::print( "TOTAL_STAKED: ", curr_dist.total_staked.to_string(), "\n" );
 
     for ( ; voter_itr != end_itr && max_steps > 0; ++voter_itr, --max_steps ) {
-      eosio::print( "OWNER: ", voter_itr->owner().to_string(), "\n" );
-      // TODO: look for a solution to avoid to valide if the use is active
+      // TODO: look for a solution to avoid to valide if the user is active
       if ( auto *itr = std::get_if< voter_v1 >( &voter_itr->value ) ) {
-        eosio::print( "VOTER IS ACTIVE\n" );
-        auto staked_by_account = get_staked_amount( itr->owner );
-        eosio::print( "STAKED_BY_ACCOUNT: ",
-                      std::to_string( staked_by_account ),
-                      "\n" );
+        auto         staked_by_account = get_staked_amount( itr->owner );
         eosio::asset reward = staked_by_account * curr_dist.total_distribution;
         reward /= curr_dist.total_staked.amount;
-        eosio::print( "REWARD: ", reward.to_string(), "\n" );
         voters.add_reward( itr->owner, reward.amount );
         total_distributed += reward;
 
@@ -116,7 +93,6 @@ namespace edenproxy {
                         eosio::time_point_sec( eosio::current_time_point() ) ) )
             .send();
       } else {
-        eosio::print( "VOTER IS INACTIVE\n" );
       }
     }
 
@@ -124,9 +100,6 @@ namespace edenproxy {
     curr_dist.next_account =
         voter_itr != voter_table.end() ? voter_itr->owner() : eosio::name( -1 );
     distribution_sing.set( curr_dist, contract );
-    eosio::print( "CURR_DIST.NEXT_ACCOUNT: ",
-                  curr_dist.next_account.to_string(),
-                  "\n\n" );
   }
 
   uint32_t distributions::distribute_daily( uint32_t max_steps ) {

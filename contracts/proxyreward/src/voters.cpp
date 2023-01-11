@@ -27,25 +27,24 @@ namespace edenproxy {
     return PROXY_CONTRACT == get_voter_proxy( owner );
   }
 
-  void voters::update_voter_state( eosio::name owner, bool active ) {
+  void voters::activate( eosio::name owner ) {
     auto voter_itr = voter_tb.find( owner.value );
 
     voter_tb.modify( voter_itr, eosio::same_payer, [&]( auto &row ) {
-      eosio::print( "UPDATE_VOTER_STATE: ", std::to_string( active ), "\n" );
-      row.value = std::visit(
-          [&]( auto &v ) {
-            eosio::print( "UPDATE_VOTER_STATE2: ",
-                          voter_v1{ v }.owner.to_string(),
-                          " ",
-                          std::to_string( active ),
-                          "\n" );
-            return active ? voter_v1{ v } : voter_v0{ v };
-          },
-          row.value );
+      row.value =
+          std::visit( [&]( auto &v ) { return voter_v1{ v }; }, row.value );
     } );
   }
 
-  // TODO: add attribute to validate the rewards with an eosio::check
+  void voters::deactivate( eosio::name owner ) {
+    auto voter_itr = voter_tb.find( owner.value );
+
+    voter_tb.modify( voter_itr, eosio::same_payer, [&]( auto &row ) {
+      row.value =
+          std::visit( [&]( auto &v ) { return voter_v0{ v }; }, row.value );
+    } );
+  }
+
   void voters::send_rewards( eosio::name owner, bool check = true ) {
     auto voter_itr = voter_tb.find( owner.value );
 

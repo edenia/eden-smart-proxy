@@ -12,15 +12,6 @@ namespace edenproxy {
     // notified transacion gets here, it's a valid transfer and comes from
     // a trusted contract only which is `default_funding_contract`
 
-    eosio::print( "NOTIFY TRANSFER: ",
-                  "from: ",
-                  from.to_string(),
-                  " -> to:",
-                  to.to_string(),
-                  " ",
-                  quantity,
-                  "\n" );
-
     accounts{ get_self() }.add_balance( quantity );
   }
 } // namespace edenproxy
