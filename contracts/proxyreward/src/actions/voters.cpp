@@ -1,3 +1,4 @@
+#include <distributions.hpp>
 #include <reward.hpp>
 #include <voters.hpp>
 
@@ -11,10 +12,12 @@ namespace edenproxy {
   void reward::resign( eosio::name owner ) {
     require_auth( owner );
 
-    voters voters{ get_self() };
+    eosio::check( !distributions( get_self() ).is_distribution_in_progress(),
+                  "Cannot resign while a distribution is in progress" );
 
+    voters voters{ get_self() };
     voters.check_resign( owner );
-    voters.on_resign( owner );
+    voters.remove( owner );
   }
 
   void reward::changercpt( eosio::name owner, eosio::name recipient ) {

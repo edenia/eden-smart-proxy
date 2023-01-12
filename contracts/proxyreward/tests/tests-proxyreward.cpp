@@ -23,6 +23,7 @@ TEST_CASE( "Init Smart Contract" ) {
       eosio::time_point_sec( 1672642800 ) ); // == January 02, 2023 07:00 AM UTC
 }
 
+// TODO: update tests to consider inactive scope in voters table
 TEST_CASE( "Sign up and remove" ) {
   tester t;
 
@@ -413,3 +414,6 @@ TEST_CASE( "Disable claim funds for an account" ) {
   expect( t.alice.trace< edenproxy::actions::claim >( "alice"_n ),
           "Claiming has been blocked for alice" );
 }
+
+// TODO: test scenarios where the voter is not active
+// create an special action of settable only available for the testing

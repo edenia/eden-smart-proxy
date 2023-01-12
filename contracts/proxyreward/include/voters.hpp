@@ -90,16 +90,23 @@ namespace edenproxy {
   private:
     eosio::name      contract;
     voter_table_type voter_tb;
+    voter_table_type voter_tb_inactive;
 
   public:
     voters( eosio::name contract )
-        : contract( contract ), voter_tb( contract, contract.value ) {}
+        : contract( contract ), voter_tb( contract, contract.value ),
+          voter_tb_inactive( contract, "inactive"_n.value ) {}
 
-    const voter_table_type &get_table() const { return voter_tb; }
+    const voter_table_type &get_table( bool active = true ) const {
+      return active ? voter_tb : voter_tb_inactive;
+    }
 
+    bool is_active( eosio::name owner );
+    bool is_inactive( eosio::name owner );
+    bool exist( eosio::name owner );
     void on_signup( eosio::name owner, eosio::name recipient );
     void check_resign( eosio::name owner );
-    void on_resign( eosio::name owner );
+    void remove( eosio::name owner );
     void on_changercpt( eosio::name owner, eosio::name recipient );
     void on_claim( eosio::name owner );
 

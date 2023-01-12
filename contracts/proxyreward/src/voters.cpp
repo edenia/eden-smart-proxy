@@ -29,21 +29,30 @@ namespace edenproxy {
   }
 
   void voters::activate( eosio::name owner ) {
-    auto voter_itr = voter_tb.find( owner.value );
+    auto voter_itr = voter_tb_inactive.find( owner.value );
 
-    voter_tb.modify( voter_itr, eosio::same_payer, [&]( auto &row ) {
-      row.value =
-          std::visit( [&]( auto &v ) { return voter_v1{ v }; }, row.value );
-    } );
+    if ( voter_itr != voter_tb_inactive.end() ) {
+      voter_tb.emplace( contract, [&]( auto &row ) {
+        row.value = std::visit( [&]( auto &v ) { return voter_v1{ v }; },
+                                voter_itr->value );
+      } );
+
+      voter_tb_inactive.erase( voter_itr );
+    }
   }
 
   void voters::deactivate( eosio::name owner ) {
     auto voter_itr = voter_tb.find( owner.value );
 
-    voter_tb.modify( voter_itr, eosio::same_payer, [&]( auto &row ) {
-      row.value =
-          std::visit( [&]( auto &v ) { return voter_v0{ v }; }, row.value );
-    } );
+    if ( voter_itr != voter_tb.end() ) {
+
+      voter_tb_inactive.emplace( contract, [&]( auto &row ) {
+        row.value = std::visit( [&]( auto &v ) { return voter_v0{ v }; },
+                                voter_itr->value );
+      } );
+
+      voter_tb.erase( voter_itr );
+    }
   }
 
   void voters::send_rewards( eosio::name owner, bool check = true ) {
@@ -93,6 +102,22 @@ namespace edenproxy {
     } );
   }
 
+  bool voters::is_active( eosio::name owner ) {
+    auto voter_itr = voter_tb.find( owner.value );
+
+    return voter_itr != voter_tb.end();
+  }
+
+  bool voters::is_inactive( eosio::name owner ) {
+    auto voter_itr = voter_tb_inactive.find( owner.value );
+
+    return voter_itr != voter_tb_inactive.end();
+  }
+
+  bool voters::exist( eosio::name owner ) {
+    return is_active( owner ) || is_inactive( owner );
+  }
+
   void voters::on_signup( eosio::name owner, eosio::name recipient ) {
     eosio::check( is_vote_delegated( owner ),
                   "Need to delegate the vote to " +
@@ -106,7 +131,8 @@ namespace edenproxy {
 
     auto voter_itr = voter_tb.find( owner.value );
 
-    eosio::check( voter_itr == voter_tb.end(), "Voter already exist" );
+    eosio::check( !is_active( owner ), "Voter already exist" );
+    eosio::check( !is_inactive( owner ), "Voter is inactive" );
 
     voter_tb.emplace( contract, [&]( auto &row ) {
       row.value = voter_v1{ { .owner = owner, .recipient = recipient } };
@@ -114,17 +140,18 @@ namespace edenproxy {
   }
 
   void voters::check_resign( eosio::name owner ) {
-    auto voter_itr = voter_tb.find( owner.value );
+    eosio::check( exist( owner ), "Voter does not exist" );
 
-    eosio::check( voter_itr != voter_tb.end(), "Voter does not exist" );
+    auto voter_itr = is_active( owner ) ? voter_tb.find( owner.value )
+                                        : voter_tb_inactive.find( owner.value );
+
     eosio::check( voter_itr->unclaimed() == 0,
                   "Need to claim the funds before to resign" );
-    eosio::check( !distributions( contract ).is_distribution_in_progress(),
-                  "Cannot resign while a distribution is in progress" );
   }
 
-  void voters::on_resign( eosio::name owner ) {
-    auto voter_itr = voter_tb.find( owner.value );
+  void voters::remove( eosio::name owner ) {
+    auto voter_itr = is_active( owner ) ? voter_tb.find( owner.value )
+                                        : voter_tb_inactive.find( owner.value );
     voter_tb.erase( voter_itr );
   }
 
@@ -133,6 +160,9 @@ namespace edenproxy {
       eosio::check( eosio::is_account( new_recipient ),
                     "Recipient is not an account" );
     }
+
+    eosio::check( !is_inactive( owner ),
+                  "Cannot change the recipient of an inactive account" );
 
     auto voter_itr = voter_tb.find( owner.value );
 
@@ -146,7 +176,8 @@ namespace edenproxy {
   void voters::on_claim( eosio::name owner ) {
     auto voter_itr = voter_tb.find( owner.value );
 
-    eosio::check( voter_itr != voter_tb.end(), "Voter does not exist" );
+    eosio::check( exist( owner ), "Voter does not exist" );
+    eosio::check( !is_inactive( owner ), "Your account is inactive" );
     eosio::check( voter_itr->recipient() != eosio::name{},
                   "Claiming has been blocked for " + owner.to_string() );
 

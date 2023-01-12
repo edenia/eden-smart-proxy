@@ -44,8 +44,8 @@ namespace edenproxy {
       action( signup, owner, recipient ),
       action( resign, owner ),
       action( changercpt, owner, recipient ),
-      action( claim, owner ),
       action( distribute, max_steps ),
+      action( claim, owner ),
       action( receipt, owner, reward, staked, unclaimed, distribution_time ),
       notify( SUPPORTED_TOKEN_CONTRACT, transfer ) )
 

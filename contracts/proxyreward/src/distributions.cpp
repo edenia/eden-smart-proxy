@@ -45,8 +45,6 @@ namespace edenproxy {
 
     for ( ; voter_itr != voter_table.end() && max_steps > 0;
           ++voter_itr, --max_steps ) {
-      // TODO: move the inactive voter to another scope to avoid
-      // validating if they are active when calculating the reward
       if ( is_vote_delegated( voter_itr->owner() ) ) {
         voters.activate( voter_itr->owner() );
         int64_t staked_by_account = get_staked_amount( voter_itr->owner() );
@@ -74,7 +72,6 @@ namespace edenproxy {
     auto   total_distributed = eosio::asset( 0, SUPPORTED_TOKEN_SYMBOL );
 
     for ( ; voter_itr != end_itr && max_steps > 0; ++voter_itr, --max_steps ) {
-      // TODO: look for a solution to avoid to valide if the user is active
       if ( auto *itr = std::get_if< voter_v1 >( &voter_itr->value ) ) {
         auto         staked_by_account = get_staked_amount( itr->owner );
         eosio::asset reward = staked_by_account * curr_dist.total_distribution;
@@ -92,7 +89,6 @@ namespace edenproxy {
                         eosio::asset( itr->unclaimed, SUPPORTED_TOKEN_SYMBOL ),
                         eosio::time_point_sec( eosio::current_time_point() ) ) )
             .send();
-      } else {
       }
     }
 
