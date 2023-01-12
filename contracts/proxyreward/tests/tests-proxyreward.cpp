@@ -23,7 +23,6 @@ TEST_CASE( "Init Smart Contract" ) {
       eosio::time_point_sec( 1672642800 ) ); // == January 02, 2023 07:00 AM UTC
 }
 
-#ifdef ENABLE_TESTING_BYPASS
 TEST_CASE( "Sign up and remove" ) {
   tester t;
 
@@ -81,7 +80,6 @@ TEST_CASE( "Sign up and remove" ) {
   expect( t.fakeaccount.trace< edenproxy::actions::resign >( "account.fake"_n ),
           "Voter does not exist" );
 }
-#endif
 
 TEST_CASE( "Change the Recipient" ) {
   tester t;
@@ -105,6 +103,58 @@ TEST_CASE( "Change the Recipient" ) {
   expected["alice"_n] = "bob"_n;
 
   CHECK( t.get_recipients() == expected );
+}
+
+TEST_CASE( "Send tokens from fake contract and symbol" ) {
+  tester t;
+
+  t.fund_accounts();
+
+  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.alice.with_code( "fake.token"_n )
+      .act< token::actions::transfer >( "alice"_n,
+                                        edenproxy::default_funding_contract,
+                                        s2a( "500.0000 EOS" ),
+                                        "donation" );
+  t.alice.with_code( "fake.token"_n )
+      .act< token::actions::transfer >( "alice"_n,
+                                        "edenproxyrwd"_n,
+                                        s2a( "500.0000 EOS" ),
+                                        "donation" );
+  t.alice.act< token::actions::transfer >( "alice"_n,
+                                           "edenproxyrwd"_n,
+                                           s2a( "500.0000 OTHER" ),
+                                           "donation" );
+
+  expect( t.alice.trace< token::actions::transfer >(
+              "alice"_n,
+              edenproxy::default_funding_contract,
+              s2a( "500.0000 OTHER" ),
+              "donation" ),
+          "Invalid token symbol" );
+
+  CHECK( t.get_account().balance == s2a( "0.0000 EOS" ) );
+
+  t.alice.act< token::actions::transfer >( "alice"_n,
+                                           edenproxy::default_funding_contract,
+                                           s2a( "500.0000 EOS" ),
+                                           "donation" );
+  t.chain.as( "eosio"_n )
+      .act< token::actions::transfer >( "eosio"_n,
+                                        edenproxy::default_funding_contract,
+                                        s2a( "500.0000 EOS" ),
+                                        "donation" );
+  t.alice.act< token::actions::transfer >( "alice"_n,
+                                           "edenproxyrwd"_n,
+                                           s2a( "500.0000 EOS" ),
+                                           "donation" );
+  t.chain.as( "eosio"_n )
+      .act< token::actions::transfer >( "eosio"_n,
+                                        "edenproxyrwd"_n,
+                                        s2a( "500.0000 EOS" ),
+                                        "donation" );
+
+  CHECK( t.get_account().balance == s2a( "1000.0000 EOS" ) );
 }
 
 TEST_CASE( "Receive the inflation amount" ) {

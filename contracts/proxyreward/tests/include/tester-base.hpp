@@ -29,7 +29,10 @@ void proxyfunds_setup( test_chain &t ) {
 
 void token_setup( test_chain &t ) {
   t.create_code_account( "eosio.token"_n );
+  t.create_code_account( "fake.token"_n );
+
   t.set_code( "eosio.token"_n, "token.wasm" );
+  t.set_code( "fake.token"_n, "token.wasm" );
 
   t.as( "eosio.token"_n )
       .act< token::actions::create >( "eosio.token"_n,
@@ -45,11 +48,22 @@ void token_setup( test_chain &t ) {
       .act< token::actions::issue >( "eosio.token"_n,
                                      s2a( "9000000000000.0000 OTHER" ),
                                      "" );
+
+  t.as( "fake.token"_n )
+      .with_code( "fake.token"_n )
+      .act< token::actions::create >( "fake.token"_n,
+                                      s2a( "9000000000000.0000 EOS" ) );
+  t.as( "fake.token"_n )
+      .with_code( "fake.token"_n )
+      .act< token::actions::issue >( "fake.token"_n,
+                                     s2a( "9000000000000.0000 EOS" ),
+                                     "" );
 }
 
 struct tester {
   test_chain   chain;
   user_context token = chain.as( "eosio.token"_n );
+  user_context faketoken = chain.as( "fake.token"_n );
   user_context eden = chain.as( "genesis.eden"_n );
   user_context edenprxfunds = chain.as( "edenprxfunds"_n );
   user_context edenproxyrwd = chain.as( "edenproxyrwd"_n );
@@ -97,8 +111,13 @@ struct tester {
   }
 
   void fund_accounts() {
-    for ( auto account :
-          { "alice"_n, "bob"_n, "pip"_n, "egeon"_n, "bertie"_n, "ahab"_n } ) {
+    for ( auto account : { "eosio"_n,
+                           "alice"_n,
+                           "bob"_n,
+                           "pip"_n,
+                           "egeon"_n,
+                           "bertie"_n,
+                           "ahab"_n } ) {
       chain.as( "eosio.token"_n )
           .act< token::actions::transfer >( "eosio.token"_n,
                                             account,
@@ -109,6 +128,13 @@ struct tester {
           .act< token::actions::transfer >( "eosio.token"_n,
                                             account,
                                             s2a( "1000000000000.0000 OTHER" ),
+                                            "memo" );
+
+      chain.as( "fake.token"_n )
+          .with_code( "fake.token"_n )
+          .act< token::actions::transfer >( "fake.token"_n,
+                                            account,
+                                            s2a( "1000000000000.0000 EOS" ),
                                             "memo" );
     }
   }

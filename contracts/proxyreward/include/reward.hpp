@@ -47,6 +47,6 @@ namespace edenproxy {
       action( claim, owner ),
       action( distribute, max_steps ),
       action( receipt, owner, reward, staked, unclaimed, distribution_time ),
-      notify( "eosio.token"_n, transfer ) )
+      notify( SUPPORTED_TOKEN_CONTRACT, transfer ) )
 
 } // namespace edenproxy
