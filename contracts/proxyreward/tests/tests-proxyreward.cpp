@@ -23,7 +23,6 @@ TEST_CASE( "Init Smart Contract" ) {
       eosio::time_point_sec( 1672642800 ) ); // == January 02, 2023 07:00 AM UTC
 }
 
-// TODO: update tests to consider inactive scope in voters table
 TEST_CASE( "Sign up and remove" ) {
   tester t;
 
