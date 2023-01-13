@@ -216,7 +216,7 @@ TEST_CASE( "Distribute" ) {
       { "pip"_n, { 500000, 0, 853333 } } };
 
   CHECK( t.get_voters() == expected );
-  CHECK( t.get_account().balance == s2a( "0.0000 EOS" ) );
+  CHECK( t.get_account().balance == s2a( "0.0002 EOS" ) );
 
   expect( t.alice.trace< edenproxy::actions::claim >( "bob"_n ),
           "Missing required authority" );
@@ -242,7 +242,7 @@ TEST_CASE( "Distribute" ) {
   expect( t.alice.trace< edenproxy::actions::distribute >( 100 ),
           "Nothing to do" );
 
-  CHECK( t.get_account().balance == s2a( "0.0000 EOS" ) );
+  CHECK( t.get_account().balance == s2a( "600.0002 EOS" ) );
 
   t.chain.start_block();
   t.alice.act< edenproxy::actions::distribute >( 100 );
@@ -255,6 +255,7 @@ TEST_CASE( "Distribute" ) {
   expected["pip"_n] = { 500000, 0, 1853333 };
 
   CHECK( t.get_voters() == expected );
+  CHECK( t.get_account().balance == s2a( "0.0002 EOS" ) );
 }
 
 TEST_CASE( "Slow distribution" ) {
@@ -296,7 +297,7 @@ TEST_CASE( "Slow distribution" ) {
   expect( t.alice.trace< edenproxy::actions::distribute >( 1 ),
           "Nothing to do" );
 
-  CHECK( t.get_account().balance == s2a( "0.0000 EOS" ) );
+  CHECK( t.get_account().balance == s2a( "0.0002 EOS" ) );
 
   std::map< eosio::name, std::vector< uint64_t > > expected{
       { "ahab"_n, { 500000, 0, 853333 } },
