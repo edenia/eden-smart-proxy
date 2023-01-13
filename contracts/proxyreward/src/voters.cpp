@@ -155,18 +155,20 @@ namespace edenproxy {
     voter_tb.erase( voter_itr );
   }
 
-  void voters::on_changercpt( eosio::name owner, eosio::name new_recipient ) {
-    if ( new_recipient != eosio::name{} ) {
-      eosio::check( eosio::is_account( new_recipient ),
-                    "Recipient is not an account" );
-    }
-
+  void voters::on_changercpt( eosio::name owner,
+                              eosio::name new_recipient,
+                              bool        admin = false ) {
     eosio::check( !is_inactive( owner ),
                   "Cannot change the recipient of an inactive account" );
 
     auto voter_itr = voter_tb.find( owner.value );
 
     eosio::check( voter_itr != voter_tb.end(), "Voter does not exist" );
+
+    if ( !admin ) {
+      eosio::check( voter_itr->recipient() != eosio::name{},
+                    "Your account has been block by admins" );
+    }
 
     voter_tb.modify( voter_itr, eosio::same_payer, [&]( auto &row ) {
       row.recipient() = new_recipient;

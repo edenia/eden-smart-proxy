@@ -107,7 +107,7 @@ namespace edenproxy {
     void on_signup( eosio::name owner, eosio::name recipient );
     void check_resign( eosio::name owner );
     void remove( eosio::name owner );
-    void on_changercpt( eosio::name owner, eosio::name recipient );
+    void on_changercpt( eosio::name owner, eosio::name recipient, bool admin );
     void on_claim( eosio::name owner );
 
     void set_staked( eosio::name account, uint64_t staked );

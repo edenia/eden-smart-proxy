@@ -6,5 +6,5 @@ EOSIO_ACTION_DISPATCHER( edenproxy::actions )
 
 EOSIO_ABIGEN( actions( edenproxy::actions ),
               table( "distribution"_n, edenproxy::distribution_variant ),
-              //   table( "settings"_n, edenproxy::settings_variant ),
+              table( "account"_n, edenproxy::account_variant ),
               table( "voter"_n, edenproxy::voter_variant ) )

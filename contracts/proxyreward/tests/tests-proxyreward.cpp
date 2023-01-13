@@ -90,15 +90,19 @@ TEST_CASE( "Change the Recipient" ) {
 
   CHECK( t.get_recipients() == expected );
 
-  expect( t.bob.trace< edenproxy::actions::changercpt >( "alice"_n, "bob"_n ),
+  expect( t.bob.trace< edenproxy::actions::changercpt >( "alice"_n,
+                                                         "bob"_n,
+                                                         false ),
           "Missing required authority" );
+  expect( t.alice.trace< edenproxy::actions::changercpt >( "alice"_n,
+                                                           "bob2"_n,
+                                                           false ),
+          "Recipient is not an account" );
   expect(
-      t.alice.trace< edenproxy::actions::changercpt >( "alice"_n, "bob2"_n ),
-      "Recipient is not an account" );
-  expect( t.bob.trace< edenproxy::actions::changercpt >( "bob"_n, "bob"_n ),
-          "Voter does not exist" );
+      t.bob.trace< edenproxy::actions::changercpt >( "bob"_n, "bob"_n, false ),
+      "Voter does not exist" );
 
-  t.alice.trace< edenproxy::actions::changercpt >( "alice"_n, "bob"_n );
+  t.alice.trace< edenproxy::actions::changercpt >( "alice"_n, "bob"_n, false );
 
   expected["alice"_n] = "bob"_n;
 
@@ -401,10 +405,28 @@ TEST_CASE( "Disable claim funds for an account" ) {
   t.alice.act< edenproxy::actions::distribute >( 100 );
   t.chain.start_block();
 
-  expect( t.bob.trace< edenproxy::actions::changercpt >( "alice"_n, ""_n ),
-          "Missing required authority" );
+  expect(
+      t.bob.trace< edenproxy::actions::changercpt >( "alice"_n, ""_n, false ),
+      "Missing required authority" );
 
-  t.edenproxyrwd.act< edenproxy::actions::changercpt >( "alice"_n, ""_n );
+  expect( t.edenproxyrwd.trace< edenproxy::actions::changercpt >( "alice"_n,
+                                                                  ""_n,
+                                                                  false ),
+          "Missing required authority" );
+  expect(
+      t.alice.trace< edenproxy::actions::changercpt >( "alice"_n, ""_n, true ),
+      "Missing required authority" );
+  expect( t.edenproxyrwd.trace< edenproxy::actions::changercpt >( "alice"_n,
+                                                                  "bob"_n,
+                                                                  true ),
+          "Admin can only ban" );
+
+  t.edenproxyrwd.act< edenproxy::actions::changercpt >( "alice"_n, ""_n, true );
+
+  expect( t.alice.trace< edenproxy::actions::changercpt >( "alice"_n,
+                                                           "alice"_n,
+                                                           false ),
+          "Your account has been block by admins" );
 
   expected["alice"_n] = eosio::name{};
 

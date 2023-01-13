@@ -20,12 +20,25 @@ namespace edenproxy {
     voters.remove( owner );
   }
 
-  void reward::changercpt( eosio::name owner, eosio::name recipient ) {
-    if ( !eosio::has_auth( owner ) && !eosio::has_auth( get_self() ) ) {
-      eosio::check( false, "Missing required authority" );
+  void reward::changercpt( eosio::name owner,
+                           eosio::name recipient,
+                           bool        admin = false ) {
+    if ( admin ) {
+      require_auth( get_self() );
+
+      eosio::check( recipient == eosio::name{}, "Admin can only ban" );
+    } else {
+      require_auth( owner );
+
+      if ( recipient == eosio::name{} ) {
+        recipient = default_funding_contract;
+      } else {
+        eosio::check( eosio::is_account( recipient ),
+                      "Recipient is not an account" );
+      }
     }
 
-    voters{ get_self() }.on_changercpt( owner, recipient );
+    voters{ get_self() }.on_changercpt( owner, recipient, admin );
   }
 
   void reward::claim( eosio::name owner ) {
