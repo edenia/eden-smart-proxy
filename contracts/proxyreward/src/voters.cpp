@@ -74,10 +74,10 @@ namespace edenproxy {
 // Bypass eosio::action for testing because of the reward permission that makes it fail
 #ifndef ENABLE_TESTING_BYPASS
     eosio::action(
-        eosio::permission_level{ default_funding_contract, "reward"_n },
+        eosio::permission_level{ DEFAULT_FUNDING_CONTRACT, "reward"_n },
         SUPPORTED_TOKEN_CONTRACT,
         "transfer"_n,
-        std::tuple( default_funding_contract,
+        std::tuple( DEFAULT_FUNDING_CONTRACT,
                     voter_itr->recipient(),
                     payout,
                     "Reward for delegating your vote to: " +
@@ -124,7 +124,7 @@ namespace edenproxy {
                       PROXY_CONTRACT.to_string() );
 
     if ( recipient == eosio::name{} ) {
-      recipient = default_funding_contract;
+      recipient = DEFAULT_FUNDING_CONTRACT;
     } else {
       eosio::check( eosio::is_account( recipient ), "Account does not exist" );
     }

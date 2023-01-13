@@ -11,10 +11,10 @@ namespace edenproxy {
 
     // validate transfers would be:
     // 1. from != get_self()
-    // 2. to != get_self() && to == default_funding_contract
+    // 2. to != get_self() && to == DEFAULT_FUNDING_CONTRACT
 
     if ( from == get_self() ||
-         ( to == get_self() || to != default_funding_contract ) ) {
+         ( to == get_self() || to != DEFAULT_FUNDING_CONTRACT ) ) {
       return;
     }
 

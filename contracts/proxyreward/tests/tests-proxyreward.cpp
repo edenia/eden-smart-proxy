@@ -117,7 +117,7 @@ TEST_CASE( "Send tokens from fake contract and symbol" ) {
   t.edenproxyrwd.act< edenproxy::actions::init >();
   t.alice.with_code( "fake.token"_n )
       .act< token::actions::transfer >( "alice"_n,
-                                        edenproxy::default_funding_contract,
+                                        edenproxy::DEFAULT_FUNDING_CONTRACT,
                                         s2a( "500.0000 EOS" ),
                                         "donation" );
   t.alice.with_code( "fake.token"_n )
@@ -132,7 +132,7 @@ TEST_CASE( "Send tokens from fake contract and symbol" ) {
 
   expect( t.alice.trace< token::actions::transfer >(
               "alice"_n,
-              edenproxy::default_funding_contract,
+              edenproxy::DEFAULT_FUNDING_CONTRACT,
               s2a( "500.0000 OTHER" ),
               "donation" ),
           "Invalid token symbol" );
@@ -140,12 +140,12 @@ TEST_CASE( "Send tokens from fake contract and symbol" ) {
   CHECK( t.get_account().balance == s2a( "0.0000 EOS" ) );
 
   t.alice.act< token::actions::transfer >( "alice"_n,
-                                           edenproxy::default_funding_contract,
+                                           edenproxy::DEFAULT_FUNDING_CONTRACT,
                                            s2a( "500.0000 EOS" ),
                                            "donation" );
   t.chain.as( "eosio"_n )
       .act< token::actions::transfer >( "eosio"_n,
-                                        edenproxy::default_funding_contract,
+                                        edenproxy::DEFAULT_FUNDING_CONTRACT,
                                         s2a( "500.0000 EOS" ),
                                         "donation" );
   t.alice.act< token::actions::transfer >( "alice"_n,
@@ -216,6 +216,7 @@ TEST_CASE( "Distribute" ) {
       { "pip"_n, { 500000, 0, 853333 } } };
 
   CHECK( t.get_voters() == expected );
+  CHECK( t.get_account().balance == s2a( "0.0000 EOS" ) );
 
   expect( t.alice.trace< edenproxy::actions::claim >( "bob"_n ),
           "Missing required authority" );
@@ -240,6 +241,8 @@ TEST_CASE( "Distribute" ) {
 
   expect( t.alice.trace< edenproxy::actions::distribute >( 100 ),
           "Nothing to do" );
+
+  CHECK( t.get_account().balance == s2a( "0.0000 EOS" ) );
 
   t.chain.start_block();
   t.alice.act< edenproxy::actions::distribute >( 100 );
@@ -292,6 +295,8 @@ TEST_CASE( "Slow distribution" ) {
 
   expect( t.alice.trace< edenproxy::actions::distribute >( 1 ),
           "Nothing to do" );
+
+  CHECK( t.get_account().balance == s2a( "0.0000 EOS" ) );
 
   std::map< eosio::name, std::vector< uint64_t > > expected{
       { "ahab"_n, { 500000, 0, 853333 } },
@@ -367,7 +372,7 @@ TEST_CASE( "Use default recipient if no one is set" ) {
   t.alice.act< edenproxy::actions::signup >( "alice"_n, ""_n );
 
   std::map< eosio::name, eosio::name > expected{
-      { "alice"_n, edenproxy::default_funding_contract } };
+      { "alice"_n, edenproxy::DEFAULT_FUNDING_CONTRACT } };
 
   CHECK( t.get_recipients() == expected );
 }

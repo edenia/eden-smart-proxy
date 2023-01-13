@@ -24,7 +24,7 @@ namespace edenproxy {
 
   public:
     accounts( eosio::name contract )
-        : contract( contract ), account_sing( contract, self_account.value ) {}
+        : contract( contract ), account_sing( contract, SELF_ACCOUNT.value ) {}
 
     void         on_init();
     eosio::asset get_balance();
@@ -34,5 +34,4 @@ namespace edenproxy {
 
     account_v0 account();
   };
-
 } // namespace edenproxy

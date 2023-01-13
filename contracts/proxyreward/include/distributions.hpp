@@ -63,5 +63,4 @@ namespace edenproxy {
 
     next_distribution distribution();
   };
-
 } // namespace edenproxy

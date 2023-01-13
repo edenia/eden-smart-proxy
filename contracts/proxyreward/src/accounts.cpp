@@ -43,5 +43,4 @@ namespace edenproxy {
     return std::visit( []( const auto &acc ) { return account_v0{ acc }; },
                        account_sing.get_or_default() );
   }
-
 } // namespace edenproxy

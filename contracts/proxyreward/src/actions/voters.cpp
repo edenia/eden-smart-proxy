@@ -31,7 +31,7 @@ namespace edenproxy {
       require_auth( owner );
 
       if ( recipient == eosio::name{} ) {
-        recipient = default_funding_contract;
+        recipient = DEFAULT_FUNDING_CONTRACT;
       } else {
         eosio::check( eosio::is_account( recipient ),
                       "Recipient is not an account" );

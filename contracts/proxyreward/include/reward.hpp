@@ -7,7 +7,6 @@
 #include <constants.hpp>
 #include <distributions.hpp>
 #include <voters.hpp>
-// #include <myvoteeosdao/myvoteeosdao.hpp>
 
 namespace edenproxy {
   class reward : public eosio::contract {
@@ -48,5 +47,4 @@ namespace edenproxy {
       action( claim, owner ),
       action( receipt, owner, reward, staked, unclaimed, distribution_time ),
       notify( SUPPORTED_TOKEN_CONTRACT, transfer ) )
-
 } // namespace edenproxy
