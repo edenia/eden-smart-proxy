@@ -12,13 +12,6 @@ target_include_directories(proxyreward PUBLIC include ../eden/src ../eden/includ
 target_link_libraries(proxyreward eosio-contract-simple-malloc)
 set_target_properties(proxyreward PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 
-# Build reward-debug.wasm
-# This is like reward.wasm, but includes debugging information.
-# add_executable(proxyreward-debug src/reward.cpp)
-# target_include_directories(proxyreward-debug PRIVATE include ../eden/src ../eden/include ../myvoteeosdao/include)
-# target_link_libraries(proxyreward-debug eosio-contract-simple-malloc-debug)
-# set_target_properties(proxyreward-debug PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-
 # Generate reward.abi
 # This is a 2-step process:
 # * Build reward.abi.wasm. This must link to eosio-contract-abigen.

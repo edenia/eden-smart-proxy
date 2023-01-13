@@ -6,7 +6,7 @@ project(smartproxy)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(ENABLE_TESTING_BYPASS ON CACHE BOOL "Enable testing to bypass restrictions")
+set(ENABLE_TESTING_BYPASS OFF CACHE BOOL "Enable testing to bypass restrictions")
 if(ENABLE_TESTING_BYPASS)
     add_definitions(-DENABLE_TESTING_BYPASS)
 endif()
