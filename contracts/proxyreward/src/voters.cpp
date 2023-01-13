@@ -129,11 +129,20 @@ namespace edenproxy {
       eosio::check( eosio::is_account( recipient ), "Account does not exist" );
     }
 
-    auto voter_itr = voter_tb.find( owner.value );
-
     eosio::check( !is_active( owner ), "Voter already exist" );
-    eosio::check( !is_inactive( owner ), "Voter is inactive" );
 
+    if ( is_inactive( owner ) ) {
+      auto voter_itr = voter_tb_inactive.find( owner.value );
+
+      voter_tb.emplace( contract,
+                        [&]( auto &row ) { row.value = voter_itr->value; } );
+
+      voter_tb_inactive.erase( voter_itr );
+
+      return;
+    }
+
+    auto voter_itr = voter_tb.find( owner.value );
     voter_tb.emplace( contract, [&]( auto &row ) {
       row.value = voter_v1{ { .owner = owner, .recipient = recipient } };
     } );

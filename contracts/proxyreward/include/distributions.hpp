@@ -58,6 +58,7 @@ namespace edenproxy {
     void update_voters( uint32_t &max_steps, prepare_distribution &prep_dist );
     void distribute_rewards( uint32_t             &max_steps,
                              current_distribution &curr_dist );
+    void set_next_distribution( eosio::time_point_sec prev_distribution_time );
     bool is_distribution_in_progress();
 
     next_distribution distribution();
