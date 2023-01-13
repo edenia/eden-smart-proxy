@@ -157,28 +157,17 @@ struct tester {
   };
 
   auto get_voters() const {
-    eosio::print( "\n\nGET_VOTERS\n" );
     std::map< eosio::name, std::vector< uint64_t > > result;
     edenproxy::voter_table_type                      voter_tb{ "edenproxyrwd"_n,
                                           "edenproxyrwd"_n.value };
 
     for ( auto t : voter_tb ) {
       if ( auto *voter = std::get_if< edenproxy::voter_v1 >( &t.value ) ) {
-        eosio::print( "VOTER: ",
-                      voter->owner,
-                      " STAKED: ",
-                      voter->staked,
-                      " CLAIMED: ",
-                      voter->claimed,
-                      " UNCLAIMED: ",
-                      voter->unclaimed,
-                      "\n" );
         result.insert( std::pair(
             voter->owner,
             std::vector{ voter->staked, voter->claimed, voter->unclaimed } ) );
       }
     }
-    eosio::print( "FINISH_GET_VOTERS\n" );
 
     return result;
   };

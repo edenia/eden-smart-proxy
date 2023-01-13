@@ -252,17 +252,6 @@ TEST_CASE( "Distribute" ) {
   expected["pip"_n] = { 500000, 0, 1853333 };
 
   CHECK( t.get_voters() == expected );
-
-  // Validate voter data is updated as expected
-  // 1. account stop delegating their vote
-  // 2. check user structure has changed
-  // 3. account start delegating their vote again
-  // - 4. check staked is the right amount
-  // - 5. check unclaimed is the right amount
-  // - 6. check last_update_time is the right date
-  // 7. voter is with inactive structure, then the function get him active back again with the right structure and values
-  // - 8. check reward value is right according to the formula
-  // - 9. check reward can only happen in the right time
 }
 
 TEST_CASE( "Slow distribution" ) {
@@ -434,6 +423,35 @@ TEST_CASE( "Disable claim funds for an account" ) {
 
   expect( t.alice.trace< edenproxy::actions::claim >( "alice"_n ),
           "Claiming has been blocked for alice" );
+}
+
+TEST_CASE( "Skip distribution if there are no accounts" ) {
+  tester t;
+
+  t.fund_accounts();
+  t.skip_to( "2023-01-01T07:00:00.000" );
+
+  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.alice.act< token::actions::transfer >( "alice"_n,
+                                           "edenprxfunds"_n,
+                                           s2a( "512.0000 EOS" ),
+                                           "donation" );
+
+  t.skip_to( "2023-01-02T07:00:00.000" );
+  t.alice.act< edenproxy::actions::distribute >( 1 );
+  t.chain.start_block();
+
+  CHECK(
+      t.get_distribution().distribution_time ==
+      eosio::time_point_sec( 1672729200 ) ); // == January 03, 2023 07:00 AM UTC
+
+  t.skip_to( "2023-01-03T07:00:00.000" );
+  t.alice.act< edenproxy::actions::distribute >( 1 );
+  t.chain.start_block();
+
+  CHECK(
+      t.get_distribution().distribution_time ==
+      eosio::time_point_sec( 1672815600 ) ); // == January 04, 2023 07:00 AM UTC
 }
 
 // TODO: test scenarios where the voter is not active
