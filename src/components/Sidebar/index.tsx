@@ -30,6 +30,7 @@ import Styles from './styles'
 import VoterSvg from './Voter.svg'
 import VoteSvg from './Vote.svg'
 import AboutSvg from './About.svg'
+import DelegatorSvg from './Delegator.svg'
 
 const useStyles = Styles
 
@@ -130,7 +131,20 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
             </Link>
           </div>
           <div className={classes.scrollbar}>
-            <Link href={'/about'} passHref>
+            <Link href={'/delegator'} passHref>
+              <div
+                className={clsx(classes.navLink, {
+                  [classes.selected]: '/delegator' === router.pathname
+                })}
+              >
+                <DelegatorSvg />
+                <Typography variant='subtitle1' className={classes.navLabel}>
+                  {t('routes.delegator')}
+                </Typography>
+                <p />
+              </div>
+            </Link>
+            <Link href={'/delegator'} passHref>
               <div
                 className={clsx(classes.navLink, {
                   [classes.selected]: '/about' === router.pathname

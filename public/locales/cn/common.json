@@ -20,7 +20,8 @@
     "successfulVote": "投票成功",
     "somethingWrong": "出错，请重试",
     "signin": "登录",
-    "logout": "登录"
+    "logout": "登录",
+    "delegator": "委託人"
   },
   "about": {
     "votersMetaTitle": "关于投票者",
@@ -120,6 +121,18 @@
   },
   "footer": {
     "communityOwnedPublic": "由以下人员开发的社区拥有的公共物品",
-    "and": "和"
+    "and": "和",
+    "developedEdenia": "Developed by Edenia"
+  },
+  "delegator": {
+    "delegatorMetaTitle": "委託人",
+    "delegate": "Delegate",
+    "sendTo": "Sent To",
+    "claim": "Claim",
+    "delegateStatus": "Your account delegate status",
+    "recipient": "Recipient account",
+    "rewards": "Your rewards",
+    "noDelegate": "Not Delegated Yet",
+    "submit": "Submit"
   }
 }

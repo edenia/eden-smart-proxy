@@ -150,6 +150,8 @@ export const useSharedState = (): any => {
     dispatchTemp({ type: 'setImg', payload: img })
   }
 
+  console.log({ stateTemp })
+
   return [
     stateTemp,
     {

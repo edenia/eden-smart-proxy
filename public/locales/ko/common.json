@@ -20,7 +20,8 @@
     "successfulVote": "투표 완료",
     "somethingWrong": "문제가 발생했습니다. 다시 시도해주세요.",
     "signin": "로그인",
-    "logout": "로그아웃"
+    "logout": "로그아웃",
+    "delegator": "위임자"
   },
   "about": {
     "votersMetaTitle": "소개",
@@ -121,6 +122,18 @@
   },
   "footer": {
     "communityOwnedPublic": "에 의해 개발된 커뮤니티 소유의 공공재",
-    "and": "그리고"
+    "and": "그리고",
+    "developedEdenia": "Developed by Edenia"
+  },
+  "delegator": {
+    "delegatorMetaTitle": "위임자",
+    "delegate": "Delegate",
+    "sendTo": "Sent To",
+    "claim": "Claim",
+    "delegateStatus": "Your account delegate status",
+    "recipient": "Recipient account",
+    "rewards": "Your rewards",
+    "noDelegate": "Not Delegated Yet",
+    "submit": "Submit"
   }
 }

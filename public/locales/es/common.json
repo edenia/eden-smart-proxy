@@ -20,7 +20,8 @@
     "successfulVote": "Voto Exitoso",
     "somethingWrong": "Algo salió mal, inténtalo de nuevo",
     "signin": "Iniciar sesión",
-    "logout": "Salir"
+    "logout": "Salir",
+    "delegator": "Delegator"
   },
   "about": {
     "votersMetaTitle": "Acerca de",
@@ -120,6 +121,18 @@
   },
   "footer": {
     "communityOwnedPublic": "Un bien publico comunitario desarrollado por",
-    "and": "y"
+    "and": "y",
+    "developedEdenia": "Desarrollo por Edenia"
+  },
+  "delegator": {
+    "delegatorMetaTitle": "Delegador",
+    "delegate": "Delegar",
+    "sendTo": "Enviar a",
+    "claim": "reclamar",
+    "delegateStatus": "Estado de tu cuenta de delegado",
+    "recipient": "Cuenta del destinatario",
+    "rewards": "Tus recompensas",
+    "noDelegate": "No delegado aún",
+    "submit": "Enviar"
   }
 }

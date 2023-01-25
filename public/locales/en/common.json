@@ -20,7 +20,8 @@
     "successfulVote": "Voted Successfully.",
     "somethingWrong": "Something went wrong, try again.",
     "signin": "Login",
-    "logout": "Logout"
+    "logout": "Logout",
+    "delegator": "Delegator"
   },
   "about": {
     "votersMetaTitle": "About",
@@ -120,6 +121,18 @@
   },
   "footer": {
     "communityOwnedPublic": "A Community Owned Public Good Developed by",
-    "and": "and"
+    "and": "and",
+    "developedEdenia": "Developed by Edenia"
+  },
+  "delegator": {
+    "delegatorMetaTitle": "Delegator",
+    "delegate": "Delegate",
+    "sendTo": "Sent To",
+    "claim": "Claim",
+    "delegateStatus": "Your account delegate status",
+    "recipient": "Recipient account",
+    "rewards": "Your rewards",
+    "noDelegate": "Not Delegated Yet",
+    "submit": "Submit"
   }
 }
