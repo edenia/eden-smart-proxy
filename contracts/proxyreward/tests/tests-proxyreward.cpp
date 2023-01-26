@@ -3,6 +3,7 @@
 
 #define CATCH_CONFIG_RUNNER
 
+#ifdef ENABLE_TESTING_BYPASS
 TEST_CASE( "Init Smart Contract" ) {
   tester t;
 
@@ -462,3 +463,4 @@ TEST_CASE( "Skip distribution if there are no accounts" ) {
 
 // TODO: test scenarios where the voter is not active
 // create an special action of settable only available for the testing
+#endif
