@@ -40,7 +40,7 @@ namespace edenproxy {
                  flags1,
                  reserved2,
                  reserved3 )
-  typedef eosio::multi_index< "eosiovoters"_n, voter_info > eosio_voters_table;
+  typedef eosio::multi_index< "voters"_n, voter_info > eosio_voters_table;
 
   int64_t     get_staked_amount( eosio::name account );
   eosio::name get_voter_proxy( eosio::name account );
