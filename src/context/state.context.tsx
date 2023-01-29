@@ -50,7 +50,8 @@ const sharedStateReducer = (state, action): stateType => {
       return {
         ...state,
         ual: action.ual,
-        isLogout: false
+        isLogout: false,
+        user: { accountName: action?.ual?.accountName || null }
       }
     }
 
@@ -150,7 +151,12 @@ export const useSharedState = (): any => {
     dispatchTemp({ type: 'setImg', payload: img })
   }
 
-  console.log({ stateTemp })
+  const setDelegateStateByUser = delegateState => {
+    dispatchTemp({
+      type: 'setUser',
+      payload: { ...stateTemp.user, delegateState }
+    })
+  }
 
   return [
     stateTemp,
@@ -161,7 +167,8 @@ export const useSharedState = (): any => {
       loginDelegateVote,
       logout,
       handleOpenMenu,
-      handleCloseMenu
+      handleCloseMenu,
+      setDelegateStateByUser
     }
   ]
 }

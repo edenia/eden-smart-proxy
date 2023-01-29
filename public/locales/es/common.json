@@ -133,6 +133,18 @@
     "recipient": "Cuenta del destinatario",
     "rewards": "Tus recompensas",
     "noDelegate": "No delegado aún",
-    "submit": "Enviar"
+    "submit": "Enviar",
+    "projectedRewards": "Recompensas Proyectadas (EOS)",
+    "delegateVote": "Delega tu voto para comenzar a recibir recompensas.",
+    "reviewClaim": "Revisa y reclame sus recompensas.",
+    "currentApy": "APY Actual",
+    "yourRewards": "Tus recompensas",
+    "legend": "La recompensa no está activada ahora. Si desea instar a los BP a activar la recompensa de inflación directa, indique cuánta inflación debe dedicarse a la recompensa de compra sin voto en todo el sistema. Elija: 0%, 0.25% , 0,5%, 0,75%, 1%.",
+    "delegateVoteMessage": "Voto Delegado Exitosamente",
+    "somethingWrong": "Algo salió mal, inténtalo de nuevo",
+    "claimMessage": "Recompensa Reclamada",
+    "account": "Cuenta",
+    "active": "Activo",
+    "undelegado": "Anular el delegado"
   }
 }

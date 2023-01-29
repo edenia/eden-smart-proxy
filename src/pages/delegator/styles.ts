@@ -4,21 +4,69 @@ const Styles = makeStyles(theme => ({
   topInfo: {
     padding: theme.spacing(4, 2, 2),
     alignItems: 'center',
+    flexDirection: 'column',
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row'
+    }
   },
   columnBlock: {
     display: 'flex',
     justifyContent: 'space-between',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: 'auto'
+    }
+  },
+  currentReward: {
+    flexDirection: 'row',
+    marginTop: theme.spacing(1),
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'column'
+    }
   },
   actionBox: {
     margin: theme.spacing(0, 2),
     padding: theme.spacing(2),
     display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderBottom: '1px solid rgba(0,0,0,0.12)'
+    borderBottom: '1px solid rgba(0,0,0,0.12)',
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row'
+    }
+  },
+  legend: {
+    borderLeft: '3px solid #2563EB',
+    display: 'flex',
+    height: 70,
+    marginLeft: theme.spacing(2)
+  },
+  legendInfo: {
+    margin: theme.spacing(2),
+    fontWeight: '400',
+    display: 'flex',
+    fontSize: 16,
+    lineHeight: '20px',
+    letterSpacing: '0.25px',
+    color: 'rgba(0, 0, 0, 0.87)'
+  },
+  graph: {
+    marginTop: theme.spacing(2),
+    height: 400
+  },
+  lastBlock: {
+    marginBottom: theme.spacing(2)
+  },
+  graphTitle: {
+    fontWeight: '700',
+    fontSize: 16,
+    padding: theme.spacing(2),
+    lineHeight: '20px',
+    color: '#000000'
   },
   btnAction: {
     textTransform: 'capitalize',
@@ -59,6 +107,11 @@ const Styles = makeStyles(theme => ({
   outlinedBtn: {
     backgroundColor: 'transparent',
     color: '#2563EB',
+    boxShadow: 'none'
+  },
+  outlinedBtnRed: {
+    backgroundColor: 'transparent',
+    color: '#C5283D',
     boxShadow: 'none'
   },
   accountSubmit: {
