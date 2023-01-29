@@ -42,7 +42,7 @@ const Styles = makeStyles(theme => ({
   legend: {
     borderLeft: '3px solid #2563EB',
     display: 'flex',
-    height: 70,
+    minHeight: 70,
     marginLeft: theme.spacing(2)
   },
   legendInfo: {
