@@ -140,6 +140,16 @@ const Styles = makeStyles(theme => ({
   },
   checked: {
     color: '#2563EB !important'
+  },
+  validatorBox: {
+    borderLeft: '3px solid #C5283D',
+    marginBottom: theme.spacing(4),
+    width: '100%'
+  },
+  signupBox: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   }
 }))
 

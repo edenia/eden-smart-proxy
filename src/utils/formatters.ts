@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 export const formatWithThousandSeparator = (
   value: string,
   precision: number
@@ -18,3 +19,20 @@ export const formatWithThousandSeparator = (
     comma[1] ? `.${comma[1]}` : ''
   }`
 }
+
+export const getActionFormat = (
+  account: string,
+  action: string,
+  accountName: string,
+  data: any
+): any => ({
+  account,
+  name: action,
+  authorization: [
+    {
+      actor: accountName,
+      permission: 'active'
+    }
+  ],
+  data
+})

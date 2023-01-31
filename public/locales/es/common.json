@@ -134,6 +134,7 @@
     "rewards": "Tus recompensas",
     "noDelegate": "No delegado aún",
     "submit": "Enviar",
+    "validate": "validar",
     "projectedRewards": "Recompensas Proyectadas (EOS)",
     "delegateVote": "Delega tu voto para comenzar a recibir recompensas.",
     "reviewClaim": "Revisa y reclame sus recompensas.",
@@ -143,8 +144,10 @@
     "delegateVoteMessage": "Voto Delegado Exitosamente",
     "somethingWrong": "Algo salió mal, inténtalo de nuevo",
     "claimMessage": "Recompensa Reclamada",
+    "recipientMessage": "Destinatario cambiado",
     "account": "Cuenta",
     "active": "Activo",
-    "undelegado": "Anular el delegado"
+    "undelegado": "Anular el delegado",
+    "signupMessage": "Tu cuenta necesita un paso más para poder acceder a esta página, por favor has click en en boton de validar para poder continuar."
   }
 }

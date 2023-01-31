@@ -133,6 +133,7 @@
     "recipient": "Recipient account",
     "rewards": "Your rewards",
     "noDelegate": "Not Delegated Yet",
+    "validate": "validate",
     "submit": "Submit",
     "projectedRewards": "Projected Rewards (EOS)",
     "delegateVote": "Delegate your vote to start receiving rewards.",
@@ -143,6 +144,7 @@
     "delegateVoteMessage": "Vote Delegaded Successfully",
     "somethingWrong": "Something went wrong, try again.",
     "claimMessage": "Reward Claimed",
+    "recipientMessage": "Recipient Changed",
     "account": "Account",
     "active": "Active",
     "undelegate": "Undelegate"
