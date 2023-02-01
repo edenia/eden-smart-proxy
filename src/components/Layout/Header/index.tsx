@@ -28,7 +28,7 @@ type MessageObject = {
 }
 
 const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
-  const [state, { setDelegateStateByUser }] = useSharedState()
+  const [state] = useSharedState()
   const { t } = useTranslation()
   const classes = useStyles()
   const router = useRouter()
@@ -47,7 +47,6 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
       state?.ual?.activeUser?.accountName
     )
 
-    setDelegateStateByUser(delegateState === eosioUtil.VoteState.ForProxy)
     setShowDelegateButton(!(delegateState === eosioUtil.VoteState.ForProxy))
     setTotalVotesDelegate(await eosioUtil.getTotalEosVoteDelegate())
   }

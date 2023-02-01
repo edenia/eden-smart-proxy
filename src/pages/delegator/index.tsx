@@ -87,10 +87,21 @@ const Delegator: NextPage = () => {
   }, [state?.ual?.activeUser?.rpc, state.ual.accountName])
 
   useEffect(() => {
-    if (!state?.ual?.activeUser) return
+    if (
+      !state?.ual?.activeUser ||
+      (validatingData.isUserValid && !validatingData.loading)
+    )
+      return
 
     getVoterData()
-  }, [getVoterData, state])
+  }, [
+    state?.ual?.activeUser,
+    validatingData.isUserValid,
+    validatingData.loading,
+    getVoterData
+  ])
+
+  console.log({ validatingData })
 
   return (
     <>

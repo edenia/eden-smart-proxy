@@ -1,6 +1,6 @@
-import React, { useState, useCallback, ReactNode } from 'react'
+import React, { useState, useCallback, ReactNode, useEffect } from 'react'
 import { Button } from '@edenia/ui-kit'
-import { TextField, Switch, FormControlLabel, AlertColor } from '@mui/material'
+import { TextField, AlertColor } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import clsx from 'clsx'
 import {
@@ -71,9 +71,10 @@ const DelegatorAction: React.FC<DelegateBody> = ({
 }) => {
   const { t } = useTranslation()
   const classes = useStyles()
-  const [state, { setDelegateStateByUser }] = useSharedState()
+  const [state] = useSharedState()
   const [showSubmit, setShowSubmit] = useState(false)
   const [recipient, setRecipient] = useState('')
+  const [userVoteForProxy, setUserVoteForProxy] = useState(false)
   const [message, setMessage] = useState<MessageObject>({
     message: '',
     severity: 'success',
@@ -89,7 +90,7 @@ const DelegatorAction: React.FC<DelegateBody> = ({
       state?.ual?.activeUser?.accountName
     )
 
-    setDelegateStateByUser(delegateState === eosioUtil.VoteState.ForProxy)
+    setUserVoteForProxy(delegateState === eosioUtil.VoteState.ForProxy)
   }
 
   const delegateVote = async () => {
@@ -229,7 +230,15 @@ const DelegatorAction: React.FC<DelegateBody> = ({
     }
   }
 
-  if (isValidUser)
+  useEffect(() => {
+    const validateUserVote = async () => {
+      await validateHasDelegateVote()
+    }
+
+    validateUserVote()
+  }, [validateHasDelegateVote])
+
+  if (!isValidUser)
     return (
       <div className={classes.signupBox}>
         <div className={clsx(classes.legend, classes.validatorBox)}>
@@ -257,12 +266,12 @@ const DelegatorAction: React.FC<DelegateBody> = ({
             {t('delegator.delegateStatus')}:
           </span>
           <span className={classes.info}>
-            {state?.user?.delegateState
+            {userVoteForProxy
               ? t('delegator.active')
               : t('delegator.noDelegate')}
           </span>
         </div>
-        {state?.user?.delegateState ? (
+        {userVoteForProxy ? (
           <Button
             onClick={undelegateVote}
             label={t('delegator.undelegate')}
@@ -287,7 +296,7 @@ const DelegatorAction: React.FC<DelegateBody> = ({
             {t('delegator.recipient')}:
           </span>
           <span className={classes.info}>
-            {state?.user?.delegateState
+            {userVoteForProxy
               ? dalegateData?.recipient
               : t('delegator.noDelegate')}
           </span>
@@ -315,8 +324,8 @@ const DelegatorAction: React.FC<DelegateBody> = ({
             label={t('delegator.sendTo')}
             variant='primary'
             externalStyles={clsx(classes.btnAction, {
-              [classes.disabledBtn]: !state?.user?.delegateState,
-              [classes.outlinedBtn]: state?.user?.delegateState
+              [classes.disabledBtn]: !userVoteForProxy,
+              [classes.outlinedBtn]: userVoteForProxy
             })}
           />
         )}
@@ -325,27 +334,19 @@ const DelegatorAction: React.FC<DelegateBody> = ({
         <div>
           <span className={classes.titleLabel}>{t('delegator.rewards')}:</span>
           <span className={classes.info}>
-            {state?.user?.delegateState
+            {userVoteForProxy
               ? dalegateData?.unclaimed
               : t('delegator.noDelegate')}
           </span>
         </div>
         <div className={classes.claimBox}>
-          <FormControlLabel
-            value='start'
-            control={
-              <Switch color='primary' classes={{ checked: classes.checked }} />
-            }
-            label='Auto Claim'
-            labelPlacement='start'
-          />
           <Button
             onClick={claimReward}
             label={t('delegator.claim')}
             variant='primary'
             externalStyles={clsx(classes.btnAction, {
               [classes.disabledBtn]:
-                !state?.user?.delegateState || !dalegateData?.unclaimed
+                !userVoteForProxy || !dalegateData?.unclaimed
             })}
           />
         </div>
