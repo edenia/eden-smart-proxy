@@ -85,13 +85,13 @@ const DelegatorAction: React.FC<DelegateBody> = ({
     setRecipient(e.target.value)
   }
 
-  const validateHasDelegateVote = async () => {
+  const validateHasDelegateVote = useCallback(async () => {
     const delegateState = await eosioUtil.getVotingState(
       state?.ual?.activeUser?.accountName
     )
 
     setUserVoteForProxy(delegateState === eosioUtil.VoteState.ForProxy)
-  }
+  }, [setUserVoteForProxy, state?.ual?.activeUser?.accountName])
 
   const delegateVote = async () => {
     try {
