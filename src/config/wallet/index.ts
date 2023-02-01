@@ -17,5 +17,6 @@ const network: any = {
   ]
 }
 const authenticators = [new Anchor([network], { appName, verifyProofs: true })]
+const rewardAccount = 'edenproxyrwd'
 
-export default { rpcEndpoint, authenticators, appName, network }
+export default { rpcEndpoint, authenticators, appName, network, rewardAccount }

@@ -46,6 +46,7 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
     const delegateState = await eosioUtil.getVotingState(
       state?.ual?.activeUser?.accountName
     )
+
     setShowDelegateButton(!(delegateState === eosioUtil.VoteState.ForProxy))
     setTotalVotesDelegate(await eosioUtil.getTotalEosVoteDelegate())
   }
@@ -74,6 +75,7 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
   useEffect(() => {
     if (!state?.ual?.activeUser?.accountName) {
       setShowDelegateButton(true)
+
       return
     }
 
