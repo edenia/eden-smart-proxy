@@ -51,9 +51,7 @@ const Delegator: NextPage = () => {
       limit: 1
     })
 
-    console.log({ rows }) // TODO: this console if just for test
-
-    if (rows[0]) {
+    if (!rows.length) {
       setValidatingData({
         loading: false,
         isUserValid: false
@@ -69,16 +67,14 @@ const Delegator: NextPage = () => {
     }
 
     setDelegateData(
-      rows[0]
-        ? rows[0][1]
-        : {
-            claimed: 0,
-            last_claim_time: '',
-            owner: state.ual.accountName,
-            recipient: state.ual.accountName,
-            staked: 0,
-            unclaimed: 0
-          }
+      rows[0][1] || {
+        claimed: 0,
+        last_claim_time: '',
+        owner: state.ual.accountName,
+        recipient: state.ual.accountName,
+        staked: 0,
+        unclaimed: 0
+      }
     )
     setValidatingData({
       loading: false,
@@ -100,8 +96,6 @@ const Delegator: NextPage = () => {
     validatingData.loading,
     getVoterData
   ])
-
-  console.log({ validatingData })
 
   return (
     <>

@@ -106,7 +106,7 @@ const DelegatorAction: React.FC<DelegateBody> = ({
       })
       setMessage({
         severity: 'success',
-        message: t('routes.delegateVoteMessage'),
+        message: t('delegator.delegateVoteMessage'),
         visible: true
       })
       setTimeout(async () => {
@@ -116,7 +116,7 @@ const DelegatorAction: React.FC<DelegateBody> = ({
       console.error(error)
       setMessage({
         severity: 'error',
-        message: t('routes.somethingWrong'),
+        message: t('delegator.somethingWrong'),
         visible: true
       })
     }
@@ -146,7 +146,7 @@ const DelegatorAction: React.FC<DelegateBody> = ({
 
       setMessage({
         severity: 'success',
-        message: t('routes.recipientMessage'),
+        message: t('delegator.recipientMessage'),
         visible: true
       })
 
@@ -156,7 +156,7 @@ const DelegatorAction: React.FC<DelegateBody> = ({
       console.error(error)
       setMessage({
         severity: 'error',
-        message: t('routes.somethingWrong'),
+        message: t('delegator.somethingWrong'),
         visible: true
       })
     }
