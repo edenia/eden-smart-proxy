@@ -101,7 +101,7 @@ const DelegatorAction: React.FC<DelegateBody> = ({
 
       await state?.ual?.activeUser?.signTransaction(delegateVoteTrx, {
         blocksBehind: 3,
-        expireSeconds: 1200,
+        expireSeconds: 120,
         broadcast: true
       })
       setMessage({
@@ -138,9 +138,9 @@ const DelegatorAction: React.FC<DelegateBody> = ({
       await state.ual.activeUser.signTransaction(
         { actions: [entityTrx] },
         {
-          broadcast: false,
+          broadcast: true,
           blocksBehind: 3,
-          expireSeconds: 1200
+          expireSeconds: 120
         }
       )
 
@@ -164,9 +164,8 @@ const DelegatorAction: React.FC<DelegateBody> = ({
 
   const onCloseSnackBar: any = useCallback(
     (event?: React.SyntheticEvent, reason?: string) => {
-      if (reason === 'clickaway') {
-        return
-      }
+      if (reason === 'clickaway') return
+
       setMessage({ ...message, visible: false })
     },
     [message]
@@ -194,9 +193,9 @@ const DelegatorAction: React.FC<DelegateBody> = ({
       await state.ual.activeUser.signTransaction(
         { actions: [entityTrx] },
         {
-          broadcast: false,
+          broadcast: true,
           blocksBehind: 3,
-          expireSeconds: 1200
+          expireSeconds: 120
         }
       )
     } catch (error) {
@@ -219,9 +218,9 @@ const DelegatorAction: React.FC<DelegateBody> = ({
       await state.ual.activeUser.signTransaction(
         { actions: [entityTrx] },
         {
-          broadcast: false,
+          broadcast: true,
           blocksBehind: 3,
-          expireSeconds: 1200
+          expireSeconds: 120
         }
       )
       await getVoterData()

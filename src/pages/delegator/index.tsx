@@ -64,6 +64,8 @@ const Delegator: NextPage = () => {
         staked: 0,
         unclaimed: 0
       })
+
+      return
     }
 
     setDelegateData(
