@@ -144,7 +144,7 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
                 <p />
               </div>
             </Link>
-            <Link href={'/delegator'} passHref>
+            <Link href={'/about'} passHref>
               <div
                 className={clsx(classes.navLink, {
                   [classes.selected]: '/about' === router.pathname
