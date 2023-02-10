@@ -20,6 +20,8 @@ interface DelegateData {
   recipient: string
   staked: number
   unclaimed: number
+  unclaimedEOS: number
+  claimedEOS: number
 }
 
 const Delegator: NextPage = () => {
@@ -37,10 +39,14 @@ const Delegator: NextPage = () => {
     owner: '',
     recipient: '',
     staked: 0,
-    unclaimed: 0
+    unclaimed: 0,
+    claimedEOS: 0,
+    unclaimedEOS: 0
   })
 
   const getVoterData = useCallback(async () => {
+    if (!state?.ual?.accountName) return
+
     const { rows = [] } = await state?.ual?.activeUser?.rpc.get_table_rows({
       code: walletConfig.rewardAccount,
       scope: walletConfig.rewardAccount,
@@ -62,27 +68,40 @@ const Delegator: NextPage = () => {
         owner: state.ual.accountName,
         recipient: state.ual.accountName,
         staked: 0,
-        unclaimed: 0
+        unclaimed: 0,
+        claimedEOS: 0,
+        unclaimedEOS: 0
       })
 
       return
     }
 
+    const rewards = rows[0][1] || null
+    const exponent = Math.pow(10, 4)
+
     setDelegateData(
-      rows[0][1] || {
-        claimed: 0,
-        last_claim_time: '',
-        owner: state.ual.accountName,
-        recipient: state.ual.accountName,
-        staked: 0,
-        unclaimed: 0
-      }
+      rewards
+        ? {
+            ...rewards,
+            unclaimedEOS: rewards.unclaimed / exponent,
+            claimedEOS: rewards.claimed / exponent
+          }
+        : {
+            claimed: 0,
+            last_claim_time: '',
+            owner: state.ual.accountName,
+            recipient: state.ual.accountName,
+            staked: 0,
+            unclaimed: 0,
+            claimedEOS: 0,
+            unclaimedEOS: 0
+          }
     )
     setValidatingData({
       loading: false,
       isUserValid: true
     })
-  }, [state?.ual?.activeUser?.rpc, state.ual.accountName])
+  }, [state?.ual?.activeUser?.rpc, state?.ual?.accountName])
 
   useEffect(() => {
     if (
@@ -112,7 +131,9 @@ const Delegator: NextPage = () => {
             {`${t('delegator.currentApy')}: 7%`}
           </span>
           <span className={clsx(classes.title, classes.rightTitle)}>
-            {`${t('delegator.yourRewards')}: ${dalegateData?.claimed || 'N/A'}`}
+            {`${t('delegator.yourRewards')}: ${
+              dalegateData?.claimedEOS || '0'
+            } EOS`}
           </span>
         </div>
       </div>
