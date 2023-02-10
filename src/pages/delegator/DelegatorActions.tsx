@@ -51,6 +51,8 @@ interface DelegateData {
   recipient: string
   staked: number
   unclaimed: number
+  unclaimedEOS: number
+  claimedEOS: number
 }
 interface DelegateBody {
   isValidUser: boolean
@@ -198,6 +200,7 @@ const DelegatorAction: React.FC<DelegateBody> = ({
           expireSeconds: 120
         }
       )
+      await getVoterData()
     } catch (error) {
       console.error(error)
     }
@@ -334,7 +337,7 @@ const DelegatorAction: React.FC<DelegateBody> = ({
           <span className={classes.titleLabel}>{t('delegator.rewards')}:</span>
           <span className={classes.info}>
             {userVoteForProxy
-              ? dalegateData?.unclaimed
+              ? `${dalegateData?.unclaimedEOS} EOS`
               : t('delegator.noDelegate')}
           </span>
         </div>
