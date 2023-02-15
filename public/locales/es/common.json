@@ -148,6 +148,7 @@
     "account": "Cuenta",
     "active": "Activo",
     "undelegado": "Anular el delegado",
-    "signupMessage": "Tu cuenta necesita un paso más para poder acceder a esta página, por favor has click en en boton de validar para poder continuar."
+    "signupMessage": "Tu cuenta necesita un paso más para poder acceder a esta página, por favor has click en en boton de validar para poder continuar.",
+    "distributionLabel": "tiempo estimado para la siguiente distribución"
   }
 }

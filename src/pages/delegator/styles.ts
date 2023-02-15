@@ -56,7 +56,10 @@ const Styles = makeStyles(theme => ({
   },
   graph: {
     marginTop: theme.spacing(2),
-    height: 400
+    height: 400,
+    '& .recharts-legend-item-text': {
+      textTransform: 'capitalize'
+    }
   },
   lastBlock: {
     marginBottom: theme.spacing(2)
@@ -150,6 +153,25 @@ const Styles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
+  },
+  nextDistribution: {
+    justifyContent: 'space-between',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  yourRewardsBox: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    display: 'flex',
+    flexDirection: 'column',
+    marginBottom: theme.spacing(1),
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+      width: 'auto'
+    }
   }
 }))
 
