@@ -149,6 +149,7 @@
     "account": "Account",
     "active": "Active",
     "undelegate": "Undelegate",
-    "signupMessage": "Your account needs one more step to access this page, please click on the validate button to continue."
+    "signupMessage": "Your account needs one more step to access this page, please click on the validate button to continue.",
+    "distributionLabel": "Estimated time to next distribution"
   }
 }

@@ -14,7 +14,7 @@ import {
   ResponsiveContainer
 } from 'recharts'
 
-import { BaseSnackbar } from 'components'
+import { BaseSnackbar, CountdownTimer } from 'components'
 import { useSharedState } from 'context/state.context'
 import { walletConfig } from 'config'
 import { smartProxyUtil, eosioUtil, formatters } from 'utils'
@@ -24,23 +24,23 @@ import useStyles from './styles'
 const data = [
   {
     name: 'September',
-    rewards: 2000
+    rewards: 0
   },
   {
     name: 'October',
-    rewards: 7000
+    rewards: 0
   },
   {
     name: 'November',
-    rewards: 9800
+    rewards: 0
   },
   {
     name: 'December',
-    rewards: 13500
+    rewards: 0
   },
   {
     name: 'Junary',
-    rewards: 15000
+    rewards: 0
   }
 ]
 
@@ -76,6 +76,7 @@ const DelegatorAction: React.FC<DelegateBody> = ({
   const [state] = useSharedState()
   const [showSubmit, setShowSubmit] = useState(false)
   const [recipient, setRecipient] = useState('')
+  const [nextDistribution, setNextDistribution] = useState<number>(0)
   const [userVoteForProxy, setUserVoteForProxy] = useState(false)
   const [message, setMessage] = useState<MessageObject>({
     message: '',
@@ -94,6 +95,13 @@ const DelegatorAction: React.FC<DelegateBody> = ({
 
     setUserVoteForProxy(delegateState === eosioUtil.VoteState.ForProxy)
   }, [setUserVoteForProxy, state?.ual?.activeUser?.accountName])
+
+  const getNextDistributionDate = useCallback(async () => {
+    const [, distribution] = await eosioUtil.getDistributionData()
+    const DATE_FORMATED = new Date(distribution.distribution_time).getTime()
+
+    setNextDistribution(DATE_FORMATED)
+  }, [setNextDistribution])
 
   const delegateVote = async () => {
     try {
@@ -165,7 +173,7 @@ const DelegatorAction: React.FC<DelegateBody> = ({
   }
 
   const onCloseSnackBar: any = useCallback(
-    (event?: React.SyntheticEvent, reason?: string) => {
+    (e?: React.SyntheticEvent, reason?: string) => {
       if (reason === 'clickaway') return
 
       setMessage({ ...message, visible: false })
@@ -235,10 +243,11 @@ const DelegatorAction: React.FC<DelegateBody> = ({
   useEffect(() => {
     const validateUserVote = async () => {
       await validateHasDelegateVote()
+      await getNextDistributionDate()
     }
 
     validateUserVote()
-  }, [validateHasDelegateVote])
+  }, [validateHasDelegateVote, getNextDistributionDate])
 
   if (!isValidUser)
     return (
@@ -322,6 +331,7 @@ const DelegatorAction: React.FC<DelegateBody> = ({
           </div>
         ) : (
           <Button
+            disabled={!userVoteForProxy}
             onClick={() => setShowSubmit(true)}
             label={t('delegator.sendTo')}
             variant='primary'
@@ -333,16 +343,27 @@ const DelegatorAction: React.FC<DelegateBody> = ({
         )}
       </div>
       <div className={clsx(classes.actionBox, classes.lastBlock)}>
-        <div>
-          <span className={classes.titleLabel}>{t('delegator.rewards')}:</span>
-          <span className={classes.info}>
-            {userVoteForProxy
-              ? `${dalegateData?.unclaimedEOS} EOS`
-              : t('delegator.noDelegate')}
-          </span>
+        <div className={classes.yourRewardsBox}>
+          <div className={classes.nextDistribution}>
+            <span className={classes.titleLabel}>
+              {t('delegator.rewards')}:
+            </span>
+            <span className={classes.info}>
+              {userVoteForProxy
+                ? `${dalegateData?.unclaimedEOS} EOS`
+                : t('delegator.noDelegate')}
+            </span>
+          </div>
+
+          <CountdownTimer
+            date={nextDistribution}
+            style={classes.info}
+            distributionLabel={t('delegator.distributionLabel')}
+          />
         </div>
         <div className={classes.claimBox}>
           <Button
+            disabled={!userVoteForProxy || !dalegateData?.unclaimed}
             onClick={claimReward}
             label={t('delegator.claim')}
             variant='primary'
