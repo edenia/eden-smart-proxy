@@ -1,5 +1,4 @@
 import React from 'react'
-// import InfoIcon from '@mui/icons-material/Info'
 import { Box } from '@mui/material'
 
 import useCountdown from 'hooks/useCountdown'
