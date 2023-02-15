@@ -13,8 +13,7 @@ const CountdownTimer = ({
   style: string
   distributionLabel: string
 }): JSX.Element => {
-  const SEVEN_DAYS_IN_MS = 17 * 24 * 60 * 60 * 1000
-  const [days, hours, minutes, seconds] = useCountdown(date + SEVEN_DAYS_IN_MS)
+  const [days, hours, minutes, seconds] = useCountdown(date)
 
   return (
     <Box display='flex' alignItems='center'>
