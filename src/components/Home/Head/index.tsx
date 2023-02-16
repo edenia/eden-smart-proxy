@@ -1,9 +1,7 @@
-import Image from 'next/image'
-
 import LanguageSelector from 'components/LanguageSelector'
-import logoImage from '/public/logos/eden-proxy-logo.png'
 
 import useStyles from './styles'
+import LogoSvg from './Logo.svg'
 
 const Head: React.FC = () => {
   const classes = useStyles()
@@ -11,7 +9,7 @@ const Head: React.FC = () => {
   return (
     <div className={classes.container}>
       <div>
-        <Image src={logoImage} />
+        <LogoSvg />
       </div>
       <LanguageSelector />
     </div>
