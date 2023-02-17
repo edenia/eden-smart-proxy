@@ -1,6 +1,6 @@
 import React from 'react'
 
-const DelegatorSvg = (): any => (
+const DelegatorSvg = (): JSX.Element => (
   <svg width={20} height={20} viewBox='0 0 20 20'>
     <path
       fillRule='evenodd'

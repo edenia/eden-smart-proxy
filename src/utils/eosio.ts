@@ -44,8 +44,8 @@ export const getTotalEosVoteDelegate = async (): Promise<number> => {
 
 export const getDistributionData = async <T = any>(): Promise<T> => {
   const { rows } = await eosApi.getTableRows({
-    code: 'edenproxyrwd',
-    scope: 'edenproxyrwd',
+    code: sdkConfig.edenSmartProxyRewardContract,
+    scope: sdkConfig.edenSmartProxyRewardContract,
     table: 'distribution',
     json: true,
     limit: 1

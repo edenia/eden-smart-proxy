@@ -48,7 +48,11 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
     )
 
     setShowDelegateButton(!(delegateState === eosioUtil.VoteState.ForProxy))
-    setTotalVotesDelegate(await eosioUtil.getTotalEosVoteDelegate())
+
+    const totalVotes = await eosioUtil.getTotalEosVoteDelegate()
+    const exponent = Math.pow(10, 4)
+
+    setTotalVotesDelegate(totalVotes / exponent)
   }
 
   const onCloseSnackBar: any = useCallback(
@@ -66,7 +70,10 @@ const Header: React.FC<HeaderProps> = ({ onDrawerToggle }) => {
 
   useEffect(() => {
     const totalVotes = async () => {
-      setTotalVotesDelegate(await eosioUtil.getTotalEosVoteDelegate())
+      const totalVotes = await eosioUtil.getTotalEosVoteDelegate()
+      const exponent = Math.pow(10, 4)
+
+      setTotalVotesDelegate(totalVotes / exponent)
     }
 
     totalVotes()

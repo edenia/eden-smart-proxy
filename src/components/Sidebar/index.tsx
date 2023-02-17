@@ -21,7 +21,6 @@ import clsx from 'clsx'
 
 import { useSharedState } from 'context/state.context'
 import { atomicAssetsUtil, smartProxyUtil } from 'utils'
-import logoImage from '/public/logos/eden-proxy-logo.png'
 import AuthButton from 'components/AuthUAL'
 import LanguageSelector from 'components/LanguageSelector'
 import { BaseSnackbar } from 'components'
@@ -31,6 +30,7 @@ import VoterSvg from './Voter.svg'
 import VoteSvg from './Vote.svg'
 import AboutSvg from './About.svg'
 import DelegatorSvg from './Delegator.svg'
+import LogoSvg from './Logo.svg'
 
 const useStyles = Styles
 
@@ -127,7 +127,9 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
         <div>
           <div className={classes.sidebarHeader}>
             <Link href={'/'} passHref>
-              <Image src={logoImage} className={classes.cursor} />
+              <div className={classes.cursor}>
+                <LogoSvg />
+              </div>
             </Link>
           </div>
           <div className={classes.scrollbar}>
