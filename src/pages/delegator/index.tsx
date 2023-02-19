@@ -52,7 +52,7 @@ const Delegator: NextPage = () => {
       scope: walletConfig.rewardAccount,
       table: 'voter',
       lower_bound: state.ual.accountName,
-      uppper_bound: state.ual.accountName,
+      upper_bound: state.ual.accountName,
       json: true,
       limit: 1
     })

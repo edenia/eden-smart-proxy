@@ -13,7 +13,7 @@ const getMemberVotes = async <T = any>(account: string): Promise<T> => {
     scope: sdkConfig.eosioContract,
     table: 'voters',
     lower_bound: account,
-    uppper_bound: account,
+    upper_bound: account,
     json: true,
     limit: 1
   })
