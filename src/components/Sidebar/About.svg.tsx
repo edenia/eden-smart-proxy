@@ -1,6 +1,6 @@
 import React from 'react'
 
-const AboutSvg = (): any => (
+const AboutSvg = (): JSX.Element => (
   <svg
     width={24}
     height={24}

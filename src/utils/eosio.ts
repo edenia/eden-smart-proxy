@@ -13,7 +13,7 @@ const getMemberVotes = async <T = any>(account: string): Promise<T> => {
     scope: sdkConfig.eosioContract,
     table: 'voters',
     lower_bound: account,
-    uppper_bound: account,
+    upper_bound: account,
     json: true,
     limit: 1
   })
@@ -40,4 +40,16 @@ export const getTotalEosVoteDelegate = async (): Promise<number> => {
   )
 
   return (await response.json())?.proxy?.proxied_vote_eos || 0
+}
+
+export const getDistributionData = async <T = any>(): Promise<T> => {
+  const { rows } = await eosApi.getTableRows({
+    code: sdkConfig.edenSmartProxyRewardContract,
+    scope: sdkConfig.edenSmartProxyRewardContract,
+    table: 'distribution',
+    json: true,
+    limit: 1
+  })
+
+  return rows[0]
 }

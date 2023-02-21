@@ -1,11 +1,11 @@
 import { DefaultSeoProps } from 'next-seo'
-const title = 'Eden Smart Proxy'
+const title = 'EOS Smart Proxy'
 const description =
-  'The Eden Smart Proxy is an EOS BP Voting Proxy that aims to maximize the voice of individual EOS holders, leverage peer-vetted accountability, reward whitelisted BPs, and provide low-risk APR for all token stakers.'
+  'The EOS Smart Proxy is an EOS BP Voting Proxy that aims to maximize the voice of individual EOS holders, leverage peer-vetted accountability, reward whitelisted BPs, and provide low-risk APR for all token stakers.'
 const url = 'https://proxy.eden.eoscommunity.org'
 
 const SEO: DefaultSeoProps = {
-  titleTemplate: '%s | Eden Smart Proxy',
+  titleTemplate: '%s | EOS Smart Proxy',
   title,
   description,
   canonical: url,
@@ -15,7 +15,7 @@ const SEO: DefaultSeoProps = {
     url,
     title,
     description,
-    site_name: 'Eden Smart Proxy',
+    site_name: 'EOS Smart Proxy',
     images: [
       {
         url: `${url}/images/preview-image.jpg`,
@@ -24,8 +24,8 @@ const SEO: DefaultSeoProps = {
     ]
   },
   twitter: {
-    handle: 'Eden Smart Proxy',
-    site: 'Eden Smart Proxy',
+    handle: 'EOS Smart Proxy',
+    site: 'EOS Smart Proxy',
     cardType: 'summary_large_image'
   }
 }

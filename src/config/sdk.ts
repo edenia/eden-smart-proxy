@@ -18,6 +18,8 @@ export const edenSmartProxyContract =
 export const myVoteEOSDaoContract =
   process.env.NEXT_PUBLIC_MYVOTEEOSDAO_CONTRACT || 'myvoteeosdao'
 
+export const edenSmartProxyRewardContract = 'edenproxyrwd'
+
 export const producersInfoApiUrl =
   process.env.NEXT_PUBLIC_PRODUCERS_INFO_API_URL ||
   'https://graphql-eos.antelope.tools/api/rest/get-producers-info'
