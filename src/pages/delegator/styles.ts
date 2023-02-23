@@ -121,7 +121,16 @@ const Styles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     '& .MuiTextField-root': {
-      marginRight: theme.spacing(4)
+      marginRight: theme.spacing(2),
+      height: 36
+    },
+    '& .MuiFormLabel-root': {
+      fontSize: 16,
+      marginTop: -4
+    },
+    '& .MuiInputBase-root': {
+      fontSize: 16,
+      height: 36
     }
   },
   claimBox: {

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, ReactNode, useEffect } from 'react'
 import { Button } from '@edenia/ui-kit'
-import { TextField, AlertColor } from '@mui/material'
+import { TextField, AlertColor, Button as ButtonMUI } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import clsx from 'clsx'
 import {
@@ -103,10 +103,11 @@ const DelegatorAction: React.FC<DelegateBody> = ({
     setNextDistribution(DATE_FORMATED)
   }, [setNextDistribution])
 
-  const delegateVote = async () => {
+  const delegateVote = async (isUndelegate = false) => {
     try {
       const delegateVoteTrx = smartProxyUtil.buildDelegateTransaction(
-        state?.ual?.activeUser?.accountName
+        state?.ual?.activeUser?.accountName,
+        isUndelegate
       )
 
       await state?.ual?.activeUser?.signTransaction(delegateVoteTrx, {
@@ -116,7 +117,9 @@ const DelegatorAction: React.FC<DelegateBody> = ({
       })
       setMessage({
         severity: 'success',
-        message: t('delegator.delegateVoteMessage'),
+        message: isUndelegate
+          ? t('delegator.undelegateVoteMessage')
+          : t('delegator.delegateVoteMessage'),
         visible: true
       })
       setTimeout(async () => {
@@ -183,7 +186,7 @@ const DelegatorAction: React.FC<DelegateBody> = ({
 
   const undelegateVote = () => {
     try {
-      console.log('undelegate vote')
+      delegateVote(true)
     } catch (error) {
       console.error(error)
     }
@@ -285,7 +288,7 @@ const DelegatorAction: React.FC<DelegateBody> = ({
         {userVoteForProxy ? (
           <Button
             onClick={undelegateVote}
-            label={t('delegator.undelegate')}
+            label={t('delegator.undelegated')}
             variant='primary'
             externalStyles={clsx(classes.btnAction, {
               [classes.outlinedBtnRed]: true
@@ -317,11 +320,27 @@ const DelegatorAction: React.FC<DelegateBody> = ({
             <TextField
               id='recipient-basic'
               label={t('account')}
+              placeholder='edenprxfunds'
               variant='outlined'
               size='small'
               value={recipient}
               onChange={inputOnChange}
             />
+            <ButtonMUI
+              onClick={() => setShowSubmit(false)}
+              variant='text'
+              sx={{
+                marginRight: `16px`,
+                color: '#C5283D',
+                textTransform: 'capitalize',
+                borderColor: '#C5283D',
+                '& .MuiSvgIcon-root': {
+                  fontSize: 16
+                }
+              }}
+            >
+              {t('delegator.close')}
+            </ButtonMUI>
             <Button
               onClick={chanceReceipt}
               label={t('delegator.submit')}

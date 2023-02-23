@@ -1,6 +1,6 @@
-import { Button, Spinner } from '@edenia/ui-kit'
+import { Button } from '@edenia/ui-kit'
 import { useTranslation } from 'next-i18next'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 
 import useAuthUAL from './useAuthUAL.hook'
 import useStyles from './styles'
@@ -10,19 +10,16 @@ const AuthButton: React.FC<{
   setMessage(value: any): void
 }> = ({ btnLabel, setMessage }) => {
   const [{ state }, { login }] = useAuthUAL()
-  const [loader, setLoader] = useState<boolean>(false)
   const { t } = useTranslation()
   const classes = useStyles()
 
   const handleLogin = async () => {
-    setLoader(true)
     await login('anchor')
   }
 
   useEffect(() => {
     if (state?.validUser === undefined || state?.validUser) return
 
-    setLoader(false)
     setMessage({
       severity: 'warning',
       message: t('home.noEdenMember'),
@@ -35,8 +32,6 @@ const AuthButton: React.FC<{
       {!state?.ual?.activeUser && (
         <Button onClick={handleLogin} label={btnLabel} variant='primary' />
       )}
-      <p />
-      {loader && <Spinner />}
     </div>
   )
 }
