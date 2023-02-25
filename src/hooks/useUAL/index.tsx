@@ -32,14 +32,12 @@ const useLightUAL = ({ appName, chains, authenticators }: UALType) => {
       )
 
       setLoading(true)
-      const response = authenticateWithoutAccountInput({
+      authenticateWithoutAccountInput({
         ual,
         appName,
         availableAuthenticators,
         authenticator
       })
-
-      console.log({ response })
     } catch (error) {
       console.log('error from login', error)
     }
