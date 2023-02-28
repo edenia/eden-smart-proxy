@@ -11,6 +11,10 @@
   "searchName": "按名称搜索",
   "buttonLabel": "委托票权",
   "buttonLabelDelegate": "委托",
+  "days": "days",
+  "hrs": "hrs",
+  "mins": "mins",
+  "secs": "secs",
   "routes": {
     "/": "主页",
     "voters": "投票成员",
@@ -142,13 +146,15 @@
     "yourRewards": "Your Rewards",
     "legend": "The reward isn't activated now. If you want to urge BPs to activate direct inflation reward, please indicate how much inflation should be dedicated system-wide none-vote-buy reward. Choose: 0%, 0.25%, 0.5%, 0.75%, 1%.",
     "delegateVoteMessage": "Vote Delegaded Successfully",
+    "undelegateVoteMessage": "Vote Undelegaded Successfully",
     "somethingWrong": "Something went wrong, try again.",
     "claimMessage": "Reward Claimed",
     "recipientMessage": "Recipient Changed",
     "account": "Account",
     "active": "Active",
-    "undelegate": "Undelegate",
+    "undelegated": "Undelegate",
     "signupMessage": "Your account needs one more step to access this page, please click on the validate button to continue.",
-    "distributionLabel": "Estimated time to next distribution"
+    "distributionLabel": "Estimated time to next distribution",
+    "close": "Close"
   }
 }

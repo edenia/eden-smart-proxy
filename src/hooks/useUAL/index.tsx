@@ -22,21 +22,25 @@ const useLightUAL = ({ appName, chains, authenticators }: UALType) => {
   const [loading, setLoading] = useState(false)
 
   const login = (type: string) => {
-    const ual = new UAL(chains, appName, authenticators)
-    const { availableAuthenticators } = ual.getAuthenticators()
+    try {
+      const ual = new UAL(chains, appName, authenticators)
+      const { availableAuthenticators } = ual.getAuthenticators()
 
-    const authenticator = getAuthenticatorInstance(
-      type,
-      availableAuthenticators
-    )
+      const authenticator = getAuthenticatorInstance(
+        type,
+        availableAuthenticators
+      )
 
-    setLoading(true)
-    authenticateWithoutAccountInput({
-      ual,
-      appName,
-      availableAuthenticators,
-      authenticator
-    })
+      setLoading(true)
+      authenticateWithoutAccountInput({
+        ual,
+        appName,
+        availableAuthenticators,
+        authenticator
+      })
+    } catch (error) {
+      console.log('error from login', error)
+    }
   }
 
   const restart = () => {
@@ -167,6 +171,7 @@ const useLightUAL = ({ appName, chains, authenticators }: UALType) => {
         })
         setLoading(false)
       } catch (err) {
+        console.log('error from authenticateWithoutAccountInput')
         setLoading(false)
       }
     },

@@ -1,5 +1,4 @@
 import React, { memo, useEffect, useState, useRef, useCallback } from 'react'
-import Image from 'next/image'
 import {
   Drawer,
   DrawerProps,
@@ -231,6 +230,9 @@ const Sidebar: React.FC<SidebarType> = ({ onClose, props }) => {
                 placement='bottom-start'
                 transition
                 disablePortal
+                nonce={undefined}
+                onResize={undefined}
+                onResizeCapture={undefined}
               >
                 {({ TransitionProps, placement }) => (
                   <Grow
