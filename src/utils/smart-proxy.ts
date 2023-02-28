@@ -68,11 +68,18 @@ export const buildTransaction = ({
   }
 }
 
-export const buildDelegateTransaction = (voter: string): Transaction => {
+export const buildDelegateTransaction = (
+  voter: string,
+  undelegate = false
+): Transaction => {
   return buildTransaction({
     actor: voter,
     action: 'voteproducer',
-    data: { voter, proxy: sdkConfig.edenSmartProxyContract, producers: [] },
+    data: {
+      voter,
+      proxy: undelegate ? '' : sdkConfig.edenSmartProxyContract,
+      producers: []
+    },
     contract: sdkConfig.eosioContract
   })
 }

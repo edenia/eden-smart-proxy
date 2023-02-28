@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 const getReturnValues = countDown => {
-  if (countDown < 0) return [0, 0, 0, 0]
+  if (countDown < 0) return [0, '00', '00', '00']
 
   const days = Math.floor(countDown / (1000 * 60 * 60 * 24))
   const hours = Math.floor(
@@ -10,10 +10,15 @@ const getReturnValues = countDown => {
   const minutes = Math.floor((countDown % (1000 * 60 * 60)) / (1000 * 60))
   const seconds = Math.floor((countDown % (1000 * 60)) / 1000)
 
-  return [days, hours, minutes, seconds]
+  return [
+    days,
+    hours < 10 ? `0${hours}` : hours,
+    minutes < 10 ? `0${minutes}` : minutes,
+    seconds < 10 ? `0${seconds}` : seconds
+  ]
 }
 
-const useCountdown = (targetDate: number): Array<number> => {
+const useCountdown = (targetDate: number): Array<number | string> => {
   const countDownDate = new Date(targetDate).getTime()
   const [countDown, setCountDown] = useState(
     countDownDate - new Date().getTime()

@@ -11,6 +11,10 @@
   "searchName": "Buscar por nombre",
   "buttonLabel": "Delegar voto",
   "buttonLabelDelegate": "Delegar",
+  "days": "días",
+  "hrs": "hrs",
+  "mins": "mins",
+  "secs": "segs",
   "routes": {
     "/": "Hogar",
     "voters": "Miembros",
@@ -142,13 +146,15 @@
     "yourRewards": "Tus recompensas",
     "legend": "La recompensa no está activada ahora. Si desea instar a los BP a activar la recompensa de inflación directa, indique cuánta inflación debe dedicarse a la recompensa de compra sin voto en todo el sistema. Elija: 0%, 0.25% , 0,5%, 0,75%, 1%.",
     "delegateVoteMessage": "Voto Delegado Exitosamente",
+    "undelegateVoteMessage": "Voto sin Delegar Exitosamente",
     "somethingWrong": "Algo salió mal, inténtalo de nuevo",
     "claimMessage": "Recompensa Reclamada",
     "recipientMessage": "Destinatario cambiado",
     "account": "Cuenta",
     "active": "Activo",
-    "undelegado": "Anular el delegado",
+    "undelegated": "Anular el delegado",
     "signupMessage": "Tu cuenta necesita un paso más para poder acceder a esta página, por favor has click en en boton de validar para poder continuar.",
-    "distributionLabel": "tiempo estimado para la siguiente distribución"
+    "distributionLabel": "tiempo estimado para la siguiente distribución",
+    "close": "Cerrar"
   }
 }
