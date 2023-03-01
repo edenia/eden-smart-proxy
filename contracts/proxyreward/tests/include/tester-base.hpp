@@ -18,13 +18,13 @@ using namespace eosio;
 using user_context = test_chain::user_context;
 
 void proxyreward_setup( test_chain &t ) {
-  t.create_code_account( "edenproxyrwd"_n );
-  t.set_code( "edenproxyrwd"_n, "proxyreward.wasm" );
+  t.create_code_account( "eosproxyrwds"_n );
+  t.set_code( "eosproxyrwds"_n, "proxyreward.wasm" );
 }
 
 void proxyfunds_setup( test_chain &t ) {
-  t.create_code_account( "edenprxfunds"_n );
-  t.set_code( "edenprxfunds"_n, "fund.wasm" );
+  t.create_code_account( "eosproxyfund"_n );
+  t.set_code( "eosproxyfund"_n, "fund.wasm" );
 }
 
 void token_setup( test_chain &t ) {
@@ -65,8 +65,8 @@ struct tester {
   user_context token = chain.as( "eosio.token"_n );
   user_context faketoken = chain.as( "fake.token"_n );
   user_context eden = chain.as( "genesis.eden"_n );
-  user_context edenprxfunds = chain.as( "edenprxfunds"_n );
-  user_context edenproxyrwd = chain.as( "edenproxyrwd"_n );
+  user_context eosproxyfund = chain.as( "eosproxyfund"_n );
+  user_context eosproxyrwds = chain.as( "eosproxyrwds"_n );
 
   user_context alice = chain.as( "alice"_n );
   user_context bob = chain.as( "bob"_n );
@@ -140,11 +140,11 @@ struct tester {
   }
 
   auto get_account() const {
-    return edenproxy::accounts( "edenproxyrwd"_n ).account();
+    return edenproxy::accounts( "eosproxyrwds"_n ).account();
   };
 
   auto get_distribution() const {
-    return edenproxy::distributions( "edenproxyrwd"_n ).distribution();
+    return edenproxy::distributions( "eosproxyrwds"_n ).distribution();
   };
 
   void full_signup() {
@@ -158,8 +158,8 @@ struct tester {
 
   auto get_voters() const {
     std::map< eosio::name, std::vector< uint64_t > > result;
-    edenproxy::voter_table_type                      voter_tb{ "edenproxyrwd"_n,
-                                          "edenproxyrwd"_n.value };
+    edenproxy::voter_table_type                      voter_tb{ "eosproxyrwds"_n,
+                                          "eosproxyrwds"_n.value };
 
     for ( auto t : voter_tb ) {
       if ( auto *voter = std::get_if< edenproxy::voter_v1 >( &t.value ) ) {
@@ -174,8 +174,8 @@ struct tester {
 
   auto get_recipients() const {
     std::map< eosio::name, eosio::name > result;
-    edenproxy::voter_table_type          voter_tb{ "edenproxyrwd"_n,
-                                          "edenproxyrwd"_n.value };
+    edenproxy::voter_table_type          voter_tb{ "eosproxyrwds"_n,
+                                          "eosproxyrwds"_n.value };
 
     for ( auto t : voter_tb ) {
       if ( auto *voter = std::get_if< edenproxy::voter_v1 >( &t.value ) ) {

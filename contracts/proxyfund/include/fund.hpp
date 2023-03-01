@@ -21,6 +21,6 @@ namespace fund {
                           std::string         memo );
   };
 
-  EOSIO_ACTIONS( funds, "edenprxfunds"_n, notify( token_contract, transfer ) )
+  EOSIO_ACTIONS( funds, "eosproxyfund"_n, notify( token_contract, transfer ) )
 
 } // namespace fund

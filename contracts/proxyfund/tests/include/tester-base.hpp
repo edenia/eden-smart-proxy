@@ -12,13 +12,13 @@ using namespace eosio;
 using user_context = test_chain::user_context;
 
 void proxyfunds_setup( test_chain &t ) {
-  t.set_code( "edenprxfunds"_n, "edenprxfunds.wasm" );
+  t.set_code( "eosproxyfund"_n, "eosproxyfund.wasm" );
 }
 
 struct tester {
   test_chain   chain;
   user_context eden = chain.as( "genesis.eden"_n );
-  user_context edenproxyrwd = chain.as( "edenprxfunds"_n );
+  user_context eosproxyrwds = chain.as( "eosproxyfund"_n );
 
   user_context alice = chain.as( "alice"_n );
   user_context bob = chain.as( "bob"_n );

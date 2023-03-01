@@ -12,10 +12,10 @@ TEST_CASE( "Init Smart Contract" ) {
   expect( t.alice.trace< edenproxy::actions::init >(),
           "Missing required authority" );
 
-  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.eosproxyrwds.act< edenproxy::actions::init >();
   t.chain.start_block();
 
-  expect( t.edenproxyrwd.trace< edenproxy::actions::init >(),
+  expect( t.eosproxyrwds.trace< edenproxy::actions::init >(),
           "Contract is already initialized" );
 
   CHECK( t.get_account().balance == s2a( "0.0000 EOS" ) );
@@ -29,9 +29,9 @@ TEST_CASE( "Sign up and remove" ) {
 
   t.fund_accounts();
 
-  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.eosproxyrwds.act< edenproxy::actions::init >();
   t.alice.act< token::actions::transfer >( "alice"_n,
-                                           "edenprxfunds"_n,
+                                           "eosproxyfund"_n,
                                            s2a( "500.0000 EOS" ),
                                            "donation" );
 
@@ -115,7 +115,7 @@ TEST_CASE( "Send tokens from fake contract and symbol" ) {
 
   t.fund_accounts();
 
-  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.eosproxyrwds.act< edenproxy::actions::init >();
   t.alice.with_code( "fake.token"_n )
       .act< token::actions::transfer >( "alice"_n,
                                         edenproxy::DEFAULT_FUNDING_CONTRACT,
@@ -123,11 +123,11 @@ TEST_CASE( "Send tokens from fake contract and symbol" ) {
                                         "donation" );
   t.alice.with_code( "fake.token"_n )
       .act< token::actions::transfer >( "alice"_n,
-                                        "edenproxyrwd"_n,
+                                        "eosproxyrwds"_n,
                                         s2a( "500.0000 EOS" ),
                                         "donation" );
   t.alice.act< token::actions::transfer >( "alice"_n,
-                                           "edenproxyrwd"_n,
+                                           "eosproxyrwds"_n,
                                            s2a( "500.0000 OTHER" ),
                                            "donation" );
 
@@ -150,12 +150,12 @@ TEST_CASE( "Send tokens from fake contract and symbol" ) {
                                         s2a( "500.0000 EOS" ),
                                         "donation" );
   t.alice.act< token::actions::transfer >( "alice"_n,
-                                           "edenproxyrwd"_n,
+                                           "eosproxyrwds"_n,
                                            s2a( "500.0000 EOS" ),
                                            "donation" );
   t.chain.as( "eosio"_n )
       .act< token::actions::transfer >( "eosio"_n,
-                                        "edenproxyrwd"_n,
+                                        "eosproxyrwds"_n,
                                         s2a( "500.0000 EOS" ),
                                         "donation" );
 
@@ -167,16 +167,16 @@ TEST_CASE( "Receive the inflation amount" ) {
 
   t.fund_accounts();
 
-  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.eosproxyrwds.act< edenproxy::actions::init >();
   t.alice.act< token::actions::transfer >( "alice"_n,
-                                           "edenprxfunds"_n,
+                                           "eosproxyfund"_n,
                                            s2a( "500.0000 EOS" ),
                                            "donation" );
 
   CHECK( t.get_account().balance == s2a( "500.0000 EOS" ) );
 
   t.alice.act< token::actions::transfer >( "alice"_n,
-                                           "edenprxfunds"_n,
+                                           "eosproxyfund"_n,
                                            s2a( "12.0000 EOS" ),
                                            "donation" );
 
@@ -189,9 +189,9 @@ TEST_CASE( "Distribute" ) {
   t.fund_accounts();
   t.skip_to( "2023-01-01T07:00:00.000" );
 
-  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.eosproxyrwds.act< edenproxy::actions::init >();
   t.alice.act< token::actions::transfer >( "alice"_n,
-                                           "edenprxfunds"_n,
+                                           "eosproxyfund"_n,
                                            s2a( "512.0000 EOS" ),
                                            "donation" );
 
@@ -234,7 +234,7 @@ TEST_CASE( "Distribute" ) {
   CHECK( t.get_voters() == expected );
 
   t.alice.act< token::actions::transfer >( "alice"_n,
-                                           "edenprxfunds"_n,
+                                           "eosproxyfund"_n,
                                            s2a( "600.0000 EOS" ),
                                            "donation" );
 
@@ -265,9 +265,9 @@ TEST_CASE( "Slow distribution" ) {
   t.fund_accounts();
   t.skip_to( "2023-01-01T07:00:00.000" );
 
-  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.eosproxyrwds.act< edenproxy::actions::init >();
   t.alice.act< token::actions::transfer >( "alice"_n,
-                                           "edenprxfunds"_n,
+                                           "eosproxyfund"_n,
                                            s2a( "512.0000 EOS" ),
                                            "donation" );
 
@@ -317,9 +317,9 @@ TEST_CASE( "Cannot resign with pending funds to claim" ) {
   t.fund_accounts();
   t.skip_to( "2023-01-01T07:00:00.000" );
 
-  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.eosproxyrwds.act< edenproxy::actions::init >();
   t.alice.act< token::actions::transfer >( "alice"_n,
-                                           "edenprxfunds"_n,
+                                           "eosproxyfund"_n,
                                            s2a( "512.0000 EOS" ),
                                            "donation" );
   t.full_signup();
@@ -340,9 +340,9 @@ TEST_CASE( "Cannot resign while a distributing" ) {
   t.fund_accounts();
   t.skip_to( "2023-01-01T07:00:00.000" );
 
-  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.eosproxyrwds.act< edenproxy::actions::init >();
   t.alice.act< token::actions::transfer >( "alice"_n,
-                                           "edenprxfunds"_n,
+                                           "eosproxyfund"_n,
                                            s2a( "512.0000 EOS" ),
                                            "donation" );
   t.full_signup();
@@ -365,9 +365,9 @@ TEST_CASE( "Use default recipient if no one is set" ) {
   t.fund_accounts();
   t.skip_to( "2023-01-01T07:00:00.000" );
 
-  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.eosproxyrwds.act< edenproxy::actions::init >();
   t.alice.act< token::actions::transfer >( "alice"_n,
-                                           "edenprxfunds"_n,
+                                           "eosproxyfund"_n,
                                            s2a( "512.0000 EOS" ),
                                            "donation" );
 
@@ -385,9 +385,9 @@ TEST_CASE( "Disable claim funds for an account" ) {
   t.fund_accounts();
   t.skip_to( "2023-01-01T07:00:00.000" );
 
-  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.eosproxyrwds.act< edenproxy::actions::init >();
   t.alice.act< token::actions::transfer >( "alice"_n,
-                                           "edenprxfunds"_n,
+                                           "eosproxyfund"_n,
                                            s2a( "512.0000 EOS" ),
                                            "donation" );
 
@@ -405,19 +405,19 @@ TEST_CASE( "Disable claim funds for an account" ) {
       t.bob.trace< edenproxy::actions::changercpt >( "alice"_n, ""_n, false ),
       "Missing required authority" );
 
-  expect( t.edenproxyrwd.trace< edenproxy::actions::changercpt >( "alice"_n,
+  expect( t.eosproxyrwds.trace< edenproxy::actions::changercpt >( "alice"_n,
                                                                   ""_n,
                                                                   false ),
           "Missing required authority" );
   expect(
       t.alice.trace< edenproxy::actions::changercpt >( "alice"_n, ""_n, true ),
       "Missing required authority" );
-  expect( t.edenproxyrwd.trace< edenproxy::actions::changercpt >( "alice"_n,
+  expect( t.eosproxyrwds.trace< edenproxy::actions::changercpt >( "alice"_n,
                                                                   "bob"_n,
                                                                   true ),
           "Admin can only ban" );
 
-  t.edenproxyrwd.act< edenproxy::actions::changercpt >( "alice"_n, ""_n, true );
+  t.eosproxyrwds.act< edenproxy::actions::changercpt >( "alice"_n, ""_n, true );
 
   expect( t.alice.trace< edenproxy::actions::changercpt >( "alice"_n,
                                                            "alice"_n,
@@ -438,9 +438,9 @@ TEST_CASE( "Skip distribution if there are no accounts" ) {
   t.fund_accounts();
   t.skip_to( "2023-01-01T07:00:00.000" );
 
-  t.edenproxyrwd.act< edenproxy::actions::init >();
+  t.eosproxyrwds.act< edenproxy::actions::init >();
   t.alice.act< token::actions::transfer >( "alice"_n,
-                                           "edenprxfunds"_n,
+                                           "eosproxyfund"_n,
                                            s2a( "512.0000 EOS" ),
                                            "donation" );
 
