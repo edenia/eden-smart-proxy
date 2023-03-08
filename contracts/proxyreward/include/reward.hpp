@@ -38,7 +38,7 @@ namespace edenproxy {
 
   EOSIO_ACTIONS(
       reward,
-      "edenproxyrwd"_n,
+      "eosproxyrwds"_n,
       action( init ),
       action( signup, owner, recipient ),
       action( resign, owner ),
