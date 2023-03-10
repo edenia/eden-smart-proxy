@@ -320,7 +320,7 @@ const DelegatorAction: React.FC<DelegateBody> = ({
             <TextField
               id='recipient-basic'
               label={t('account')}
-              placeholder='edenprxfunds'
+              placeholder='eosproxyfund'
               variant='outlined'
               size='small'
               value={recipient}
